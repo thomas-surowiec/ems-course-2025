@@ -1,0 +1,135 @@
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND THEMES
+%----------------------------------------------------------------------------------------
+\PassOptionsToPackage{table}{xcolor}
+\documentclass[aspectratio=169,xcolor=dvipsnames,10pt]{beamer}
+\usetheme{SimplePlusAIC}
+
+\setbeamerfont{section in toc}{size=\small}
+
+% \usepackage{background}
+% \backgroundsetup{
+%     placement=center,
+%     scale=4,
+%     % contents={Part II/logos/Simula_logo.png},
+%     opacity=0.1
+% }
+% \setbeamertemplate{background}{\BgMaterial}
+
+\setbeamertemplate{background}{\tikz[overlay,remember picture]\node[opacity=0.05,anchor=south west]
+at (current page.south west)
+{\includegraphics[width=5cm,keepaspectratio]{../logos/Simula_logo.png}};}
+
+
+\useinnertheme[showtitle=false]{tcolorbox}
+
+
+\usepackage{amsmath}
+\usepackage{animate}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\usepackage{caption}
+\usepackage{graphicx} % Allows including images
+% \usepackage{subfig}
+\usepackage{subcaption}
+\usepackage{booktabs} % Allows the use of \toprule, \midrule and  \bottomrule in tables
+\usepackage{svg} %allows using svg figures
+\usepackage{tikz}
+\usepackage{makecell}
+\usepackage{multirow}
+\usepackage{appendixnumberbeamer}
+\usepackage{wrapfig}
+\usepackage{verbatim}
+%\usepackage[dvipsnames]{xcolor}
+
+\usepackage{hhline}
+\usepackage{relsize}
+\usepackage{bm}
+%Select the Epilogue font (requires luaLatex or XeLaTex compilers)
+%\setsansfont{Epilogue}[
+  %  Path=./epilogueFont/,
+  %  Scale=0.9,
+  %  Extension = .ttf,
+   % UprightFont=*-Regular,
+   % BoldFont=*-Bold,
+   % ItalicFont=*-Italic,
+    %BoldItalicFont=*-BoldItalic
+    %]
+    \usefonttheme[onlymath]{serif}
+% \usepackage{ eulervm } % Euler VM as math serif font
+
+\newcommand*{\defeq}{\stackrel{\text{def}}{=}}
+\newcommand{\grad}{\nabla}
+\newcommand{\lap}{\Delta}
+\newcommand{\weaklyto}{\rightharpoonup}
+\newcommand{\weakstar}{\stackrel{*}\rightharpoonup}
+\newcommand{\cts}{\hookrightarrow}
+\newcommand{\ctsDense}{\xhookrightarrow{d}}
+\newcommand{\ctsCompact}{\xhookrightarrow{c}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\bE}{\mathbb{E}}
+\newcommand{\fF}{\mathfrak{F}}
+\newcommand{\pP}{\mathbb{P}}
+\newcommand{\bP}{\mathbb{P}}
+\newcommand{\cP}{\mathcal{P}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\bR}{\mathbb{R}}
+\newcommand{\ER}{\overline{\mathbb{R}}}
+\newcommand{\cR}{\mathcal{R}}
+\newcommand{\cJ}{\mathcal{J}}
+\newcommand{\cG}{\mathcal{G}}
+\newcommand{\cU}{\mathcal{U}}
+\newcommand{\cX}{\mathcal{X}}
+\newcommand{\cZ}{\mathcal{Z}}
+\newcommand{\CVaR}{\textup{CVaR}}
+\newcommand{\D}{\textup{ d}}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\fa}{\text{for all }}
+\DeclareMathOperator*{\essinf}{\vphantom{p}ess\,inf}
+\DeclareMathOperator{\sigmoid}{expit} % a.k.a. logistic sigmoid
+
+\newcommand{\bbe}{\mathbb{E}}
+\newcommand{\Pae}{\mathbb{P}\text{-a.e.}}
+\newcommand{\bbp}{\mathbb{P}}
+\newcommand{\cF}{\mathcal{F}}
+\newcommand{\Zad}{\mathcal{Z}_{\text{\textup{ad}}}}
+\newcommand{\risk}{\mathcal{R}}
+
+\newtheorem{proposition}{Proposition}
+
+\usepackage[ruled,vlined,algo2e]{algorithm2e}
+\crefname{algocf}{algorithm}{algorithms}
+ \usepackage{caption}
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\title[\quad\quad\quad LVPP Course III]{The Latent Variable Proximal Point Method III: LVPP for Free Discontinuity Problems, Nonlinear PDEs and Future Directions
+ } % The short title appears at the bottom of every slide, the full title is only on the title page
+%\subtitle{Subtitle}
+
+\author{\small{\bf Thomas M. Surowiec}}
+
+\institute[T.M. Surowiec]{Department of Numerical Analysis and Scientific Computing \newline Simula Research Laboratory \newline Oslo, Norway}
+% Your institution as it will appear on the bottom of every slide, maybe shorthand to save space
+
+
+\date[EMS School]{ {\footnotesize 
+K\'acov, Czechia, 15-20 June 2025}}
+%----------------------------------------------------------------------------------------
+%	PRESENTATION SLIDES
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+{
+\setbeamertemplate{background canvas}{}
+\frame{\titlepage}
+}
+
+\begin{frame}{Overview}
+\tableofcontents
+\end{frame}
+
+\end{document}

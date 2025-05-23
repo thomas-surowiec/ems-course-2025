@@ -1,0 +1,71 @@
+#-------------------------------------
+# Compiled LaTeX files
+*.aux
+*.bbl
+*.blg
+*.brf
+*.fls
+*.fdb_latexmk
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.synctex.gz
+*.nav
+*.snm
+*.vrb
+*.xdv
+
+# Intermediate files from various tools
+*.dvi
+*.pdf
+*.ps
+*.eps
+*.gz
+*.run.xml
+*.bcf
+
+# Editors/IDE files
+*.swp
+*.bak
+*~
+.vscode/
+.idea/
+*.DS_Store
+
+# latexmk and arara logs
+latexmkrc
+.arara/
+*.acn
+*.acr
+*.alg
+*.glg
+*.glo
+*.gls
+*.ist
+
+# Auxiliary files from minted package
+_minted*
+
+# tikz externalization
+*.dpth
+*.md5
+*.tikz
+
+#--------------------------------------------------
+# Keep only source files
+!*.tex
+!*.bib
+!*.sty
+!*.cls
+!*.bst
+!*.jpg
+!*.jpeg
+!*.png
+!*.svg
+!*.eps
+!*.pdf_tex
+!Makefile
+!.latexmkrc
+

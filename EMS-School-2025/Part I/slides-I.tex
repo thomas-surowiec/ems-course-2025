@@ -1,0 +1,292 @@
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND THEMES
+%----------------------------------------------------------------------------------------
+\PassOptionsToPackage{table}{xcolor}
+\documentclass[aspectratio=169,xcolor=dvipsnames,11pt]{beamer}
+\usetheme{SimplePlusAIC}
+\usepackage{amsmath}
+\usepackage{animate}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\usepackage{caption}
+\usepackage{graphicx} % Allows including images
+%\usepackage{subfig}
+\usepackage{subcaption}
+\usepackage{booktabs} % Allows the use of \toprule, \midrule and  \bottomrule in tables
+\usepackage{svg} %allows using svg figures
+\usepackage{tikz}
+\usepackage{makecell}
+\usepackage{multirow}
+\usepackage{appendixnumberbeamer}
+\usepackage{wrapfig}
+\usepackage{verbatim}
+\usepackage{tcolorbox}
+%\usepackage[dvipsnames]{xcolor}
+
+\usepackage{hhline}
+\usepackage{relsize}
+\usepackage{bm}
+%Select the Epilogue font (requires luaLatex or XeLaTex compilers)
+%\setsansfont{Epilogue}[
+  %  Path=./epilogueFont/,
+  %  Scale=0.9,
+  %  Extension = .ttf,
+   % UprightFont=*-Regular,
+   % BoldFont=*-Bold,
+   % ItalicFont=*-Italic,
+    %BoldItalicFont=*-BoldItalic
+    %]
+    \usefonttheme[onlymath]{serif}
+% \usepackage{ eulervm } % Euler VM as math serif font
+
+\newcommand*{\defeq}{\stackrel{\text{def}}{=}}
+\newcommand{\grad}{\nabla}
+\newcommand{\lap}{\Delta}
+\newcommand{\weaklyto}{\rightharpoonup}
+\newcommand{\weakstar}{\stackrel{*}\rightharpoonup}
+\newcommand{\cts}{\hookrightarrow}
+\newcommand{\ctsDense}{\xhookrightarrow{d}}
+\newcommand{\ctsCompact}{\xhookrightarrow{c}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\pP}{\mathbb{P}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\ER}{\overline{\mathbb{R}}}
+\newcommand{\cR}{\mathcal{R}}
+\newcommand{\cJ}{\mathcal{J}}
+\newcommand{\cG}{\mathcal{G}}
+\newcommand{\CVaR}{\textup{CVaR}}
+\newcommand{\D}{\textup{ d}}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\fa}{\text{for all }}
+\DeclareMathOperator*{\essinf}{\vphantom{p}ess\,inf}
+\DeclareMathOperator{\sigmoid}{expit} % a.k.a. logistic sigmoid
+
+\usepackage[ruled,vlined,algo2e]{algorithm2e}
+\crefname{algocf}{algorithm}{algorithms}
+ \usepackage{caption}
+
+\usepackage{tcolorbox}  % For fancy boxes
+
+% Define a custom style for the box
+\tcbuselibrary{skins, breakable}
+% \newtcolorbox[auto counter, number within=section]{roundedshadowbox}[2][]{
+%   enhanced,
+%   colback=white, % Background color (kept white)
+%   colframe=black, % Border color
+%   boxrule=0.5pt, % Border thickness
+%   arc=3mm, % Rounded corners
+%   drop shadow southeast,
+%   shadow xshift=0.5ex,
+%   shadow yshift=-0.5ex,
+%   colshadow=gray!60!white
+%     #1 % Additional options (e.g., width override)
+% }
+
+% Define a custom gradient shadow box
+% \tcolorboxenvironment{beamercolorbox}{
+%   enhanced,
+%   colback=white, % Background color (kept white)
+%   colframe=black, % Border color
+%   boxrule=0.5pt, % Border thickness
+%   arc=3mm, % Rounded corners
+%   drop shadow southeast,
+%   shadow xshift=0.5ex,
+%   shadow yshift=-0.5ex,
+%   colshadow=gray!60!white
+% }
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\title[\quad\quad\quad LVPP Course I]{The Latent Variable Proximal Point Method I: Introduction, Preliminary Results, and the Obstacle Problem
+ } % The short title appears at the bottom of every slide, the full title is only on the title page
+%\subtitle{Subtitle}
+
+\author{\small{\bf Thomas M. Surowiec}}
+
+\institute[T.M. Surowiec]{Department of Numerical Analysis and Scientific Computing \newline Simula Research Laboratory \newline Oslo, Norway}
+% Your institution as it will appear on the bottom of every slide, maybe shorthand to save space
+
+
+\date[EMS School]{ {\footnotesize 
+K\'acov, Czechia, 15-20 June 2025}}
+%----------------------------------------------------------------------------------------
+%	PRESENTATION SLIDES
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+{
+\setbeamertemplate{background canvas}{}
+\frame{\titlepage}
+}
+
+\begin{frame}{Overview}
+\tableofcontents
+\end{frame}
+
+\section{Motivation and context: Variational inequalities and PDEs}\label{sec:motivation}
+\begin{frame}{Dirichlet's Principle}
+    \begin{enumerate}
+        \item History
+            \begin{enumerate}
+                \item Who invented it, when did it get its name, etc.
+            \end{enumerate}
+        \item Modern interpretation and a first variational inequality
+            \begin{enumerate}
+                \item Derivation of a variational inequality
+                    \begin{enumerate}
+                        \item The feasible set is nonempty, closed, and convex
+                        \item Existence via direct method
+                        \item The objective function is G\^{a}teaux differentiable
+                        \item Derivation of the VI
+                    \end{enumerate}
+            \end{enumerate}
+        \item Reformulation as a variational equation
+            \begin{enumerate}
+                \item Using a clever test function
+                \item Use lifting discussion see Chouly 2023, Poisson.
+            \end{enumerate}
+    \end{enumerate}
+\end{frame}
+
+
+\begin{frame}{Dirichlet's Principle}
+% \visible<2->{
+  \begin{minipage}{0.48\textwidth}
+  \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+  A
+% We seek a minimizer $u$ of the energy functional:
+% \begin{equation*}
+% 	E(v)
+% 	=
+% 	\frac{1}{2}
+% 	\int_\Omega |\nabla v|^2 \dd x
+% 	-
+% 	\int_\Omega v f \dd x
+% 	\,,
+% \end{equation*}
+% over the \textbf{closed convex cone} defined by  
+% \[
+% K = \{ v \in H^1_0(\Omega) \mid v \geq 0 \text{~a.e.}\}.
+% \] 
+% (Displacements $v \ge 0$, the obstacle)
+   \end{beamercolorbox}
+    \end{minipage}
+    % }
+
+% \begin{frame}\frametitle{Dirichlet's Principle\footnote{\tiny  Due to William Thomson, 1st Lord Kelvin 1847 \& Gau\ss. Named after his teacher, Dirichlet, by Riemann. Hilbert used ``Dirichlet's principle'' 1900.}}
+
+%  In contemporary language, this states that for any $f\in L^2(\Omega)$ and $g\in H^1(\Omega)$, the (weak) solution of Poisson's equation over a Lipschitz domain $\Omega \subset \mathbb{R}^n$,
+% \begin{equation}
+% \label{eq:PoissonEquation}
+% 	-\Delta u = f
+% 	\quad \text{in~} \Omega,
+% 	\qquad
+% 	u = g \quad \text{on~} \partial\Omega,
+% \end{equation}
+% is the \textbf{$H^1(\Omega)$-minimizer} of the Dirichlet energy,
+% \begin{equation}
+% \label{eq:DirichletEnergy}
+% 	E(v)
+% 	=
+% 	\frac{1}{2}
+% 	\int_\Omega |\nabla v|^2 \dd x
+% 	-
+% 	\int_\Omega v f \dd x
+% 	\,,
+% \end{equation}
+% when confined to the \textbf{constraint set} $H^1_g(\Omega) = g + H^1_0(\Omega) = \{ v \in H^1(\Omega) \mid v = g \text{~on~} \partial \Omega\}$.
+\end{frame}
+
+\begin{frame}{Elliptic Variational Inequalities}
+        \begin{enumerate}
+        \item A slight twist on Dirichlet's principle
+            \begin{enumerate}
+                \item Conic constraint ($u \ge 0$)
+                \item Follow Dirichlet above for derivation
+            \end{enumerate}
+        \item A second variational inequality: An obstacle problem
+        \item A brief history of variational inequalities (of the first kind)
+        \item The Lions-Stampacchia theorem
+        \item Mignot's theorem
+            \begin{enumerate}
+                \item 
+            \end{enumerate}
+    \end{enumerate}
+\end{frame}
+\section{Examples}\label{sec:examples}
+\begin{frame}{Examples of Variational Inequalities}
+    \begin{enumerate}
+        \item Signorini problem
+        \item Stefan problem
+        \item Black-Scholes
+        \item Multiphase phase transition
+        \item Elastoplastic torsion
+        \item Ice sheet
+        \item Diffusive wave equation
+    \end{enumerate}
+\end{frame}
+\section{Alternative Formulations}\label{sec:complementarity}
+\begin{frame}{A Complementarity Formulation}
+        \begin{enumerate}
+        \item Derivation of a complementarity problem
+        \item Regularity of the multiplier
+        \item Active, Inactive, and Biactive sets
+        \item General form of multiplier?
+    \end{enumerate}
+\end{frame}
+\section{Solution Algorithms}\label{sec:algorithms}
+\begin{frame}{Algorithms}
+    \begin{enumerate}
+        \item Penalty
+        \item Barrier
+        \item Augmented Lagrangian
+    \end{enumerate}
+\end{frame}
+
+
+% \begin{frame}{Frame Title}
+    
+% \end{frame}
+% \begin{frame}{Frame Title}
+    
+% \end{frame}
+% \begin{frame}{Frame Title}
+    
+% \end{frame}
+% \begin{frame}{Frame Title}
+    
+% \end{frame}
+% \section{}
+% \begin{frame}{Frame Title}
+    
+% \end{frame}
+% \begin{frame}{Frame Title}
+    
+% \end{frame}
+% \begin{frame}{Frame Title}
+    
+% \end{frame}
+% \begin{frame}{Frame Title}
+    
+% \end{frame}
+% \begin{frame}{Frame Title}
+    
+% \end{frame}
+% \section{}
+% \begin{frame}{Frame Title}
+    
+% \end{frame}
+% \begin{frame}{Frame Title}
+    
+% \end{frame}
+% \begin{frame}{Frame Title}
+    
+% \end{frame}
+% \begin{frame}{Frame Title}
+    
+% \end{frame}
+
+\end{document}
