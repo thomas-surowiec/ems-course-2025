@@ -56,6 +56,7 @@
 %\newcommand{\cG}{\mathcal{G}}
 %\newcommand{\CVaR}{\textup{CVaR}}
 %\newcommand{\D}{\textup{ d}}
+\newcommand{\C}{\mathbb C}
 \newcommand{\dd}{\mathrm{d}}
 %\newcommand{\fa}{\text{for all }}
 %\DeclareMathOperator*{\essinf}{\vphantom{p}ess\,inf}
@@ -115,7 +116,7 @@ K\'acov, Czechia, 15-20 June 2025}}
 \tableofcontents
 \end{frame}
 
-\section{Motivation and context: Variational inequalities and PDEs}\label{sec:motivation}
+\section{Motivation and context}\label{sec:motivation}
 %\begin{frame}{Dirichlet's Principle}
 %    \begin{enumerate}
 %        \item History
@@ -219,7 +220,7 @@ K\'acov, Czechia, 15-20 June 2025}}
  	\frac{1}{2}
  	\int_\Omega |\nabla v|^2 \dd x
  	-
- 	\int_\Omega v f \dd x
+ 	\int_\Omega f v \dd x
  	\,,
  \end{equation}}\visible<3->{
  when confined to the \textbf{constraint set} $H^1_g(\Omega) = g + H^1_0(\Omega) = \{ v \in H^1(\Omega) \mid v = g \text{~on~} \partial \Omega\}$.}
@@ -308,7 +309,7 @@ $E$ is the sum of a convex continuous function and a continuous linear functiona
 \visible<5->{
  We can thus easily show that $E$ is \alert{weakly lower-semicontinuous}, meaning
  \[
- \forall \{v_k\} \subset H^1_0(\Omega) : v_k \rightharpoonup v \quad\text{ we have }\quad \liminf_{k \to +\infty} E(v_k) \ge E(v).
+ \forall v \in H^1_0(\Omega), \forall \{v_k\} \subset H^1_0(\Omega) : v_k \rightharpoonup v \quad\text{ we have }\quad \liminf_{k \to +\infty} E(v_k) \ge E(v).
  \]
 }\vspace{-2ex}
 
@@ -365,12 +366,10 @@ This completes the proof, i.e., $u = \bar{v}$ is a minimizer of $E$ over $H^1_0(
   Then for fixed arbitrary $v \in H^1_g(\Omega)$, we have:
   \[
   E(u) \le E(u + \lambda (v - u) ) = E(u) + \lambda [(\nabla u, \nabla [v-u])_{L^2} - (f,v-u)_{L^2}] + \frac{\lambda^2}{2} \| \nabla [v-u] \|^2_{L^2}
-  \]
-  and hence,
+  \] }\visible<4->{and hence,
   \[
  \lambda [(\nabla u, \nabla [v-u])_{L^2} - (f,v-u)_{L^2}] \ge o(\lambda) 
-  \]
-  Divide by $\lambda > 0$ and let $\lambda \to 0$.
+  \]}\visible<5->{Divide by $\lambda > 0$ and let $\lambda \to 0$.
   }
  
  \end{beamercolorbox}}
@@ -403,26 +402,11 @@ This means $u \in H^1_g(\Omega)$ solves
 \end{beamercolorbox}}
 \end{frame}
 
-\section{Elliptic Variational Inequalities}
+\section{Variational Inequalities}
 
-\begin{frame}{Elliptic Variational Inequalities}
-        \begin{enumerate}
-        \item A slight twist on Dirichlet's principle
-            \begin{enumerate}
-                \item Conic constraint ($u \ge 0$)
-                \item Follow Dirichlet above for derivation
-            \end{enumerate}
-        \item A second variational inequality: An obstacle problem
-        \item A brief history of variational inequalities (of the first kind)
-        \item The Lions-Stampacchia theorem
-        \item Mignot's theorem
-            \begin{enumerate}
-                \item 
-            \end{enumerate}
-    \end{enumerate}
-\end{frame}
 
-\begin{frame}{Elliptic Variational Inequalities}
+
+\begin{frame}{Pointwise Inequality Constraints}
  \visible<1->{\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
 Given $u \in H^1(\Omega)$ with $u|_{\Gamma} = g$ we look for solutions satisfying a \alert{pointwise inequality}:
  \[
@@ -430,20 +414,482 @@ Given $u \in H^1(\Omega)$ with $u|_{\Gamma} = g$ we look for solutions satisfyin
  \]
  Denote this \alert{feasible set} by $K$.
  \end{beamercolorbox}}
+ 
+ \visible<2->{\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}
+ \centering Are constraints like this even relevant?
+ \end{beamercolorbox}
+ }
 \end{frame}
 
-\section{Examples}\label{sec:examples}
-\begin{frame}{Examples of Variational Inequalities}
-    \begin{enumerate}
-        \item Signorini problem
-        \item Stefan problem
-        \item Black-Scholes
-        \item Multiphase phase transition
-        \item Elastoplastic torsion
-        \item Ice sheet
-        \item Diffusive wave equation
-    \end{enumerate}
+\begin{frame}\frametitle{The Signorini Problem}
+\begin{minipage}{0.55\linewidth}
+\visible<1->{
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+Signorini (1959), analyzed by Fichera (1963).\\
+ 
+The essential first problem in contact mechanics.\\
+ 
+Models the deformation of a linear elastic body in the presence of a contact boundary constraint.
+\end{beamercolorbox}
+}\visible<2->{
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+\visible<2->{$\Omega \subset \mathbb{R}^3$, $\Gamma$ split into two disjoint subsets.}
+\visible<2->{$\Gamma = \overline{ \Gamma_\mathrm{D} \cup \Gamma_\mathrm{T} }$ with\\
+$\Gamma_D$ for \textbf{d}isplacement\\
+$\Gamma_{T}$ for \textbf{t}raction boundary conditions.}
+\end{beamercolorbox}}
+\end{minipage}\hspace{4ex}
+\begin{minipage}{0.3\linewidth}
+ \centering
+ \begin{figure}
+  \centering\vspace{1ex}
+  \visible<1->{\begin{minipage}[b]{0.45\textwidth}
+    \includegraphics[width=\linewidth]{figures/Antonio_Signorini.jpg}
+    \captionof*{figure}{\tiny A. Signorini}
+  \end{minipage}}%
+  \hfill
+  \begin{minipage}[b]{0.46\textwidth}
+    \includegraphics[width=\linewidth]{figures/Gaetano_Fichera.jpg}
+    \captionof*{figure}{\tiny G. Fichera}
+  \end{minipage}
+\end{figure}\vspace{-8ex}
+\begin{figure}
+	\centering
+	\begin{tikzpicture}
+		\node at (-3.35,0) {\includegraphics[height=1.25in]{figures/contact.png}};
+    \end{tikzpicture}
+\end{figure}
+\end{minipage}
 \end{frame}
+
+\begin{frame}\frametitle{The Signorini Problem}
+\begin{minipage}{0.55\linewidth}
+\visible<1->{
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+\visible<1->{State space:\vspace{-1.5ex}
+\begin{equation*}
+\label{eq:Signorini_V}
+    V = \big\{ u \in H^1(\Omega,\mathbb{R}^3)
+        \mid u = g \text{ on } \Gamma_\mathrm{D\textbf{}}
+    \big\}
+    \,,
+\end{equation*}}\vspace{-4ex}
+
+\visible<2->{Objective function:\vspace{-1.5ex}
+\begin{equation*}
+    J(u) =
+    \frac{1}{2}\int_\Omega (\mathbb C \epsilon(u)) : \epsilon(u) \dd x
+    -
+    \int_\Omega f \cdot u \dd x
+    \,,
+\end{equation*}}\vspace{-2.5ex}
+
+\visible<3->{Inequality constraints:\vspace{-1ex}
+\begin{equation*}
+ \alert{   K = \big\{ u \in V
+        \mid u \cdot \tilde{n} \leq \phi_1 \text{ on } \Gamma_\mathrm{T}
+    \big\} }
+    \,.
+\end{equation*}}\vspace{-4ex}
+\end{beamercolorbox}
+}\visible<4->{
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}\scriptsize
+%Here, $\epsilon : H^1(\Omega,\mathbb{R}^3) \to L^2(\Omega,\mathbb{R}^{3\times 3}_{\mathrm{sym}})$, 
+$\epsilon := (\nabla + \nabla^\top)/2$ symmetric gradient\smallskip
+ 
+$\C \colon \mathbb{R}^{3\times 3}_{\mathrm{sym}} \to \mathbb{R}^{3\times3}_{\mathrm{sym}}$ sym.\ pos.-def.\ elasticity tensor\smallskip
+
+$f \colon \Omega \to \mathbb{R}^3$ internal body force density\smallskip
+
+$\phi_1 \colon \Gamma_\mathrm{T} \to \mathbb{R}_+$ gap function, $\tilde{n}$ normal to contact surface.
+\end{beamercolorbox}}
+\end{minipage}\hspace{4ex}
+\begin{minipage}{0.3\linewidth}
+ \centering
+ \begin{figure}
+  \centering\vspace{1ex}
+  \visible<1->{\begin{minipage}[b]{0.45\textwidth}
+    \includegraphics[width=\linewidth]{figures/Antonio_Signorini.jpg}
+    \captionof*{figure}{\tiny A. Signorini}
+  \end{minipage}}%
+  \hfill
+  \begin{minipage}[b]{0.46\textwidth}
+    \includegraphics[width=\linewidth]{figures/Gaetano_Fichera.jpg}
+    \captionof*{figure}{\tiny G. Fichera}
+  \end{minipage}
+\end{figure}\vspace{-8ex}
+\begin{figure}
+	\centering
+	\begin{tikzpicture}
+		\node at (-3.35,0) {\includegraphics[height=1.25in]{figures/contact.png}};
+    \end{tikzpicture}
+\end{figure}
+\end{minipage}
+\end{frame}
+%\hypertarget{example_1_alpha}{}
+% \hyperlink{target_alpha}{\beamerbutton{Go to choice of $\alpha$}}
+% \hyperlink{target}{\beamerbutton{Go to Finite Element Spaces}}
+%  \hyperlink{target_alg}{\beamerbutton{Go to Algorithm and Convergence}}
+
+
+\begin{frame}\frametitle{Gradient Constraints}
+\begin{minipage}{0.55\linewidth}
+\visible<1->{
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+\footnotesize}\visible<1->{Often arise in \alert{Quasi-Variational Inequalities} (QVIs).\\
+ 
+ }\visible<2->{
+Major contributions by L. Prigozhin (modeling), J.F. Rodrigues (analysis), M. Hinterm\"uller \& C.N. Rautenberg (algorithms), and many others.\\
+ 
+ }\visible<3->{
+Diverse applications: 
+\begin{itemize}
+\item Elastic-plastic torsion problem
+\item Sandpile growth
+\item Magnetization in type-II superconductors
+\item Hydrology 
+\item Simplified stress constraints.
+\end{itemize}}
+\end{beamercolorbox}
+
+%\visible<2->{
+%\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+%\visible<2->{$\Omega \subset \mathbb{R}^3$, $\Gamma$ split into two disjoint subsets.}
+%\visible<2->{$\Gamma = \overline{ \Gamma_\mathrm{D} \cup \Gamma_\mathrm{T} }$ with\\
+%$\Gamma_D$ for \textbf{d}isplacement\\
+%$\Gamma_{T}$ for \textbf{t}raction boundary conditions.}
+%\end{beamercolorbox}}
+\end{minipage}\hspace{4ex}
+\begin{minipage}{0.3\linewidth}
+ \centering
+ \begin{figure}
+  \centering\vspace{1ex}
+  \visible<1->{\begin{minipage}[b]{0.38\textwidth}
+    \includegraphics[width=\linewidth]{figures/Prigozhin.jpg}
+    \captionof*{figure}{\tiny L. Prigozhin}
+  \end{minipage}}%
+  \hfill
+  \begin{minipage}[b]{0.46\textwidth}
+    \includegraphics[width=\linewidth]{figures/Rodrigues.jpg}
+    \captionof*{figure}{\tiny J.F. Rodrigues}
+  \end{minipage}
+\end{figure}
+ \begin{minipage}[b]{0.5\textwidth}
+    \includegraphics[width=\linewidth]{figures/global_feasible_active_set.png}
+    \captionof*{figure}{\tiny Black: $|\nabla u| = \phi$.}
+  \end{minipage}%
+%  \hfill
+%  \begin{minipage}[b]{0.6\textwidth}
+    \includegraphics[width=0.8\linewidth]{figures/gradient_constraint_u.png}
+%    \captionof*{figure}{\tiny State $u$}
+%  \end{minipage}
+%\begin{figure}
+%	\centering
+%	\begin{tikzpicture}
+%		\node at (-5,0) {\includegraphics[height=1in]{figures/global_feasible_active_set.png}};\hspace{10ex}
+%    \end{tikzpicture}\vspace{-8ex}
+%	\begin{tikzpicture}
+%		\node at (-2,-1) {\includegraphics[height=1.25in]{figures/gradient_constraint_u.png}};
+%    \end{tikzpicture}
+%%\end{figure}
+%  \end{minipage}
+\end{minipage}
+\end{frame}
+
+\begin{frame}\frametitle{Gradient Constraints}
+\begin{minipage}{0.55\linewidth}
+\visible<1->{
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+\footnotesize\visible<1->{Domain: $\Omega \subset \mathbb{R}^n$ open, bounded, Lipschitz\\
+
+}\visible<2->{
+State space: $V := W^{1,p}_0(\Omega)$ with $p \ge 2$\\
+
+}\visible<3->{
+Objective function:
+ \begin{equation*}\label{eq:grad-ob}
+     J(u) :=  \frac{1}{p} \int_{\Omega}|\nabla u|^p - f u \dd x
+ \end{equation*}
+Forcing term $f \in L^2(\Omega)$\medskip
+
+}\visible<4->{
+\alert{Inequality constraints:
+\begin{equation}\label{eq:grad-constr}
+K = \{ u \in H^1_0(\Omega) \mid |\nabla u| \le \phi \text{ a.e.\ in } \Omega \}\,.
+\end{equation}
+}
+$\phi \in L^{\infty}(\Omega)$ : $\phi \ge \epsilon$ a.e.\ for constant $\epsilon > 0$.
+}
+
+
+\end{beamercolorbox}
+}
+%\visible<2->{
+%\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+%\visible<2->{$\Omega \subset \mathbb{R}^3$, $\Gamma$ split into two disjoint subsets.}
+%\visible<2->{$\Gamma = \overline{ \Gamma_\mathrm{D} \cup \Gamma_\mathrm{T} }$ with\\
+%$\Gamma_D$ for \textbf{d}isplacement\\
+%$\Gamma_{T}$ for \textbf{t}raction boundary conditions.}
+%\end{beamercolorbox}}
+\end{minipage}\hspace{4ex}
+\begin{minipage}{0.3\linewidth}
+ \centering
+ \begin{figure}
+  \centering\vspace{1ex}
+  \visible<1->{\begin{minipage}[b]{0.38\textwidth}
+    \includegraphics[width=\linewidth]{figures/hintermueller.jpg}
+    \captionof*{figure}{\tiny M. Hinterm\"uller}
+  \end{minipage}}%
+  \hfill
+  \begin{minipage}[b]{0.46\textwidth}
+    \includegraphics[width=\linewidth]{figures/rautenberg.jpg}
+    \captionof*{figure}{\tiny C.N. Rautenberg}
+  \end{minipage}
+\end{figure}
+ \begin{minipage}[b]{0.5\textwidth}
+    \includegraphics[width=\linewidth]{figures/global_feasible_active_set.png}
+    \captionof*{figure}{\tiny Black: $|\nabla u| = \phi$.}
+  \end{minipage}%
+%  \hfill
+%  \begin{minipage}[b]{0.6\textwidth}
+    \includegraphics[width=0.8\linewidth]{figures/gradient_constraint_u.png}
+%    \captionof*{figure}{\tiny \hspace{28ex} State $u$ for $p=2$}
+%  \end{minipage}
+%\begin{figure}
+%	\centering
+%	\begin{tikzpicture}
+%		\node at (-5,0) {\includegraphics[height=1in]{figures/global_feasible_active_set.png}};\hspace{10ex}
+%    \end{tikzpicture}\vspace{-8ex}
+%	\begin{tikzpicture}
+%		\node at (-2,-1) {\includegraphics[height=1.25in]{figures/gradient_constraint_u.png}};
+%    \end{tikzpicture}
+%%\end{figure}
+%  \end{minipage}
+\end{minipage}
+\end{frame}
+
+\begin{frame}{Further Examples}
+\begin{figure}
+  \centering
+  \begin{subfigure}[b]{0.19\textwidth}
+    \includegraphics[width=\linewidth]{figures/ice.jpg}
+    \caption{Stefan Problem}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.19\textwidth}
+    \includegraphics[width=\linewidth]{figures/stocks.jpg}
+    \caption{Option Pricing}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.19\textwidth}
+    \includegraphics[width=\linewidth]{figures/water-oil-2.jpg}
+    \caption{Phase Transition}
+  \end{subfigure}\\
+%  \hfill
+  \begin{subfigure}[b]{0.19\textwidth}
+    \includegraphics[width=\linewidth]{figures/glacier.jpg}
+    \caption{Ice Sheet Models}
+  \end{subfigure}
+\hspace{7em}	
+%  \hfill
+  \begin{subfigure}[b]{0.19\textwidth}
+    \includegraphics[width=\linewidth]{figures/rivers.jpg}
+    \caption{Diffusive Waves}
+  \end{subfigure}
+\end{figure}
+ \visible<1->{\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}
+ \centering Each one of these applications can be formulated as a variational inequality with nontrivial pointwise inequality constraints on the state!
+ \end{beamercolorbox}
+ }
+\end{frame}
+
+%\section{Examples}\label{sec:examples}
+%\begin{frame}{Examples of Variational Inequalities}
+%    \begin{enumerate}
+%%        \item Signorini problem
+%%        \item Stefan problem
+%%        \item Black-Scholes
+%%        \item Multiphase phase transition
+%%        \item Elastoplastic torsion
+%%        \item Ice sheet
+%        \item Diffusive wave equation
+%    \end{enumerate}
+%\end{frame}
+
+%\begin{frame}{Elliptic Variational Inequalities}
+%        \begin{enumerate}
+%        \item A slight twist on Dirichlet's principle
+%            \begin{enumerate}
+%                \item Conic constraint ($u \ge 0$)
+%                \item Follow Dirichlet above for derivation
+%            \end{enumerate}
+%        \item A second variational inequality: An obstacle problem
+%        \item A brief history of variational inequalities (of the first kind)
+%        \item The Lions-Stampacchia theorem
+%        \item Mignot's theorem
+%            \begin{enumerate}
+%                \item 
+%            \end{enumerate}
+%    \end{enumerate}
+%\end{frame}
+
+\begin{frame}\frametitle{The Obstacle Problem}
+\only<1-3>{
+\begin{minipage}{0.45\linewidth}
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+ \visible<1->{A deceptively simple twist on Dirichlet's principle...\medskip
+ 
+ }\visible<2->{
+ We seek a minimizer $u$ of the total energy functional:
+ \begin{equation*}
+ 	E(v)
+ 	=
+ 	\frac{1}{2}
+ 	\int_\Omega |\nabla v|^2 \dd x
+ 	-
+ 	\int_\Omega f v\dd x
+ 	\,,
+ \end{equation*}
+ 
+  }\visible<3->{
+ over the \textbf{closed convex set} defined by  
+ \[
+ K = \{ v \in H^1(\Omega) \mid  v \ge \varphi \text{~a.e. }  u|_{\Gamma} = g \}
+ \] 
+ with $\varphi \in H^1(\Omega)$, $(\varphi - g)|_{\Gamma} \ge 0$.
+} 
+\end{beamercolorbox}
+\end{minipage}}%
+\only<4->{
+\begin{minipage}{0.45\linewidth}
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}
+ \visible<1->{A deceptively simple twist on Dirichlet's principle...\medskip
+ 
+ }\visible<2->{
+ We seek a minimizer $u$ of the total energy functional:
+ \begin{equation*}
+ 	E(v)
+ 	=
+ 	\frac{1}{2}
+ 	\int_\Omega |\nabla v|^2 \dd x
+ 	-
+ 	\int_\Omega f v\dd x
+ 	\,,
+ \end{equation*}
+ 
+  }\visible<3->{
+ over the \textbf{closed convex set} defined by  
+ \[
+ K = \{ v \in H^1(\Omega) \mid  v \ge \varphi \text{~a.e. }  u|_{\Gamma} = g \}
+ \] 
+ with $\varphi \in H^1(\Omega)$, $(g - \varphi)|_{\Gamma} \ge 0$.
+} 
+\end{beamercolorbox}
+\end{minipage}}%
+\only<4->{%
+\begin{minipage}{0.55\linewidth}
+%\hspace{-4ex}
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+Existence of solutions:
+\begin{itemize}
+\item \visible<5->{The analysis follows Dirichlet's principle.}
+\item \visible<6->{\alert{New}: We must view $E : K \subsetneq H^1(\Omega) \to \overline{\mathbb R}$}
+\item \visible<7->{Is $K$ weakly sequentially compact? \alert{No.}}
+\item \visible<8->{We  \alert{can}, however, show that $K \cap N_0$ is!}
+\end{itemize}
+\end{beamercolorbox}
+\end{minipage}}
+\end{frame}
+
+\begin{frame}\frametitle{Direct Method: Extra Step}
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}\scriptsize
+\visible<1->{$K \ne \emptyset$ : Construct a feasible point using Dirichlet's principle and the Maximum Principle.\bigskip
+
+}\visible<2->{$K$ is convex: $v,w \in K$, $\lambda \in [0,1]$ $\Rightarrow$ $\lambda v + (1-\lambda) w \ge \lambda \varphi + (1-\lambda) \varphi = \varphi$, same as before for boundary data.\bigskip
+
+}\visible<3->{$K$ is closed:  \visible<4->{Take $\left\{v_k\right\} \subset K$ such that $v_k \to v$ (strongly) in $H^1(\Omega)$. }
+\begin{itemize}
+\item \visible<5->{$H^1(\Omega) \hookrightarrow L^1(\Omega)$ continuously, hence $v_k \to v$ (strongly) in $L^1(\Omega)$.} 
+\item \visible<6->{$L^1(\Omega)$ convergence implies  $\exists \left\{v_{k_l}\right\} \subset \left\{v_k\right\}$ such that $v_{k_l} \to v$ pointwise a.e.}
+\item \visible<7->{For all $k$: $v_{k} \ge \varphi$ a.e.\ (by definition), clearly for $k_l$ as well. Hence, $v \ge \varphi$.}
+\item \visible<8->{The trace is continuous, hence $g = v_{k}|_{\Gamma} \to v|_{\Gamma} = g$.}
+\end{itemize}}\bigskip
+
+\visible<9->{$K$ is \alert{weakly closed}: Closed convex sets in locally convex TVS are the intersections of all closed half spaces containing them, thus weakly closed ($\Rightarrow$ \alert{weakly sequentially closed}).\bigskip
+
+}\visible<10->{
+If $\{v_k\} \subset K \cap N_0$ is a minimizing sequence, then its weak accumulation points lie in $K$!
+}
+\end{beamercolorbox}
+\end{frame}
+
+\begin{frame}\frametitle{The Obstacle Problem}
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+Same arguments as in DP lead to a variational inequality as an optimality condition:\medskip
+
+Find $u \in K$ such that
+ \[
+ (\nabla u, \nabla [v-u])_{L^2} \ge  (f,v-u)_{L^2} \quad \forall v \in K.
+ \]
+ 
+ \visible<2->{
+ $K$ is not a balanced set $\Rightarrow$ no clever test functions $v \in K$ that turn this into an \alert{equation}.\medskip
+ 
+ }\visible<3->{
+Observation 1: $f$ can have less regularity, i.e., $f \in (H^1(\Omega))^*$.\medskip
+ 
+ }\visible<4->{
+Observation 2: The proofs for existence and derivation of the VI carry over to more \alert{general (smooth) objectives} $J$ and \alert{closed convex sets} $K$ in \alert{reflexive Banach spaces}.
+ }
+ \end{beamercolorbox}
+ 
+ \visible<5->{
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}
+\centering What about nonsymmetric operators (think: advection)?
+ \end{beamercolorbox}
+}
+\end{frame}
+
+\begin{frame}\frametitle{The Lions-Stampacchia Theorem}
+\begin{minipage}{0.6\linewidth}
+\begin{theorem}[Lions, Stampacchia (1967)]\visible<1->{
+Let $V$ be a real Hilbert space and $K \subset V$ $\ne\emptyset$, closed, and convex.} \visible<2->{Suppose $a : V \times V \to \mathbb R$ is a continuous bilinear form and $\exists \kappa_{a} > 0$ such that 
+\[
+a(v_1 - v_2,v_1 - v_2) \ge \kappa_{a} \|v_1 - v_2\|^2_{V} \quad \forall v_1, v_2 \in K.
+\]}\visible<3->{Then for every $f \in V^*$ there exists an \alert{unique $u \in K$:}
+\[
+a(u,v-u) \ge \langle f, v- u \rangle_{V^*,V} \quad \forall v \in K.
+\]}\visible<4->{The mapping $f \mapsto u$ is Lipschitz with modulus $\kappa_{a}^{-1}$.}
+\end{theorem}
+\end{minipage}\hspace{4ex}
+\begin{minipage}{0.3\linewidth}
+ \centering
+ \begin{figure}
+  \centering\vspace{1ex}
+  \visible<1->{\begin{minipage}[b]{0.45\textwidth}
+    \includegraphics[width=\linewidth]{figures/lions.jpg}
+    \captionof*{figure}{\tiny J.L. Lions}
+  \end{minipage}}%
+  \hfill
+  \begin{minipage}[b]{0.46\textwidth}
+    \includegraphics[width=\linewidth]{figures/stampacchia.jpg}
+    \captionof*{figure}{\tiny G. Stampacchia}
+  \end{minipage}
+\end{figure}\vspace{-6ex}
+\begin{figure}
+	\centering
+	\begin{tikzpicture}
+		\node at (-4.2,1.2) {\scriptsize 
+	    	$u$};
+		\node at (-3.35,0) {\includegraphics[height=1.25in]{figures/obstacle_new.png}};
+		\node at (-2.2,-1.35) {\scriptsize 
+	    	$\varphi$};
+    \end{tikzpicture}
+
+\end{figure}
+\end{minipage}
+\end{frame}
+
 \section{Alternative Formulations}\label{sec:complementarity}
 \begin{frame}{A Complementarity Formulation}
         \begin{enumerate}
