@@ -4,6 +4,10 @@
 \PassOptionsToPackage{table}{xcolor}
 \documentclass[aspectratio=169,xcolor=dvipsnames,11pt]{beamer}
 \usepackage{tikz}
+
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
 \usetheme{SimplePlusAIC}
 \usepackage{amsmath}
 %\usepackage{animate}
@@ -890,22 +894,227 @@ a(u,v-u) \ge \langle f, v- u \rangle_{V^*,V} \quad \forall v \in K.
 \end{minipage}
 \end{frame}
 
-\section{Alternative Formulations}\label{sec:complementarity}
-\begin{frame}{A Complementarity Formulation}
-        \begin{enumerate}
-        \item Derivation of a complementarity problem
-        \item Regularity of the multiplier
-        \item Active, Inactive, and Biactive sets
-        \item General form of multiplier?
-    \end{enumerate}
+\begin{frame}\frametitle{The Lions-Stampacchia Theorem}
+\begin{minipage}{0.6\linewidth}
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+Comments:
+
+\begin{itemize}
+\item \visible<1->{For \textbf{symmetric $a$}, use the direct method.}
+\item \visible<2->{For \textbf{nonsymmetric $a$}: The proof embeds the nonsymmetric problem in a parametric fixed point iteration of the type $u = S_{\rho}(v)$ with parameter $\rho > 0$.}
+\item \visible<3->{The evaluation of $S_{\rho}(v)$ involves the solution of a related symmetric problem, which has a unique solution.}
+\item \visible<4->{After deriving several key estimates, it becomes clear what $\rho$ needs to be to ensure $S_{\rho}(v)$ is a contraction.}
+\end{itemize}
+
+ \end{beamercolorbox}
+\end{minipage}\hspace{4ex}
+\begin{minipage}{0.3\linewidth}
+ \centering
+ \begin{figure}
+  \centering\vspace{1ex}
+  \visible<1->{\begin{minipage}[b]{0.45\textwidth}
+    \includegraphics[width=\linewidth]{figures/lions.jpg}
+    \captionof*{figure}{\tiny J.L. Lions}
+  \end{minipage}}%
+  \hfill
+  \begin{minipage}[b]{0.46\textwidth}
+    \includegraphics[width=\linewidth]{figures/stampacchia.jpg}
+    \captionof*{figure}{\tiny G. Stampacchia}
+  \end{minipage}
+\end{figure}\vspace{-6ex}
+\begin{figure}
+	\centering
+	\begin{tikzpicture}
+		\node at (-4.2,1.2) {\scriptsize 
+	    	$u$};
+		\node at (-3.35,0) {\includegraphics[height=1.25in]{figures/obstacle_new.png}};
+		\node at (-2.2,-1.35) {\scriptsize 
+	    	$\varphi$};
+    \end{tikzpicture}
+
+\end{figure}
+\end{minipage}
 \end{frame}
-\section{Solution Algorithms}\label{sec:algorithms}
+
+\section{Lagrange Multipliers}\label{sec:complementarity}
+\begin{frame}\frametitle{Lagrange Multipliers}
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}\centering
+ \visible<1->{What distinguishes these problems from ordinary PDEs?}
+ \end{beamercolorbox}
+ 
+  \visible<2->{
+ \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+Consider again the VI for the Obstacle Problem: Find $u \in K$ such that
+ \[
+ (\nabla u, \nabla [v-u])_{L^2} \ge  (f,v-u)_{L^2} \quad \forall v \in K.
+ \]
+ 
+ \visible<3->{
+Note that $a(u,v) :=  (\nabla u, \nabla v)_{L^2}$ is a symmetric bounded continuous bilinear form.\medskip
+
+}\visible<4->{
+Riesz Representation Theorem: There exists (symmetric) bounded linear operator $A : V \to V^*$:
+ \[
+ a(u,v) = \langle Au,v\rangle\quad \forall u,v \in V.
+ \]
+ We then view the VI more abstractly: Find $u \in K$ such that
+ \[
+ \langle Au - f, v - u \rangle_{V^*,V} \ge 0 \quad \forall v \in K
+ \]\vspace{-3ex}
+ }
+ \end{beamercolorbox}}
+\end{frame}
+
+\begin{frame}\frametitle{Lagrange Multipliers} 
+  \visible<1->{
+ \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+Introduce a \alert{slack variable} $\lambda := Au - f$ and consider the problem: Find $(u,\lambda) \in K \times V^*$:
+\[\aligned
+Au - \lambda &= f \quad\text{ in } V^*\\
+\langle \lambda,v-u \rangle_{V^*,V} &\ge 0 \quad \forall v \in K.
+\endaligned
+\]
+ \visible<2->{
+What more can we say about $\lambda$?\medskip
+
+}\visible<3->{
+\begin{enumerate}
+\item \visible<3->{$u \in K$ and $w \in H^1_0(\Omega)$ with $w \ge 0$ $\Rightarrow$ $u + w \ge \varphi$ and $(u + w)|_{\Gamma} = g$.}
+\item \visible<4->{Setting $v = u + w$ implies $\langle \lambda, w \rangle \ge 0$ for all $w \in H^1_0(\Omega)$ : $w \ge 0$. \alert{``$\lambda \ge 0$''}.}
+\item \visible<5->{The Riesz-Schwarz theorem states $\lambda$ is in fact a nonnegative Radon measure on $\Omega$.}
+\item \visible<6->{Kinderlehrer-Stampacchia Thm. 6.9: 
+$
+\mathrm{supp} \lambda \subset \mathcal{A} := \left\{x \in \Omega : u(x) = \varphi(x)\right\}.
+$\\
+Proof uses smooth bump functions at points in $\mathcal{A}$ to get clever test functions.
+}
+\end{enumerate}
+ }
+ \end{beamercolorbox}}
+\end{frame}
+
+\begin{frame}\frametitle{Lagrange Multipliers}
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}\centering
+ \visible<1->{What does this have to do with what I learned in nonlinear optimization class!?}
+ \end{beamercolorbox}
+
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+ \visible<2->{If everything were in $\mathbb R^n$, we would have 
+ \begin{enumerate}
+ \item \visible<3->{$u_i \ge \varphi_i$ for a $i = 1,\dots,n$.}
+ \item \visible<4->{For each $i = 1,\dots, n$, there would exist a \alert{Lagrange multiplier} $\lambda_i \ge 0$.}
+ \item \visible<5->{For each $i = 1,\dots, n$, we would have a \alert{complementarity condition}:
+$
+ \lambda_i (u_i - \varphi_i) = 0.
+$}
+ \item \visible<6->{1. and 2. correspond to $u \in K$ and $\lambda \ge 0$ in the sense of $V^*$.}
+ \item \visible<7->{The support condition means: Letting $\mathcal{I} := \left\{x \in \Omega : u(x) > \varphi(x)\right\}$ (\alert{inactive set})
+ \[
+ \int_{\mathcal{I}} \dd \lambda =  \lambda(\mathcal{I}) = \lambda(\left\{x \in \Omega : u(x) > \varphi(x)\right\}) = 0, 
+ \]}\visible<8->{which is exactly what we get from the complementarity condition for $i$: $u_i > \varphi_i$.}
+ \end{enumerate}}
+ \end{beamercolorbox}
+\end{frame}
+
+\begin{frame}\frametitle{Lagrange Multipliers: Final Words}
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+ \visible<1->{If $u \in H^2(\Omega)$, then $Au - f \in L^2(\Omega)$ so $\lambda$ will have a \alert{pointwise} description:
+ \[
+ \lambda = \max\{0, \lambda - c (u - \varphi) \} \quad \text{ for any constant } c > 0
+ \]}\vspace{-3ex}
+ 
+ \visible<2->{In this setting, the set of $x \in \Omega$ where $\lambda = 0$ and $u = \varphi$ holds is called the \alert{biactive set}.\medskip
+ 
+ }\visible<3->{A \alert{non-negligible biactive set} is typically leads to worst-case convergence rates.\medskip
+ 
+ 
+ } \visible<4->{In $H^1(\Omega)$, we \alert{cannot ignore $(n-1)$-dimensional subsets} of $\Omega$ on which $u(x) = \varphi(x)$.}
+ \end{beamercolorbox}
+ 
+ \visible<5->{
+ \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}
+ For the general setting $\{\min J(u) \text{ over } V : G(u) \in C\}$ we get optimality conditions like
+ \[
+ 0 = J'(u) +  \langle \lambda, G(\cdot) \rangle'(u)
+ \]
+ with $\lambda \in N_{C}(G(u)):= \left\{\mu : \langle \mu, y - G(u) \rangle \le 0 \quad \forall y \in C\right\}$.
+  \end{beamercolorbox}
+  }
+\end{frame}
+
+\section{Solving Variational Inequalities}\label{sec:algorithms}
 \begin{frame}{Algorithms}
     \begin{enumerate}
         \item Penalty
         \item Barrier
         \item Augmented Lagrangian
     \end{enumerate}
+\end{frame}
+
+\begin{frame}\frametitle{Towards Solution Algorithms}
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}\centering
+ \visible<1->{How does one actually \alert{solve} a variational inequality?}
+ \end{beamercolorbox}\vspace{-2ex}
+ \visible<2->{
+ \begin{minipage}{0.6\textwidth}
+ \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+ Idea \#1: First Ritz-Galerkin: Replace $V$ by $V_{h}$. Then use a black box optimization solver, e.g., active set method. \medskip
+ 
+ \visible<3->{ \medskip
+ Problem: How do we faithfully discretize the inequality constraints?\medskip 
+ }
+ 
+  \visible<4->{ \medskip
+Result: Without a non-negative basis, the discrete solution $u_{h}$ will not be globally feasible!
+ }
+ \end{beamercolorbox}
+ \end{minipage}}\quad\quad
+ %
+ \begin{minipage}{0.33\textwidth}\vspace{3ex}
+% \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+ \centering\visible<3->{
+ \resizebox{\textwidth}{\textwidth}{%
+\begin{tikzpicture}
+\begin{axis}[
+%    width=\linewidth,
+%    height=4cm,
+    scale only axis,
+    axis lines=middle,
+    xlabel={$x$},
+    ylabel={$\phi_i(x)$},
+    xtick={0, 0.5, 1},
+    xticklabels={$x_0$, $x_1$, $x_2$},
+    ytick={-0.5, 0, 0.5, 1},
+    ymin=-0.6, ymax=1.2,
+    xmin=0, xmax=1,
+    legend style={font=\tiny, at={(1.0,-0.1)}, anchor=north east},
+    grid=major,
+    domain=0:1,
+    samples=200
+]
+
+\addplot[red, thick, dashed] {2*(x - 0.5)*(x - 1)};
+\addlegendentry{$\phi_0(x)$}
+
+\addplot[blue, thick] {-4*x*(x - 1)};
+\addlegendentry{$\phi_1(x)$}
+
+\addplot[green!60!black, thick, dashdotted] {2*x*(x - 0.5)};
+\addlegendentry{$\phi_2(x)$}
+
+\end{axis}
+\end{tikzpicture}
+}}
+% \end{beamercolorbox} 
+ \end{minipage}
+ 
+ \end{frame}
+ 
+ \begin{frame}\frametitle{A Deeper Problem}
+%\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}\centering
+\centering
+The \textbf{low regularity of the Lagrange multiplier} will result in a numerical method that requires more iterations to reach the same stopping tolerance on increasingly finer meshes. This is known as \textbf{mesh dependence}.
+% \end{beamercolorbox} 
 \end{frame}
 
 
