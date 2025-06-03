@@ -1043,34 +1043,198 @@ $}
 \end{frame}
 
 \section{Solving Variational Inequalities}\label{sec:algorithms}
-\begin{frame}{Algorithms}
-    \begin{enumerate}
-        \item Penalty
-        \item Barrier
-        \item Augmented Lagrangian
-    \end{enumerate}
-\end{frame}
+%\begin{frame}{Algorithms}
+%    \begin{enumerate}
+%        \item Penalty
+%        \item Barrier
+%        \item Augmented Lagrangian
+%    \end{enumerate}
+%\end{frame}
 
 \begin{frame}\frametitle{Towards Solution Algorithms}
 \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}\centering
  \visible<1->{How does one actually \alert{solve} a variational inequality?}
- \end{beamercolorbox}\vspace{-2ex}
+ \end{beamercolorbox}\hfill
+ \visible<2->{
+% \begin{minipage}{0.6\textwidth}
+ \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}\centering
+ First Idea: Use a Ritz-Galerkin approach by replacing $V$ by $V_{h}$. Then use a black box optimization solver, e.g., active set method. 
+ \end{beamercolorbox}}
+ \hfill
+  \visible<3->{
+% \begin{minipage}{0.6\textwidth}
+ \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}\centering
+What might be the issues with such an approach?
+ \end{beamercolorbox}}
+% \end{minipage}}%\quad\quad
+% %
+% \begin{minipage}{0.33\textwidth}\vspace{3ex}
+%% \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+% \centering\visible<3->{
+% \resizebox{\textwidth}{\textwidth}{%
+%\begin{tikzpicture}
+%\begin{axis}[
+%%    width=\linewidth,
+%%    height=4cm,
+%    scale only axis,
+%    axis lines=middle,
+%    xlabel={$x$},
+%    ylabel={$\phi_i(x)$},
+%    xtick={0, 0.5, 1},
+%    xticklabels={$x_0$, $x_1$, $x_2$},
+%    ytick={-0.5, 0, 0.5, 1},
+%    ymin=-0.6, ymax=1.2,
+%    xmin=0, xmax=1,
+%    legend style={font=\tiny, at={(1.0,-0.1)}, anchor=north east},
+%    grid=major,
+%    domain=0:1,
+%    samples=200
+%]
+%
+%\addplot[red, thick, dashed] {2*(x - 0.5)*(x - 1)};
+%\addlegendentry{$\phi_0(x)$}
+%
+%\addplot[blue, thick] {-4*x*(x - 1)};
+%\addlegendentry{$\phi_1(x)$}
+%
+%\addplot[green!60!black, thick, dashdotted] {2*x*(x - 0.5)};
+%\addlegendentry{$\phi_2(x)$}
+%
+%\end{axis}
+%\end{tikzpicture}
+%}}
+%% \end{beamercolorbox} 
+% \end{minipage}
+ 
+ \end{frame}
+ 
+ \begin{frame}\frametitle{Potential Issues}
+   \visible<1->{
+ \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}\centering
+Block box optimization solvers typically use the Euclidean inner product for computing gradients. Why is that a problem?
+ \end{beamercolorbox}}
+ 
+ \visible<2->{
+ \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+Consider 
+$
+J(u) := \frac{1}{2} \| \nabla u \|^2_{L^2(\Omega)} - (f,u)_{L^2(\Omega)}  \text{ with } u \in H^1_0(\Omega), f \in L^2(\Omega).
+$
+\visible<3->{The \alert{derivative} in $H^1_0(\Omega)$ in $u$ in direction $\delta \in H^1_0(\Omega)$ is:
+\[
+dJ(u)d = (\nabla u, \nabla \delta)_{L^2(\Omega)} - (f,\delta)_{L^2(\Omega)}.
+\]
+The derivative is a \alert{dual quantity}, i.e., an element of $H^{-1}(\Omega)$. }\visible<4->{But the Riesz Representation Theorem, says the \alert{gradient} $\nabla J(u)$ is the unique solution $y$ to
+\[
+(\nabla y, \nabla \varphi)_{L^2(\Omega)} = (\nabla u, \nabla \varphi)_{L^2(\Omega)} - (f,\varphi)_{L^2(\Omega)} \quad \varphi \in H^1_0(\Omega).
+\]
+E.g. $f \equiv 0$ implies $\nabla J(u) = u$. In general, $\nabla J(u) = u - (-\Delta)^{-1} f.$}
+ \end{beamercolorbox}}
+ \end{frame}
+ 
+  \begin{frame}\frametitle{Potential Issues}
+    \visible<1->{
+ \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+If we ``\alert{first discretize, then optimize}'', then we feed the solver a discretized objective
+\[
+J_h(\mathbf{u}) := \frac{1}{2} \mathbf{u}^T A_h \mathbf{u} - \mathbf{f}^T M_h \mathbf{u}\quad \text{ with }\quad \mathbf{u}, \mathbf{f} \in \mathbb R^n,
+\]
+with mesh parameter $h > 0$, whose gradient in $\mathbb R^n$ is given by
+\[
+\nabla^{\mathbb R^n} J_h(\mathbf{u}) := A_h \mathbf{u} - M_h \mathbf{f}.
+\]
+\visible<2->{Let $\mathbf{f} \equiv 0$. Now the gradient is $A_h \mathbf{u}$, where  \alert{the condition number of $A_h$ is $O(h^{-2})$!}\medskip 
+}
+
+\visible<3->{The gradient associated with the finite dimensional subspace $V_h$, however, should be
+ \[
+\nabla^{V_h} J_h(\mathbf{u}) := A^{-1}_h(A_h \mathbf{u} - M_h \mathbf{f}) = \mathbf{u} - A^{-1}_h \mathbf{f},
+\]
+which fixes the conditioning. Most solvers do not do this automatically. 
+}
+
+ \end{beamercolorbox}}
+ \end{frame}
+ 
+\begin{frame}\frametitle{Solving Variational Inequalities}
+
+\begin{minipage}{0.55\linewidth}
+ \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+ \visible<1->{Recall the 
+ \textbf{mixed complementarity problem}:}\medskip
+ 
+ \visible<1->{Find $(u,\lambda) \in H^1_0(\Omega) \times H^{-1}(\Omega)$ s.t.
+\[
+\underbrace{-\Delta u - \lambda = f,}_{\text{PDE}} \quad \underbrace{u \ge 0 \quad {\color{red}``\lambda \ge 0"} \quad \langle \lambda, u \rangle = 0}_{\text{Complementarity Condition}}.
+\]}
+ \end{beamercolorbox}
+\end{minipage}\quad
+\begin{minipage}{0.4\linewidth}
+\centering\visible<1->{
+	\begin{tikzpicture}
+		\node at (-1.35,1.25) {\includegraphics[clip=true, trim= 4cm 0 0 0, height=4cm]{figures/ObstacleExperiment2.png}};
+		% \node at (-3.35,1) {\includegraphics[clip=true, trim= 4cm 0 0 0, width=0.44\textwidth]{Figures/ObstacleExperiment2.png}};
+%		\node at (3,0.4) {
+%		   \includegraphics[clip=true, trim= 0 0 0.35cm 0, height=2.1in]{Figures/tikz/FEniCS_plots/example1/example1_ConvergenceRate.pdf}
+%		};
+	    % \node at (-4,2.8) {\includegraphics[height=2cm]{Figures/tikz/FEniCS_plots/example1/colorbar/colorbar1.pdf}};
+	    \node at (-3.7,0.5) {\includegraphics[height=2cm]{figures/colorbar1.pdf}};
+	    \node at (0.75,2.2) {\includegraphics[height=2cm]{figures/colorbar2.pdf}};
+    \end{tikzpicture}
+}
+\end{minipage}\medskip
+
+\visible<2->{
+%\begin{minipage}{0.48\linewidth}
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+The \alert{low regularity of the Lagrange multiplier} will result in a numerical method that requires more iterations to reach the same stopping tolerance on increasingly finer meshes. This is known as \alert{mesh dependence}.
+%$\lambda$ has low regularity. 
+% 
+%This results in \textit{mesh dependence}
+%%\footnote{\tiny The number of iterations needed to reach the same stopping tolerance increases with mesh refinements.} 
+% for methods tacitly requiring $\lambda \in L^2(\Omega)$.
+\end{beamercolorbox}
+%\end{minipage}
+}
+%\visible<5->{
+%\begin{minipage}{0.48\linewidth}
+% \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}
+%$\text{Leb}(\left\{x \in \Omega : u(x) = 0,\; \lambda(x) = 0 \right\}) > 0$ causes numerical instabilities.
+%
+%\centering
+%``Loss of strict complementarity''
+%\end{beamercolorbox}
+%\end{minipage}
+%}
+
+
+\end{frame}
+ 
+ \begin{frame}\frametitle{Potential Issues}
+   \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}\centering
+  Can we faithfully discretize the inequality constraints?
+   \end{beamercolorbox}
  \visible<2->{
  \begin{minipage}{0.6\textwidth}
  \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
- Idea \#1: First Ritz-Galerkin: Replace $V$ by $V_{h}$. Then use a black box optimization solver, e.g., active set method. \medskip
- 
- \visible<3->{ \medskip
- Problem: How do we faithfully discretize the inequality constraints?\medskip 
+\visible<2->{
+Brezis \& Stampacchia (1968): The regularity theory for the obstacle problem is very similar to Poisson.\medskip 
+
+$u \in H^2(\Omega)$ can be expected if $\Gamma$, $f$, and $\varphi$ are sufficiently regular.
+}
+\end{beamercolorbox}
+\visible<3->{   
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}  
+\visible<3->{This opens the door for higher order bases, $hp$-refinement, etc. \alert{However,...}
+}
+
+\visible<4->{ \medskip
+If the basis elements are not non-negative, then the discrete solution $u_{h}$ will not be globally feasible!
  }
- 
-  \visible<4->{ \medskip
-Result: Without a non-negative basis, the discrete solution $u_{h}$ will not be globally feasible!
- }
- \end{beamercolorbox}
+ \end{beamercolorbox}}
  \end{minipage}}\quad\quad
  %
- \begin{minipage}{0.33\textwidth}\vspace{3ex}
+ \begin{minipage}{0.3\textwidth}\vspace{3ex}
 % \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
  \centering\visible<3->{
  \resizebox{\textwidth}{\textwidth}{%
@@ -1107,20 +1271,23 @@ Result: Without a non-negative basis, the discrete solution $u_{h}$ will not be 
 }}
 % \end{beamercolorbox} 
  \end{minipage}
- 
- \end{frame}
- 
- \begin{frame}\frametitle{A Deeper Problem}
-%\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}\centering
-\centering
-The \textbf{low regularity of the Lagrange multiplier} will result in a numerical method that requires more iterations to reach the same stopping tolerance on increasingly finer meshes. This is known as \textbf{mesh dependence}.
-% \end{beamercolorbox} 
+ \visible<5->{
+  \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}\centering
+Non-negativity is not enough: There are linear combinations of Bernstein polynomials that are globally nonnegative but which have some negative coefficients!
+   \end{beamercolorbox}
+ }
 \end{frame}
 
 
-% \begin{frame}{Frame Title}
-    
-% \end{frame}
+ \begin{frame}\frametitle{Summary}
+      \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+To summarize the potential issues and what we would like to have in a solver:
+\begin{enumerate}
+\item A
+\end{enumerate}
+   \end{beamercolorbox}
+ \end{frame}
+
 % \begin{frame}{Frame Title}
     
 % \end{frame}
