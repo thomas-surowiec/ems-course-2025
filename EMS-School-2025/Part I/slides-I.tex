@@ -3,76 +3,39 @@
 %----------------------------------------------------------------------------------------
 \PassOptionsToPackage{table}{xcolor}
 \documentclass[aspectratio=169,xcolor=dvipsnames,11pt]{beamer}
+\usetheme{SimplePlusAIC}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\usepackage{caption}
+\usepackage{graphicx} % Allows including images
+\usepackage{subcaption}
+\usepackage{booktabs} % Allows the use of \toprule, \midrule and  \bottomrule in tables
+\usepackage{svg} %allows using svg figures
 \usepackage{tikz}
 
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.18}
 
-\usetheme{SimplePlusAIC}
-\usepackage{amsmath}
-%\usepackage{animate}
-%%\usepackage{hyperref}
-\usepackage{cleveref}
-\usepackage{caption}
-\usepackage{graphicx} % Allows including images
-%%\usepackage{subfig}
-\usepackage{subcaption}
-%\usepackage{booktabs} % Allows the use of \toprule, \midrule and  \bottomrule in tables
-%\usepackage{svg} %allows using svg figures
-%\usepackage{makecell}
-%\usepackage{multirow}
-%\usepackage{appendixnumberbeamer}
-%\usepackage{wrapfig}
-%\usepackage{verbatim}
-%\usepackage{tcolorbox}
-%%\usepackage[dvipsnames]{xcolor}
-%
-%\usepackage{hhline}
-%\usepackage{relsize}
-%\usepackage{bm}
-%%Select the Epilogue font (requires luaLatex or XeLaTex compilers)
-%%\setsansfont{Epilogue}[
-%%    Path=./epilogueFont/,
-%%    Scale=0.9,
-%%    Extension = .ttf,
-%%    UprightFont=*-Regular,
-%%    BoldFont=*-Bold,
-%%    ItalicFont=*-Italic,
-%%    BoldItalicFont=*-BoldItalic
-%%    ]
-%    \usefonttheme[onlymath]{serif}
-%% \usepackage{ eulervm } % Euler VM as math serif font
-%
-%\newcommand*{\defeq}{\stackrel{\text{def}}{=}}
-%\newcommand{\grad}{\nabla}
-%\newcommand{\lap}{\Delta}
-%\newcommand{\weaklyto}{\rightharpoonup}
-%\newcommand{\weakstar}{\stackrel{*}\rightharpoonup}
-%\newcommand{\cts}{\hookrightarrow}
-%\newcommand{\ctsDense}{\xhookrightarrow{d}}
-%\newcommand{\ctsCompact}{\xhookrightarrow{c}}
-%\newcommand{\E}{\mathbb{E}}
-%\newcommand{\pP}{\mathbb{P}}
-%\newcommand{\R}{\mathbb{R}}
-%\newcommand{\ER}{\overline{\mathbb{R}}}
-%\newcommand{\cR}{\mathcal{R}}
-%\newcommand{\cJ}{\mathcal{J}}
-%\newcommand{\cG}{\mathcal{G}}
-%\newcommand{\CVaR}{\textup{CVaR}}
-%\newcommand{\D}{\textup{ d}}
+\usepackage{makecell}
+\usepackage{multirow}
+\usepackage{appendixnumberbeamer}
+\usepackage{wrapfig}
+\usepackage{verbatim}
+\usepackage{tcolorbox}
+\usepackage{hhline}
+\usepackage{relsize}
+\usepackage{bm}
+
+\usefonttheme[onlymath]{serif}
+    
 \newcommand{\C}{\mathbb C}
 \newcommand{\dd}{\mathrm{d}}
-%\newcommand{\fa}{\text{for all }}
-%\DeclareMathOperator*{\essinf}{\vphantom{p}ess\,inf}
-%\DeclareMathOperator{\sigmoid}{expit} % a.k.a. logistic sigmoid
-%
-%\usepackage[ruled,vlined,algo2e]{algorithm2e}
-%\crefname{algocf}{algorithm}{algorithms}
-% \usepackage{caption}
-%
-%% Define a custom style for the box
-%\usepackage{tcolorbox}  % For fancy boxes
-%
+
+\font\nullfont=cmr10
+
+\usepackage{tcolorbox}  % For fancy boxes
+%\usepackage{lipsum}     % For dummy text
 %% Define a custom style for the box
 %\tcbuselibrary{skins, breakable}
 %\newtcolorbox[auto counter, number within=section]{roundedshadowbox}[2][]{
@@ -86,15 +49,16 @@
 %    #1 % Additional options (e.g., width override)
 %}
 
-\font\nullfont=cmr10
-
 
 %----------------------------------------------------------------------------------------
 %	TITLE PAGE
 %----------------------------------------------------------------------------------------
 
-\title[\quad\quad\quad LVPP Course I]{The Latent Variable Proximal Point Method I: Introduction and Preliminary Results
- } % The short title appears at the bottom of every slide, the full title is only on the title page
+\title[LVPP Course I]{The Latent Variable Proximal Point Method I: Introduction and Preliminary Results
+ }
+% \title[\quad\quad\quad LVPP Course I]{The Latent Variable Proximal Point Method I: Introduction and Preliminary Results
+% } 
+  % The short title appears at the bottom of every slide, the full title is only on the title page
 %\subtitle{Subtitle}
 
 \author{\small{\bf Thomas M. Surowiec}}
@@ -110,11 +74,16 @@ K\'acov, Czechia, 15-20 June 2025}}
 %----------------------------------------------------------------------------------------
 
 \begin{document}
+%
+%{
+%\setbeamertemplate{background canvas}{}
+%\frame{\titlepage}
+%}
 
-{
-\setbeamertemplate{background canvas}{}
-\frame{\titlepage}
-}
+\begin{frame}[plain]
+%\setbeamertemplate{footline}{}
+\titlepage
+\end{frame}
 
 \begin{frame}{Overview}
 \tableofcontents
@@ -813,9 +782,12 @@ Existence of solutions:
 
 }\visible<3->{$K$ is closed:  \visible<4->{Take $\left\{v_k\right\} \subset K$ such that $v_k \to v$ (strongly) in $H^1(\Omega)$. }
 \begin{itemize}
-\item \visible<5->{$H^1(\Omega) \hookrightarrow L^1(\Omega)$ continuously, hence $v_k \to v$ (strongly) in $L^1(\Omega)$.} 
-\item \visible<6->{$L^1(\Omega)$ convergence implies  $\exists \left\{v_{k_l}\right\} \subset \left\{v_k\right\}$ such that $v_{k_l} \to v$ pointwise a.e.}
-\item \visible<7->{For all $k$: $v_{k} \ge \varphi$ a.e.\ (by definition), clearly for $k_l$ as well. Hence, $v \ge \varphi$.}
+\item \visible<5->{Clearly, $v_k-\varphi \to v-\varphi$ (strongly) in $L^2(\Omega)$.} 
+\item \visible<6->{For any $w \in L^2(\Omega)$ : $w \ge 0$, we have $(v_k-\varphi,w) \ge 0$. Hence, $(v-\varphi,w) \ge 0$.}
+\item \visible<7->{Since $w$ is arbitrary, $v \ge \phi$ a.e.\ in $\Omega$.}
+%\item \visible<5->{$H^1(\Omega) \hookrightarrow L^1(\Omega)$ continuously, hence $v_k \to v$ (strongly) in $L^1(\Omega)$.} 
+%\item \visible<6->{$L^1(\Omega)$ convergence implies  $\exists \left\{v_{k_l}\right\} \subset \left\{v_k\right\}$ such that $v_{k_l} \to v$ pointwise a.e.}
+%\item \visible<7->{For all $k$: $v_{k} \ge \varphi$ a.e.\ (by definition), clearly for $k_l$ as well. Hence, $v \ge \varphi$.}
 \item \visible<8->{The trace is continuous, hence $g = v_{k}|_{\Gamma} \to v|_{\Gamma} = g$.}
 \end{itemize}}\bigskip
 
@@ -1025,7 +997,7 @@ $}
  
  \visible<2->{In this setting, the set of $x \in \Omega$ where $\lambda = 0$ and $u = \varphi$ holds is called the \alert{biactive set}.\medskip
  
- }\visible<3->{A \alert{non-negligible biactive set} is typically leads to worst-case convergence rates.\medskip
+ }\visible<3->{A \alert{non-negligible biactive set} typically leads to worst-case convergence rates.\medskip
  
  
  } \visible<4->{In $H^1(\Omega)$, we \alert{cannot ignore $(n-1)$-dimensional subsets} of $\Omega$ on which $u(x) = \varphi(x)$.}
@@ -1035,7 +1007,7 @@ $}
  \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}
  For the general setting $\{\min J(u) \text{ over } V : G(u) \in C\}$ we get optimality conditions like
  \[
- 0 = J'(u) +  \langle \lambda, G(\cdot) \rangle'(u)
+ 0 = dJ(u) +  d\langle \lambda, G(\cdot) \rangle(u)
  \]
  with $\lambda \in N_{C}(G(u)):= \left\{\mu : \langle \mu, y - G(u) \rangle \le 0 \quad \forall y \in C\right\}$.
   \end{beamercolorbox}
@@ -1122,12 +1094,12 @@ J(u) := \frac{1}{2} \| \nabla u \|^2_{L^2(\Omega)} - (f,u)_{L^2(\Omega)}  \text{
 $
 \visible<3->{The \alert{derivative} in $H^1_0(\Omega)$ in $u$ in direction $\delta \in H^1_0(\Omega)$ is:
 \[
-dJ(u)d = (\nabla u, \nabla \delta)_{L^2(\Omega)} - (f,\delta)_{L^2(\Omega)}.
+dJ(u)\delta = (\nabla u, \nabla \delta)_{L^2(\Omega)} - (f,\delta)_{L^2(\Omega)}.
 \]
-The derivative is a \alert{dual quantity}, i.e., an element of $H^{-1}(\Omega)$. }\visible<4->{But the Riesz Representation Theorem, says the \alert{gradient} $\nabla J(u)$ is the unique solution $y$ to
+The derivative is a \alert{dual quantity}, i.e., an element of $H^{-1}(\Omega)$. }\visible<4->{But the Riesz Rep.\ Thm.\, says the \alert{gradient} $\nabla J(u)$ is the unique solution $y$ to
 \[
 (\nabla y, \nabla \varphi)_{L^2(\Omega)} = (\nabla u, \nabla \varphi)_{L^2(\Omega)} - (f,\varphi)_{L^2(\Omega)} \quad \varphi \in H^1_0(\Omega).
-\]
+\]}\visible<5->{
 E.g. $f \equiv 0$ implies $\nabla J(u) = u$. In general, $\nabla J(u) = u - (-\Delta)^{-1} f.$}
  \end{beamercolorbox}}
  \end{frame}
@@ -1156,7 +1128,7 @@ which fixes the conditioning. Most solvers do not do this automatically.
  \end{beamercolorbox}}
  \end{frame}
  
-\begin{frame}\frametitle{Solving Variational Inequalities}
+\begin{frame}\frametitle{Potential Issues}
 
 \begin{minipage}{0.55\linewidth}
  \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
@@ -1281,11 +1253,35 @@ Non-negativity is not enough: There are linear combinations of Bernstein polynom
 
  \begin{frame}\frametitle{Summary}
       \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
-To summarize the potential issues and what we would like to have in a solver:
-\begin{enumerate}
-\item A
-\end{enumerate}
-   \end{beamercolorbox}
+An \alert{\bf{ideal solver}} is...\medskip
+
+%\begin{enumerate}
+%\item 
+...designed in accordance with the infinite-dimensional nature of the problem.\medskip
+
+%\item 
+...provably (or observably) mesh independent for standard stopping criteria.\medskip
+
+%\item 
+...able to provide a globally constraint-preserving representation of $u$ (or $G(u)$ in general).
+%\end{enumerate}
+ \end{beamercolorbox}
+ \hfill
+\visible<2->{
+ \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+From a \alert{\bf{practical standpoint}}, an \alert{\bf{ideal solver}} should be...\medskip 
+%\begin{enumerate}
+%\item 
+
+...fast to converge.\medskip
+
+%\item 
+...have a low computational cost per iteration.\medskip
+
+%\item 
+...easy to implement
+%\end{enumerate}
+   \end{beamercolorbox}}
  \end{frame}
 
 % \begin{frame}{Frame Title}
