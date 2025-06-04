@@ -5,37 +5,121 @@
 \documentclass[aspectratio=169,xcolor=dvipsnames,11pt]{beamer}
 \usetheme{SimplePlusAIC}
 \usepackage{amsmath}
+\usepackage{animate}
 \usepackage{hyperref}
 \usepackage{cleveref}
 \usepackage{caption}
 \usepackage{graphicx} % Allows including images
+%\usepackage{subfig}
 \usepackage{subcaption}
 \usepackage{booktabs} % Allows the use of \toprule, \midrule and  \bottomrule in tables
 \usepackage{svg} %allows using svg figures
 \usepackage{tikz}
-
-\usepackage{pgfplots}
-\pgfplotsset{compat=1.18}
-
 \usepackage{makecell}
 \usepackage{multirow}
 \usepackage{appendixnumberbeamer}
 \usepackage{wrapfig}
 \usepackage{verbatim}
 \usepackage{tcolorbox}
+%\usepackage[dvipsnames]{xcolor}
+
 \usepackage{hhline}
 \usepackage{relsize}
 \usepackage{bm}
+%Select the Epilogue font (requires luaLatex or XeLaTex compilers)
+%\setsansfont{Epilogue}[
+  %  Path=./epilogueFont/,
+  %  Scale=0.9,
+  %  Extension = .ttf,
+   % UprightFont=*-Regular,
+   % BoldFont=*-Bold,
+   % ItalicFont=*-Italic,
+    %BoldItalicFont=*-BoldItalic
+    %]
+    \usefonttheme[onlymath]{serif}
+% \usepackage{ eulervm } % Euler VM as math serif font
 
-\usefonttheme[onlymath]{serif}
-    
-\newcommand{\C}{\mathbb C}
+\newcommand*{\defeq}{\stackrel{\text{def}}{=}}
+\newcommand{\grad}{\nabla}
+\newcommand{\lap}{\Delta}
+\newcommand{\weaklyto}{\rightharpoonup}
+\newcommand{\weakstar}{\stackrel{*}\rightharpoonup}
+\newcommand{\cts}{\hookrightarrow}
+\newcommand{\ctsDense}{\xhookrightarrow{d}}
+\newcommand{\ctsCompact}{\xhookrightarrow{c}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\pP}{\mathbb{P}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\ER}{\overline{\mathbb{R}}}
+\newcommand{\cR}{\mathcal{R}}
+\newcommand{\cJ}{\mathcal{J}}
+\newcommand{\cG}{\mathcal{G}}
+\newcommand{\CVaR}{\textup{CVaR}}
+\newcommand{\D}{\textup{ d}}
 \newcommand{\dd}{\mathrm{d}}
+\newcommand{\fa}{\text{for all }}
+\DeclareMathOperator*{\essinf}{\vphantom{p}ess\,inf}
+\DeclareMathOperator{\sigmoid}{expit} % a.k.a. logistic sigmoid
 
-\font\nullfont=cmr10
+\usepackage[ruled,vlined,algo2e]{algorithm2e}
+\crefname{algocf}{algorithm}{algorithms}
+ \usepackage{caption}
 
 \usepackage{tcolorbox}  % For fancy boxes
+\usepackage{lipsum}     % For dummy text
+
+% Define a custom style for the box
+\tcbuselibrary{skins, breakable}
+\newtcolorbox[auto counter, number within=section]{roundedshadowbox}[2][]{
+    colback=white, % Background color (kept white)
+    colframe=black, % Border color
+    boxrule=0.5pt, % Border thickness
+    arc=5mm, % Rounded corners
+    shadow=true, % Drop shadow effect
+    width=\linewidth, % Full width box
+    title=#2, % Title text
+    #1 % Additional options (e.g., width override)
+}
+
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+%\PassOptionsToPackage{table}{xcolor}
+%\documentclass[aspectratio=169,xcolor=dvipsnames,11pt]{beamer}
+%\usetheme{SimplePlusAIC}
+%\usepackage{amsmath}
+%\usepackage{hyperref}
+%\usepackage{cleveref}
+%\usepackage{caption}
+%\usepackage{graphicx} % Allows including images
+%\usepackage{subcaption}
+%\usepackage{booktabs} % Allows the use of \toprule, \midrule and  \bottomrule in tables
+%\usepackage{svg} %allows using svg figures
+%\usepackage{tikz}
+%
+%\usepackage{pgfplots}
+%\pgfplotsset{compat=1.18}
+%
+%\usepackage{makecell}
+%\usepackage{multirow}
+%\usepackage{appendixnumberbeamer}
+%\usepackage{wrapfig}
+%\usepackage{verbatim}
+%\usepackage{tcolorbox}
+%\usepackage{hhline}
+%\usepackage{relsize}
+%\usepackage{bm}
+%
+%\usefonttheme[onlymath]{serif}
+%    
+\newcommand{\C}{\mathbb C}
+
+%
+%%\font\nullfont=cmr10
+%
+%\usepackage{tcolorbox}  % For fancy boxes
 %\usepackage{lipsum}     % For dummy text
+%
 %% Define a custom style for the box
 %\tcbuselibrary{skins, breakable}
 %\newtcolorbox[auto counter, number within=section]{roundedshadowbox}[2][]{
@@ -67,7 +151,7 @@
 % Your institution as it will appear on the bottom of every slide, maybe shorthand to save space
 
 
-\date[EMS School]{ {\footnotesize 
+\date{{\footnotesize 
 K\'acov, Czechia, 15-20 June 2025}}
 %----------------------------------------------------------------------------------------
 %	PRESENTATION SLIDES
