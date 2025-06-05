@@ -291,7 +291,7 @@ This approach involves relaxing the constraints with a smooth penalty function $
  \end{frame}
  
   \begin{frame}\frametitle{Quadratic Penalty Methods}
-  \begin{minipage}{0.65\linewidth}
+  \begin{minipage}{0.67\linewidth}
 \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
  Given $\gamma > 0$, we seek a minimizer $u_{\gamma} \in H^1_0(\Omega)$ of the objective functional:
  \begin{equation*}
@@ -302,7 +302,7 @@ This approach involves relaxing the constraints with a smooth penalty function $
  	-
  	\int_\Omega f v\dd x
 	+
-	\underbrace{\frac{\gamma}{2}\int_{\Omega} \max\{0,\varphi - u\}^2 \dd x}_{=:\gamma \beta(u)}
+	\underbrace{\frac{\gamma}{2}\int_{\Omega} \max\{0,\varphi - v\}^2 \dd x}_{=:\gamma \beta(v)}
  	\,.
  \end{equation*}
  Here, $f \in L^2(\Omega)$ and  $\varphi \in H^1(\Omega)$, $\varphi|_{\Gamma} \le 0$.
@@ -392,7 +392,7 @@ dJ_{\gamma}(u_{\gamma}) = 0 \Leftrightarrow -\Delta u - \underbrace{\gamma \max\
     \begin{frame}\frametitle{A Workflow for Penalty Methods}
       \visible<1->{
  \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}\centering
-Both theory and experience has shown that proving convergence in infinite dimensions (usually) leads to mesh independent numerical methods.
+Both theory and experience has shown that developing algorithms in infinite dimensions (usually) leads to mesh independent numerical methods after discretization.
  \end{beamercolorbox}}\hfill   
     
  \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
@@ -410,7 +410,7 @@ Both theory and experience has shown that proving convergence in infinite dimens
  \end{beamercolorbox}
   \end{frame}
 
-\begin{frame}\frametitle{Comments}
+\begin{frame}\frametitle{Comments I}
  \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
 \visible<1->{For each fixed $\gamma > 0$, this method provably converges \alert{very fast} (locally superlinearly).\medskip}
  
@@ -431,7 +431,7 @@ Both theory and experience has shown that proving convergence in infinite dimens
  }
 \end{frame}
 
-\begin{frame}\frametitle{Comments}
+\begin{frame}\frametitle{Comments II}
 \begin{minipage}{0.3\textwidth}\centering
 \begin{tikzpicture}[scale=3]
   % Define triangle vertices
@@ -505,14 +505,165 @@ Then we use
   \]\vspace{-1ex}}
  \end{beamercolorbox}
 \end{minipage}
-%\hfill
-%\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}\centering
-%To be computationally efficient, we need to make a choice:\\ 
-%Given quadrature points $x_1,\dots,x_p$, weights $w_1,\dots,w_p$, and $N_{T} = \{1,\dots,p\}$ for a cell $T$ 
-%\begin{enumerate}
-%\item If $u_h(x_i) - \psi_h(x_i) \le 0$, then $N_{T} := N_{T} \setminus \{i\}$
-%\end{enumerate}
-%\end{beamercolorbox}
+\end{frame}
+
+\begin{frame}\frametitle{Augmented Lagrangian Method}
+      \visible<1->{
+ \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}\centering
+The conditioning issues and lack of guarantees for feasibilty are a major downside of penalty methods.
+ \end{beamercolorbox}}\hfill   
+ 
+       \visible<2->{
+ \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}\centering
+Finite-dimensional nonlinear optimization offers a (sort of) remedy to this problem in the form of the \alert{Augmented Lagrangian Method}.
+ \end{beamercolorbox}}\hfill    
+\end{frame}
+
+  \begin{frame}\frametitle{Augmented Lagrangian Method}
+  \begin{minipage}{0.68\linewidth}
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+ Given $\gamma > 0$, and a Lagrange multiplier $\lambda$, we define the \alert{Lagrangian} and \alert{Augmented Lagrangian}, resp.:
+ \begin{equation*}\aligned
+  	L(v,\lambda)
+ 	&=
+	\frac{1}{2}\| \nabla v \|^2 - (f,v) - \langle \lambda, v-\varphi\rangle\\
+ 	L(v,\lambda,\gamma)
+ 	&=
+ 	\frac{1}{2}\| \nabla v \|^2 - (f,v) -  \| \lambda\|^2\\
+	&\hspace{8ex}+
+	\frac{1}{2\gamma}\|(\lambda + \gamma (\varphi - u))_+\|^2
+ 	\endaligned
+ \end{equation*}
+\end{beamercolorbox}
+\end{minipage}\hfill
+\begin{minipage}{0.3\linewidth}
+ \begin{figure}
+% \resizebox{0.3\textwidth}{0.25\textwidth}{%
+  \begin{tikzpicture}[scale=0.5]
+    \begin{axis}[
+        axis lines=middle, % Draw axes through the origin
+        xlabel=$x$,
+        ylabel=$f_\gamma(x)$,
+        xmin=-1, xmax=1, % Adjust x-range as needed
+        ymin=-0.5, ymax=.5, % Adjust y-range as needed
+        grid=both, % Add a grid
+        grid style={line width=.1pt, draw=gray!10}, % Style the grid lines
+        major grid style={line width=.2pt,draw=gray!50}, % Style major grid lines
+        xtick distance=1, % Tick marks every 1 unit on x-axis
+        ytick distance=.5, % Tick marks every 1 unit on y-axis
+        % Add a legend
+        legend pos=outer north east, % Position the legend
+        legend cell align=left,
+        no markers, % Don't put markers on the plots
+    ]
+
+    % Define the function with a placeholder for c
+    % We use 'max(0,x)^2' for the (x)^2 part, and then multiply by c
+    % PGFPlots works with degrees, so we need to be careful with functions that are not trigonometric.
+    % max(0, x) is directly supported.
+
+
+    \addplot[domain=-2:4, Red, ultra thick, smooth] {0.5*x^2 + 1*x  - 0.1^2 + 1 * max(0,0.1-x)^2 / 2};
+    \addlegendentry{$\gamma=1$};
+    % Plot for c = 0.5
+    \addplot[domain=-2:4, ForestGreen, ultra thick,smooth] {0.5*x^2 + 1*x  - 0.1^2 + max(0,0.1-10*x)^2 / (2*10)};
+    \addlegendentry{$\gamma=10$};
+
+    % Plot for c = 1
+    \addplot[domain=-2:4, MidnightBlue, ultra thick, smooth] {0.5*x^2 + 1*x - 0.1^2+  max(0,0.1-20*x)^2 / (2*20)};
+    \addlegendentry{$\gamma=20$};
+
+    % Plot for c = 2
+%    \addplot[domain=-2:4, BurntOrange, ultra thick] {0.5*x^2 + 1*x  - x + 50.0 * max(0,-x)^2 * 0.5};
+%    \addlegendentry{$\gamma=50$};
+	
+    \end{axis} \node[text width=4cm, align=left] at (4,-2) {\scriptsize $L(x,\lambda,\gamma) =\frac{1}{2} x^2 + x -\lambda^2 + \frac{1}{2\gamma}\max\{0,\lambda-\gamma x\}^2$ with multiplier estimate $\lambda = 0.1$};
+\end{tikzpicture}
+%}
+%\caption{\scriptsize Plot of $L(x,\lambda,\gamma) =\frac{1}{2} x^2 + x -\lambda + \gamma\max\{0,-x\}^2$ with $\lambda = 0.5$}
+  \label{fig:tikz-example}
+\end{figure}
+\end{minipage}
+      \visible<1->{
+ \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}\centering
+In light of the theory of Lagrange multipliers for the obstacle problem ($\lambda \in H^{-1}(\Omega) \cap M(\Omega)$), there is a clear discrepancy. Here, we need $\lambda \in L^2(\Omega)$.
+ \end{beamercolorbox}}\hfill   
+  \end{frame}
+  
+  \begin{frame}\frametitle{AL Workflow}
+  \visible<1->{
+   \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+\visible<1->{The theory for the subproblems  mirrors that of penalty methods (if $\lambda$ is regular).\medskip
+
+\visible<2->{The optimality conditions for minimizing $L(u,\lambda,\gamma)$ are
+\[
+-\Delta u - \max\{0,\lambda + \gamma(\varphi - u)\} = f
+\]
+We can therefore compute $u_{\gamma}$ using a \alert{Semismooth Newton Method}.\medskip}
+
+\visible<3->{We take $\gamma := \tau\gamma$ ($\tau > 1$) and \alert{update} the \alert{multipliers} $\lambda_{\gamma}$ using the formula 
+\[
+\lambda_{\gamma} := \lambda + \max\{0,\lambda + \gamma(\varphi - u_{\gamma})\}.
+\]
+}\vspace{-3ex}
+}
+\end{beamercolorbox}}   
+  
+        \visible<4->{
+ \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}
+Ito \& Kunisch (1990) provides convergence theory for an AL method in Hilbert space that applies to the obstacle problem and a problem with gradient constraints.  \visible<3->{The theory requires more regularity of the obstacle, $\lambda \in L^2(\Omega)$, and $\gamma \to +\infty$.} \end{beamercolorbox}}\hfill   
+  \end{frame}
+
+\begin{frame}\frametitle{Interior Point Methods}
+        \visible<1->{
+ \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}\centering
+The previously sketched methods approximate the feasible set $K$ from ``the outside''. Classical interior point methods offer an alternative viewpoint.
+\end{beamercolorbox}}\hfill   
+\visible<2->{
+  \begin{minipage}{0.68\linewidth}
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+ Given $\gamma > 0$, and a Lagrange multiplier $\lambda$, we define the \alert{Lagrangian} and \alert{Augmented Lagrangian}, resp.:
+ \begin{equation*}\aligned
+  	L(v,\lambda)
+ 	&=
+	\frac{1}{2}\| \nabla v \|^2 - (f,v) - \langle \lambda, v\rangle\\
+ 	L(v,\lambda,\gamma)
+ 	&=
+ 	\frac{1}{2}\| \nabla v \|^2 - (f,v) -  \| \lambda\|^2\\
+	&\hspace{8ex}+
+	\frac{1}{2\gamma}\|(\lambda + \gamma (\varphi - u))_+\|^2
+ 	\endaligned
+ \end{equation*}
+\end{beamercolorbox}
+\end{minipage}\hfill
+\begin{minipage}{0.3\linewidth}
+ \begin{figure}
+ \begin{tikzpicture}[scale=0.5]
+  \begin{axis}[
+    domain=0.0001:5,
+    samples=100,
+    axis lines=middle,
+    xlabel=$x$,
+    ylabel={$y = \ln x$},
+    ymin=-10, ymax=50,
+    grid=both,
+    width=10cm,
+    height=6cm,
+  ]
+    \addplot[ForestGreen, ultra thick,smooth] {0.5*x^2 + 1*x - 10*ln(x)};
+    \addlegendentry{$\mu=10$}
+    
+    \addplot[MidnightBlue, ultra thick, smooth] {0.5*x^2 + 1*x - 5*ln(x)};
+    \addlegendentry{$\mu=5$}
+    
+    \addplot[ BurntOrange, ultra thick, smooth] {0.5*x^2 + 1*x - 1*ln(x)};
+    \addlegendentry{$\mu=5$}
+  \end{axis}
+  \node[text width=4cm, align=left] at (4,-2) {\scriptsize $L(x,\lambda,\gamma) =\frac{1}{2} x^2 + x -\lambda^2 + \frac{1}{2\gamma}\max\{0,\lambda-\gamma x\}^2$ with multiplier estimate $\lambda = 0.1$};
+\end{tikzpicture}
+  \label{fig:tikz-example}
+\end{figure}
+\end{minipage}}
 \end{frame}
 
 \section{The Proximal Point Method}
