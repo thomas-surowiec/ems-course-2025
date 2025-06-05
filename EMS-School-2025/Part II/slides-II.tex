@@ -15,6 +15,7 @@
 \usepackage{booktabs} % Allows the use of \toprule, \midrule and  \bottomrule in tables
 \usepackage{svg} %allows using svg figures
 \usepackage{tikz}
+\usetikzlibrary{intersections}
 \usepackage{makecell}
 \usepackage{multirow}
 \usepackage{appendixnumberbeamer}
@@ -168,14 +169,14 @@ K\'acov, Czechia, 15-20 June 2025}}
 \section{Penalty and Approximation Methods}
  \begin{frame}\frametitle{Frame Title}
     \begin{enumerate}
-    	\item Quadratic Penalty
-		\begin{enumerate}
-			\item Definition
-			\item Connection to Moreau-Yosida regularization
-			\item Asymptotic convergence
-			\item Advantages/Disadvantages
-			\item Path-following
-		\end{enumerate}
+%    	\item Quadratic Penalty
+%		\begin{enumerate}
+%			\item Definition
+%			\item Connection to Moreau-Yosida regularization
+%			\item Asymptotic convergence
+%			\item Advantages/Disadvantages
+%			\item Path-following
+%		\end{enumerate}
 	\item Barrier Penalty
 		\begin{enumerate}
 			\item Definition
@@ -236,7 +237,7 @@ K\'acov, Czechia, 15-20 June 2025}}
  
  \begin{frame}\frametitle{Penalty Methods}
    \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
-This approach involves relaxing the constraints with a smooth penalty function $\beta : K \to \mathbb R$, where $\beta$ is usually convex, $C^{1,1}$ and ideally satisfies
+This approach involves relaxing the constraints with a smooth penalty function $\beta : V \to \mathbb R$, where $\beta$ is usually convex, $C^{1,1}$ and ideally satisfies
 \[
 \beta(u) = 0 \text{ if } u \in K\quad \text{ and }\quad \beta(u) > 0 \text{ otherwise. }
 \]
@@ -249,8 +250,8 @@ This approach involves relaxing the constraints with a smooth penalty function $
     \begin{axis}[
         axis lines=middle, % Draw axes through the origin
         xlabel=$x$,
-        ylabel=$f(x)$,
-        xmin=-2, xmax=4, % Adjust x-range as needed
+        ylabel=$\beta_\gamma(x)$,
+        xmin=-2, xmax=2, % Adjust x-range as needed
         ymin=-0.5, ymax=10, % Adjust y-range as needed
         grid=both, % Add a grid
         grid style={line width=.1pt, draw=gray!10}, % Style the grid lines
@@ -269,25 +270,250 @@ This approach involves relaxing the constraints with a smooth penalty function $
     % max(0, x) is directly supported.
 
     % Plot for c = 0.5
-    \addplot[domain=-2:4, ForestGreen, thick] {1 * max(0,x)^2};
-    \addlegendentry{$c=1$};
+    \addplot[domain=-2:4, ForestGreen, ultra thick] {1 * max(0,-x)^2};
+    \addlegendentry{$\gamma=1$};
 
     % Plot for c = 1
-    \addplot[domain=-2:4, MidnightBlue, thick] {10.0 * max(0,x)^2};
-    \addlegendentry{$c=10$};
+    \addplot[domain=-2:4, MidnightBlue, ultra thick] {10.0 * max(0,-x)^2};
+    \addlegendentry{$\gamma=10$};
 
     % Plot for c = 2
-    \addplot[domain=-2:4, BurntOrange, thick] {50.0 * max(0,x)^2};
-    \addlegendentry{$c=100$};
+    \addplot[domain=-2:4, BurntOrange, ultra thick] {50.0 * max(0,-x)^2};
+    \addlegendentry{$\gamma=100$};
 
     \end{axis}
 \end{tikzpicture}
 %}
-\caption{Plot of the typical quadratic penalty function used for inequality constraints $f_c(x) = c\max\{0,x\}^2$.}
+\caption{Plot of typical quadratic penalty function used for inequality constraints $\beta_\gamma(x) = \gamma\max\{0,-x\}^2$.}
   \label{fig:tikz-example}
 \end{figure}
 %\end{minipage}
  \end{frame}
+ 
+  \begin{frame}\frametitle{Quadratic Penalty Methods}
+  \begin{minipage}{0.65\linewidth}
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+ Given $\gamma > 0$, we seek a minimizer $u_{\gamma} \in H^1_0(\Omega)$ of the objective functional:
+ \begin{equation*}
+ 	J_{\gamma}(v)
+ 	=
+ 	\frac{1}{2}
+ 	\int_\Omega |\nabla v|^2 \dd x
+ 	-
+ 	\int_\Omega f v\dd x
+	+
+	\underbrace{\frac{\gamma}{2}\int_{\Omega} \max\{0,\varphi - u\}^2 \dd x}_{=:\gamma \beta(u)}
+ 	\,.
+ \end{equation*}
+ Here, $f \in L^2(\Omega)$ and  $\varphi \in H^1(\Omega)$, $\varphi|_{\Gamma} \le 0$.
+\end{beamercolorbox}
+\end{minipage}\hfill
+\begin{minipage}{0.3\linewidth}
+ \begin{figure}
+% \resizebox{0.3\textwidth}{0.25\textwidth}{%
+  \begin{tikzpicture}[scale=0.5]
+    \begin{axis}[
+        axis lines=middle, % Draw axes through the origin
+        xlabel=$x$,
+        ylabel=$f_\gamma(x)$,
+        xmin=-2, xmax=2, % Adjust x-range as needed
+        ymin=-0.75, ymax=4, % Adjust y-range as needed
+        grid=both, % Add a grid
+        grid style={line width=.1pt, draw=gray!10}, % Style the grid lines
+        major grid style={line width=.2pt,draw=gray!50}, % Style major grid lines
+        xtick distance=1, % Tick marks every 1 unit on x-axis
+        ytick distance=1, % Tick marks every 1 unit on y-axis
+        % Add a legend
+        legend pos=outer north east, % Position the legend
+        legend cell align=left,
+        no markers, % Don't put markers on the plots
+    ]
+
+    % Define the function with a placeholder for c
+    % We use 'max(0,x)^2' for the (x)^2 part, and then multiply by c
+    % PGFPlots works with degrees, so we need to be careful with functions that are not trigonometric.
+    % max(0, x) is directly supported.
+
+
+    \addplot[domain=-2:4, Red, ultra thick] {0.5*x^2 + 1*x + 0 * max(0,-x)^2};
+    \addlegendentry{$\gamma=0$};
+    % Plot for c = 0.5
+    \addplot[domain=-2:4, ForestGreen, ultra thick] {0.5*x^2 + 1*x + 1 * max(0,-x)^2};
+    \addlegendentry{$\gamma=1$};
+
+    % Plot for c = 1
+    \addplot[domain=-2:4, MidnightBlue, ultra thick] {0.5*x^2 + 1*x + 10.0 * max(0,-x)^2};
+    \addlegendentry{$\gamma=10$};
+
+    % Plot for c = 2
+    \addplot[domain=-2:4, BurntOrange, ultra thick] {0.5*x^2 + 1*x + 50.0 * max(0,-x)^2};
+    \addlegendentry{$\gamma=100$};
+
+    \end{axis}
+\end{tikzpicture}
+%}
+\caption{\scriptsize Plot of $f_\gamma(x) = \frac{1}{2} x^2 + x + \gamma\max\{0,-x\}^2$}
+  \label{fig:tikz-example}
+\end{figure}
+\end{minipage}
+  \end{frame}
+  
+  \begin{frame}\frametitle{A Workflow for Penalty Methods}
+     \visible<1->{
+ \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}\centering
+The $\gamma$-dependent subproblems are no longer constrained. This makes both the analysis and the numerical solution more familiar to techniques for PDEs.
+ \end{beamercolorbox}}\hfill
+ 
+ \visible<2->{
+ \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+\visible<3->{Theory: 
+\begin{itemize}
+\item \visible<4->{Prove existence and uniqueness of $u_{\gamma}$ using the Direct Method.}
+\item \visible<5->{Prove that $J_{\gamma} \to J + i_{K}$ in the sense of \alert{Mosco convergence} $\Rightarrow$ $u_{\gamma} \rightharpoonup u$.}
+\item \visible<6->{Prove that $J_{\gamma}$ is G\^{a}teaux differentiable and derive optimality conditions:
+\[
+dJ_{\gamma}(u_{\gamma}) = 0 \Leftrightarrow -\Delta u - \underbrace{\gamma \max\{0,\varphi-u\}}_{=:\lambda_{\gamma}} = f.
+\]}
+\end{itemize}
+}\vspace{-3ex}
+
+%\visible<7->{Algorithms:
+%\begin{itemize}
+%\item A standard way to compute $u_{\gamma}$ is the \alert{Semismooth Newton Method}.
+%\item In a nutshell: Given $u^k \in H^1_0(\Omega)$, compute $\delta^k \in H^1_0(\Omega)$ such that
+%\[
+%-\Delta \delta
+%\]
+%\end{itemize}
+%}
+ \end{beamercolorbox}}
+  \end{frame}
+  
+    \begin{frame}\frametitle{A Workflow for Penalty Methods}
+      \visible<1->{
+ \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}\centering
+Both theory and experience has shown that proving convergence in infinite dimensions (usually) leads to mesh independent numerical methods.
+ \end{beamercolorbox}}\hfill   
+    
+ \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+\visible<2->{Algorithms:
+\begin{itemize}
+\item \visible<2->{A standard way to compute $u_{\gamma}$ is the \alert{Semismooth Newton Method}.}
+\item \visible<3->{In a nutshell: Given $u^k \in H^1_0(\Omega)$, compute $\delta^k \in H^1_0(\Omega)$ such that
+\[
+-\Delta \delta^k + \gamma \chi_{\{\varphi - u^k > 0\}}\delta^k = \underbrace{\Delta u^k + \gamma \max\{0, \varphi - u^k\} + f}_{=:\tt{res_k}} 
+\]\vspace{-2ex}}
+
+\visible<4->{Set $u^{k+1} := u^k + \delta^k.$ Stop when $\|{\tt res_{k+1}}\|_{H^{-1}(\Omega)} \le {\tt tol_{rel}}\|{\tt res_{0}}\|_{H^{-1}(\Omega)} + {\tt tol_{abs}}$  }
+\end{itemize}
+}
+ \end{beamercolorbox}
+  \end{frame}
+
+\begin{frame}\frametitle{Comments}
+ \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+\visible<1->{For each fixed $\gamma > 0$, this method provably converges \alert{very fast} (locally superlinearly).\medskip}
+ 
+ \visible<2->{Analytical path-following methods for adaptive, automatic updates of $\gamma$ are available.\medskip} 
+ 
+ \visible<3->{But $u_{\gamma}$ is \alert{never} feasible for \alert{finite} $\gamma$. This may cause \alert{conditioning issues} as $\gamma \uparrow +\infty$.}
+  \end{beamercolorbox}
+  
+ \visible<4->{
+  \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+  There are two challenges for discretization: 
+  \[\aligned
+  ( \chi_{\{\varphi - u^k > 0\}}\delta^k, w) &= \int_{\{\varphi - u^k > 0\}} \delta^k w \dd x\\
+  ( \max\{0, \varphi - u^k\} ,w) &= \int_{\{\varphi - u^k > 0\}}(\varphi - u^k) w \dd x
+  \endaligned
+  \]
+ \end{beamercolorbox}
+ }
+\end{frame}
+
+\begin{frame}\frametitle{Comments}
+\begin{minipage}{0.3\textwidth}\centering
+\begin{tikzpicture}[scale=3]
+  % Define triangle vertices
+  \coordinate (A) at (0,0);
+%  \coordinate (B) at (1,0);
+%  \coordinate (C) at (0.5,1);
+
+  \coordinate (B) at (1,0);
+  \coordinate (C) at (0.5,1);
+
+  % Define curve
+  \draw[name path=curve, thick, domain=0:1, samples=100, variable=\x] 
+    plot ({\x}, {0.5*sin(6*\x r) + 0.35});
+
+  % Triangle path
+  \path[name path=AB] (A) -- (B);
+  \path[name path=BC] (B) -- (C);
+  \path[name path=CA] (C) -- (A);
+
+  % Clip and fill region below curve inside triangle
+  \begin{scope}
+    \clip (A) -- (B) -- (C) -- cycle;
+    \fill[blue!20] plot[domain=0:1, samples=100] 
+      ({\x}, {0.5*sin(6*\x r) + 0.35}) -- (1,0) -- (0,0) -- cycle;
+  \end{scope}
+
+  % Clip and fill region above curve inside triangle
+  \begin{scope}
+    \clip (A) -- (B) -- (C) -- cycle;
+    \fill[red!20] (0,0) -- (0.5,1) -- (1,0) -- 
+      plot[domain=1:0, samples=100] 
+      ({\x}, {0.5*sin(6*\x r) + 0.35}) -- cycle;
+  \end{scope}
+
+  % Draw triangle edges
+  \draw[thick] (A) -- (B) -- (C) -- cycle;
+
+  % Draw curve on top
+  \draw[thick, blue] plot[domain=0:1, samples=100] 
+    ({\x}, {0.5*sin(6*\x r) + 0.35});
+
+  % Optional: label triangle vertices
+  \node[below left] at (A) {$A$};
+  \node[below right] at (B) {$B$};
+  \node[above] at (C) {$C$};
+  
+ 
+   % Label in blue region (below the curve)
+  \node[blue!70!black] at (0.35,0.2) {\scriptsize $u > \varphi$};
+
+  % Label in red region (above the curve)
+  \node[red!70!black] at (0.7,0.3) {\scriptsize $u \le \varphi$};
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}{0.68\textwidth}
+  \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+  To be computationally efficient, we need to make a choice:\medskip
+  
+For a cell $T$, we are given
+\begin{enumerate}
+\item Quadrature points $x_1,\dots,x_p$
+\item Weights $w_1,\dots,w_p$
+\item $N_{T} = \{1,\dots,p\}$ 
+\end{enumerate}\visible<2->{
+\alert{If $\varphi(x_i) - u^k(x_i) \le 0$, then $N_{T} := N_{T} \setminus \{i\}$}.}\visible<3->{
+Then we use
+  \[\aligned
+  ( \chi_{\{\varphi - u^k > 0\}}\delta^k, v) &\approx \sum_{i \in N_{T}}w_i \delta^k(x_i) v(x_i)\\
+  ( \max\{0, \varphi - u^k\} ,v) &\approx \sum_{i \in N_{T}}w_i(\varphi(x_i) - u^k(x_i)) v(x_i).
+  \endaligned
+  \]\vspace{-1ex}}
+ \end{beamercolorbox}
+\end{minipage}
+%\hfill
+%\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}\centering
+%To be computationally efficient, we need to make a choice:\\ 
+%Given quadrature points $x_1,\dots,x_p$, weights $w_1,\dots,w_p$, and $N_{T} = \{1,\dots,p\}$ for a cell $T$ 
+%\begin{enumerate}
+%\item If $u_h(x_i) - \psi_h(x_i) \le 0$, then $N_{T} := N_{T} \setminus \{i\}$
+%\end{enumerate}
+%\end{beamercolorbox}
+\end{frame}
 
 \section{The Proximal Point Method}
  \begin{frame}\frametitle{Frame Title}
