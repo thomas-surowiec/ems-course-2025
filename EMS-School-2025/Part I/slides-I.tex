@@ -1167,7 +1167,7 @@ What might be the issues with such an approach?
  \begin{frame}\frametitle{Potential Issues}
    \visible<1->{
  \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}\centering
-Block box optimization solvers typically use the Euclidean inner product for computing gradients. Why is that a problem?
+Black box optimization solvers typically use the Euclidean inner product for computing gradients. Why is that a problem?
  \end{beamercolorbox}}
  
  \visible<2->{
@@ -1182,7 +1182,7 @@ dJ(u)\delta = (\nabla u, \nabla \delta)_{L^2(\Omega)} - (f,\delta)_{L^2(\Omega)}
 \]
 The derivative is a \alert{dual quantity}, i.e., an element of $H^{-1}(\Omega)$. }\visible<4->{But the Riesz Rep.\ Thm.\, says the \alert{gradient} $\nabla J(u)$ is the unique solution $y$ to
 \[
-(\nabla y, \nabla \varphi)_{L^2(\Omega)} = (\nabla u, \nabla \varphi)_{L^2(\Omega)} - (f,\varphi)_{L^2(\Omega)} \quad \varphi \in H^1_0(\Omega).
+(\nabla y, \nabla \varphi)_{L^2(\Omega)} = (\nabla u, \nabla \varphi)_{L^2(\Omega)} - (f,\varphi)_{L^2(\Omega)} \quad \forall \varphi \in H^1_0(\Omega).
 \]}\visible<5->{
 E.g. $f \equiv 0$ implies $\nabla J(u) = u$. In general, $\nabla J(u) = u - (-\Delta)^{-1} f.$}
  \end{beamercolorbox}}
@@ -1204,7 +1204,7 @@ with mesh parameter $h > 0$, whose gradient in $\mathbb R^n$ is given by
 
 \visible<3->{The gradient associated with the finite dimensional subspace $V_h$, however, should be
  \[
-\nabla^{V_h} J_h(\mathbf{u}) := A^{-1}_h(A_h \mathbf{u} - M_h \mathbf{f}) = \mathbf{u} - A^{-1}_h \mathbf{f},
+\nabla^{V_h} J_h(\mathbf{u}) := A^{-1}_h(A_h \mathbf{u} - M_h \mathbf{f}) = \mathbf{u} - A^{-1}_h M_h \mathbf{f},
 \]
 which fixes the conditioning. Most solvers do not do this automatically. 
 }

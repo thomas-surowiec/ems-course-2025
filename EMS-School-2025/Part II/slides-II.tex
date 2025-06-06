@@ -167,8 +167,8 @@ K\'acov, Czechia, 15-20 June 2025}}
 \end{frame}
 
 \section{Penalty and Approximation Methods}
- \begin{frame}\frametitle{Frame Title}
-    \begin{enumerate}
+% \begin{frame}\frametitle{Frame Title}
+%    \begin{enumerate}
 %    	\item Quadratic Penalty
 %		\begin{enumerate}
 %			\item Definition
@@ -177,22 +177,22 @@ K\'acov, Czechia, 15-20 June 2025}}
 %			\item Advantages/Disadvantages
 %			\item Path-following
 %		\end{enumerate}
-	\item Barrier Penalty
-		\begin{enumerate}
-			\item Definition
-			\item Outer vs. Inner approximation
-			\item Primal-dual formulation
-			\item PD does not force $u$ to be nonnegative, this has to be done with careful line search
-		\end{enumerate}
-	\item Augmented Lagrangian (Ito, Kunisch 1990)
-		\begin{enumerate}
-			\item Definition
-			\item A dual-adaptive quadratic penalty scheme, roots in proximal point (Rockafellar)
-			\item For computation, we need $\lambda$ to have a pointwise interpretation, but this may not be guaranteed
-			\item This forces $r \to +\infty$ (as opposed to finite dimensions)
-		\end{enumerate}
-    \end{enumerate}
- \end{frame}
+%	\item Barrier Penalty
+%		\begin{enumerate}
+%			\item Definition
+%			\item Outer vs. Inner approximation
+%			\item Primal-dual formulation
+%			\item PD does not force $u$ to be nonnegative, this has to be done with careful line search
+%		\end{enumerate}
+%	\item Augmented Lagrangian (Ito, Kunisch 1990)
+%		\begin{enumerate}
+%			\item Definition
+%			\item A dual-adaptive quadratic penalty scheme, roots in proximal point (Rockafellar)
+%			\item For computation, we need $\lambda$ to have a pointwise interpretation, but this may not be guaranteed
+%			\item This forces $r \to +\infty$ (as opposed to finite dimensions)
+%		\end{enumerate}
+%    \end{enumerate}
+% \end{frame}
  
  \begin{frame}\frametitle{A Mathematical Fruitfly} 
   \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}\centering
@@ -517,6 +517,11 @@ The conditioning issues and lack of guarantees for feasibilty are a major downsi
  \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}\centering
 Finite-dimensional nonlinear optimization offers a (sort of) remedy to this problem in the form of the \alert{Augmented Lagrangian Method}.
  \end{beamercolorbox}}\hfill    
+ 
+       \visible<3->{
+ \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}\centering
+In \alert{finite dimensions} we do not require the penalty parameter to pass to infinity for AL.
+ \end{beamercolorbox}}
 \end{frame}
 
   \begin{frame}\frametitle{Augmented Lagrangian Method}
@@ -618,21 +623,21 @@ Ito \& Kunisch (1990) provides convergence theory for an AL method in Hilbert sp
         \visible<1->{
  \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}\centering
 The previously sketched methods approximate the feasible set $K$ from ``the outside''. Classical interior point methods offer an alternative viewpoint.
-\end{beamercolorbox}}\hfill   
+\end{beamercolorbox}}   \vspace{3ex}
 \visible<2->{
-  \begin{minipage}{0.68\linewidth}
+  \begin{minipage}{0.67\linewidth}
 \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
- Given $\gamma > 0$, and a Lagrange multiplier $\lambda$, we define the \alert{Lagrangian} and \alert{Augmented Lagrangian}, resp.:
- \begin{equation*}\aligned
-  	L(v,\lambda)
- 	&=
-	\frac{1}{2}\| \nabla v \|^2 - (f,v) - \langle \lambda, v\rangle\\
- 	L(v,\lambda,\gamma)
- 	&=
- 	\frac{1}{2}\| \nabla v \|^2 - (f,v) -  \| \lambda\|^2\\
-	&\hspace{8ex}+
-	\frac{1}{2\gamma}\|(\lambda + \gamma (\varphi - u))_+\|^2
- 	\endaligned
+ Given $\mu > 0$, use a \alert{logarithmic barrier function} and consider
+ \begin{equation*}
+ 	J_{\mu}(v)
+ 	=
+ 	\frac{1}{2}
+ 	\int_\Omega |\nabla v|^2 \dd x
+ 	-
+ 	\int_\Omega f v\dd x
+	-
+	\mu \int_{\Omega} \ln(u-\varphi) \dd x
+ 	\,.
  \end{equation*}
 \end{beamercolorbox}
 \end{minipage}\hfill
@@ -644,7 +649,7 @@ The previously sketched methods approximate the feasible set $K$ from ``the outs
     samples=100,
     axis lines=middle,
     xlabel=$x$,
-    ylabel={$y = \ln x$},
+    ylabel={$y = J_\mu(x)$},
     ymin=-10, ymax=50,
     grid=both,
     width=10cm,
@@ -657,13 +662,91 @@ The previously sketched methods approximate the feasible set $K$ from ``the outs
     \addlegendentry{$\mu=5$}
     
     \addplot[ BurntOrange, ultra thick, smooth] {0.5*x^2 + 1*x - 1*ln(x)};
-    \addlegendentry{$\mu=5$}
+    \addlegendentry{$\mu=1$}
   \end{axis}
-  \node[text width=4cm, align=left] at (4,-2) {\scriptsize $L(x,\lambda,\gamma) =\frac{1}{2} x^2 + x -\lambda^2 + \frac{1}{2\gamma}\max\{0,\lambda-\gamma x\}^2$ with multiplier estimate $\lambda = 0.1$};
+  \node[text width=4cm, align=left] at (4,-1) {\scriptsize $J_{\mu}(x,\lambda,\gamma) =\frac{1}{2} x^2 + x -\mu\ln(x)$};
 \end{tikzpicture}
   \label{fig:tikz-example}
 \end{figure}
 \end{minipage}}
+\end{frame}
+
+\begin{frame}\frametitle{IP Workflow}
+  \visible<1->{
+   \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+\visible<1->{The theory for the subproblems is more complicated than for penalty and AL.\medskip
+
+}
+\visible<2->{Logarithmic penalties are \alert{not differentiable} in the usual functions spaces.\medskip
+
+}
+\visible<3->{If there are reals $\epsilon(\mu) > 0$ and $M(\mu) > 0$ such that solution $u_{\mu} \in [\varphi + \epsilon(\mu), M(\mu)]$, then 
+\begin{multline*}
+\int_{\Omega} \ln(u + \eta \delta - \varphi) - \ln(u-\varphi) - \eta\frac{\delta}{u - \varphi} \dd x =
+-\eta^2 \underbrace{\left(\int_{\Omega}\frac{\delta}{u - \varphi}\int_{0}^{1} \frac{1}{u - \varphi +  \tau \eta \delta} \dd \tau\dd x.\right)}_{=: A(u,\delta,\eta)}
+\end{multline*}\vspace{-2ex}
+
+is valid provided $\eta > 0$ is sufficiently small and \alert{$\delta \in H^1(\Omega) \cap L^{\infty}(\Omega)$}.\medskip
+
+}
+\visible<4->{Once we show $A(u,\delta,\eta)$ is bounded as $\eta \downarrow 0$, we can derive the \alert{optimality condition}:
+\[
+J_{\mu}(u_{\mu}) = 0 \Longleftrightarrow -\Delta u_{\mu} - \frac{\mu}{u_{\mu} - \varphi} = f
+\]
+}\vspace{-3ex}
+\end{beamercolorbox}}   
+  
+%        \visible<4->{
+% \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}
+%Ito \& Kunisch (1990) provides convergence theory for an AL method in Hilbert space that applies to the obstacle problem and a problem with gradient constraints.  \visible<3->{The theory requires more regularity of the obstacle, $\lambda \in L^2(\Omega)$, and $\gamma \to +\infty$.} \end{beamercolorbox}}\hfill   
+
+\end{frame}
+
+\begin{frame}\frametitle{Comments I}
+  \visible<1->{
+   \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+\visible<1->{The optimality conditions yields a \alert{singular semilinear elliptic PDE}:
+\[
+-\Delta u_{\mu} - \frac{\mu}{u_{\mu} - \varphi} = f
+\]
+This is unfortunate, especially if the Lebesgue measure of $\mathcal{A} := \left\{u = \varphi \right\}$ is positive.\medskip 
+}
+
+\visible<2->{
+Introducing a slack $\lambda_{\mu} := \frac{\mu}{u_{\mu} - \varphi}$ we can write down a \alert{primal dual} formulation:
+\[\aligned
+-\Delta u_{\mu} - \lambda_{\mu} &= f\\
+(u_{\mu}-\varphi) \lambda_{\mu} &= \mu
+\endaligned
+\]
+This system can be solved with \alert{Newton's method} for each $\mu$.}
+\end{beamercolorbox}}   
+  
+%        \visible<4->{
+% \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}
+%Ito \& Kunisch (1990) provides convergence theory for an AL method in Hilbert space that applies to the obstacle problem and a problem with gradient constraints.  \visible<3->{The theory requires more regularity of the obstacle, $\lambda \in L^2(\Omega)$, and $\gamma \to +\infty$.} \end{beamercolorbox}}\hfill   
+
+\end{frame}
+
+\begin{frame}\frametitle{Comments II}
+  \visible<1->{
+   \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+\visible<1->{Find strictly feasible $(u_{\mu},\lambda_{\mu})$ satisfying
+\[\aligned
+-\Delta u_{\mu} - \lambda_{\mu} &= f\\
+(u_{\mu}-\varphi) \lambda_{\mu} &= \mu
+\endaligned
+\]}\visible<2->{We need to ensure $u_{\mu} > \varphi$ and $\lambda_{\mu} > 0$ to be faithful to interior point.\medskip
+
+This does not guarantee feasibility and will require an intelligent strategy for updating $\mu$ and a special line search at each step to guarantee primal and dual feasibility.
+}
+\end{beamercolorbox}}   
+  
+        \visible<3->{
+ \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}\centering
+Despite its theoretical promises, IP falls short of our ideal solver. \textbf{Is there a better idea?}
+\end{beamercolorbox}}\hfill   
+
 \end{frame}
 
 \section{The Proximal Point Method}
