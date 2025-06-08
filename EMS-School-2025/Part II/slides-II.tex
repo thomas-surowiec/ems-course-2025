@@ -891,8 +891,8 @@ for all $a \in \mathop{\text{dom}} R = \mathbb R_+,~b \in \mathop{\text{int}} \m
 \end{minipage}
 
 \visible<2->{
-\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
-In other words, the Bregman divergence associated with the Shannon entropy is the well-known \alert{Kullback-Leibler divergence} (Kullback \& Leibler (1951)).
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}
+In other words, the Bregman divergence associated with the Shannon entropy is the well-known \textbf{Kullback-Leibler divergence} (Kullback \& Leibler (1951)).
 \end{beamercolorbox}}
  \end{frame}
  
@@ -978,18 +978,76 @@ S(u) = \left\{
 +\infty, & \text{ else.}
 \end{array}
 \right.
-\]
-$p \in [1,\infty] \Rightarrow$ $S$ is strictly convex and l.s.c.\\
+\]\visible<2->{
+$p \in [1,\infty] \Rightarrow$ $S$ is strictly convex and l.s.c.\\}
 
-$p \in (1,\infty] \Rightarrow$ $S$ is continuous on $L^p(\Omega)_+$\\
+\visible<3->{$p \in (1,\infty] \Rightarrow$ $S$ is continuous on $L^p(\Omega)_+$\\}
 
-$p = \infty \Rightarrow$ $S$ is cont. Fr\'echet diff. on $\mathrm{int}\, L^{\infty}(\Omega)_+$.
+\visible<4->{$p = \infty \Rightarrow$ $S$ is cont. Fr\'echet diff. on $\mathrm{int}\, L^{\infty}(\Omega)_+$.}
 \end{theorem}
-\end{minipage}\hfill \visible<2->{
+\end{minipage}\hfill \visible<5->{
+\begin{minipage}{0.48\linewidth}
+\begin{theorem}[continued]\visible<5->{
+For all $u \in \mathrm{int}\, L^{\infty}(\Omega)_+$ and $v \in L^{\infty}(\Omega)$ we have
+\[
+\langle S'(u), v \rangle = \int_{\Omega} v \ln u \, \dd x.
+\]}\visible<6->{
+Moreover, $\| S'(u) \|_{(L^{\infty}(\Omega))^*} = \| \nabla S(u) \|_{L^1(\Omega)}$ where
+\[
+\nabla S(u) = \ln u \in L^{\infty}(\Omega)
+\]}\visible<7->{
+is the unique primal representation of $S'(u)$ and 
+\[
+(\nabla S(u), v) = \langle S'(u) , v \rangle
+\]
+for all $u \in  \mathrm{int}\, L^{\infty}(\Omega)_+$ and $v \in L^1(\Omega)$.}
+\end{theorem}
+\end{minipage}}
+}
+ \end{frame}
+ 
+  \begin{frame}\frametitle{The Entropic Poisson Equation\footnote{\tiny Keith and Surowiec (2024) Thm.\ 4.7, Cor.\ 4.9}}
+ {\scriptsize
+\begin{minipage}{0.48\linewidth}
+\begin{theorem}
+Assume $\Omega \subset \mathbb R^n$ is an open, bounded Lipschitz domain, $n \ge 1$, and 
+$
+K = \left\{v \in H^1_g(\Omega) \left| v \ge 0 \right.\right\}
+$
+where $g \in H^1(\Omega) \cap C(\overline{\Omega})$ and $\inf_{x \in \partial \Omega} g(x) > 0$.\medskip
+
+\visible<2->{
+Moreover, assume $f \in L^{\infty}(\Omega)$ and $w \in \mathrm{int}\, L^{\infty}(\Omega)$ and set 
+$D(u,w) := S(u) - [S(w) + S'(w)(u-w)]$.}\medskip
+
+\visible<3->{Then the optimization problem
+\[
+\min_{u \in K}\{J(u) + \frac{1}{\alpha} D(u,w)\}
+\]
+has a \alert{unique solution $u \in H^1_g(\Omega) \cap \mathrm{int}\, L^{\infty}(\Omega)_+$}.}
+\end{theorem}
+\end{minipage}\hfill \visible<4->{
 \begin{minipage}{0.48\linewidth}
 \begin{theorem}[continued]
-
+In addition, $u$ satisfies the following \alert{Entropic Poisson Equation}
+\[
+-\alpha \Delta u + \ln u = \alpha f + \ln w;
+\]
+understood in $H^{-1}(\Omega)$.
 \end{theorem}
+\visible<5->{
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+The proof is nontrivial. The steps involve
+\begin{itemize}
+\item Existence/uniqueness in $H^1_g(\Omega)$ (Direct Method).
+\item Proof that $u \in \mathrm{int}\, L^{\infty}(\Omega)_+$.
+%\[
+%\min\{g_{\rm min}, e^(-\|\ln(w) + \alpha f\|_{L^{\infty}})\} \le u \le \max\{g_{\rm max}, e^(\|\ln(w) + \alpha f\|_{L^{\infty}})\} 
+%\]
+\item Derivation of a VI in $H^1(\Omega) \cap L^{\infty}(\Omega)$.
+\item Density argument to obtain variational \alert{equation}.
+\end{itemize}
+\end{beamercolorbox}}
 \end{minipage}}
 }
  \end{frame}
