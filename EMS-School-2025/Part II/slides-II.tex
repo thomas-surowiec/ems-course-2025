@@ -749,13 +749,35 @@ Despite its theoretical promises, IP falls short of our ideal solver. \textbf{Is
 
 \end{frame}
 
-\section{The Proximal Point Method}
- \begin{frame}\frametitle{Frame Title}
-    \begin{enumerate}
-    	\item Martinet, Rockafellar
-	\item Bregman, Nemirovskij Yudin
-	\item Convergence statements
-    \end{enumerate}
+%\section{The Bregman Proximal Point Method}
+ \begin{frame}\frametitle{A better idea?}
+%    \begin{enumerate}
+%    	\item Martinet, Rockafellar
+%	\item Bregman, Nemirovskij Yudin
+%	\item Convergence statements
+%    \end{enumerate}
+    
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+Each method we discussed above has a useful feature
+\begin{enumerate}
+\item \visible<2->{\textbf{Penalty methods} can be applied to any type of inequality constraint.}
+\item \visible<3->{\textbf{Augmented Lagrangian methods} work like penalty methods but provide a dual-adapted penalty function at each step.\\
+There pre-asymptotic feasibility guarantees in finite dimensions.}
+\item \visible<4->{\textbf{Interior point methods} work with strictly feasible points.}
+\end{enumerate}
+\end{beamercolorbox}\hfill
+
+\visible<5->{
+ \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}\centering
+The \textbf{Bregman proximal point method} offers an alternative for the obstacle problem.
+\end{beamercolorbox}
+}\hfill
+
+\visible<6->{
+ \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}\centering
+In \alert{Part III} we will return to this perspective and derive a whole new class of methods for large classes of inequality constrained problems and beyond.
+\end{beamercolorbox}
+}
  \end{frame}
 
 \section{Derivation of the Latent Variable Proximal Point Method}
@@ -766,6 +788,107 @@ Despite its theoretical promises, IP falls short of our ideal solver. \textbf{Is
 	\item Invention of the latent variable
 	\item Discretization approaches
     \end{enumerate}
+ \end{frame}
+ 
+ \begin{frame}\frametitle{A Brief History of Proximal Point}
+        \visible<1->{
+ \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+\visible<1->{Lions \& Stampacchia (1967): The non-symmetric part of the proof  in Part I is deeply linked to \alert{Proximal Gradient Methods}.\medskip}
+
+\visible<2->{B. Martinet (1970): Invention of the \alert{Proximal Point Method} for variational inequalities:
+\begin{center}
+\includegraphics[height=1.25in,keepaspectratio]{figures/bmartinet_1970_summary.png}
+\end{center}}
+\visible<3->{
+Rockafellar (1976), G\"uler (1991): Generalizations and main convergence statements. }
+\end{beamercolorbox}}   \vspace{3ex}
+\end{frame}
+ 
+
+\begin{frame}\frametitle{Application to Obstacle Problem}
+ \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+ 	Applying this idea to the Obstacle Problem leads to the variational inequality:
+	\begin{equation*}
+%	\label{eq:L2ProxVI}
+		\int_\Omega
+		\nabla( (1+\alpha)u - u^{k}) \cdot \nabla w
+		\dd x
+		+
+		\int_\Omega (u-u^{k}-\alpha f) w  \dd x
+		\geq
+		0
+		~\fa w \in K-u,\quad \alpha > 0
+	\end{equation*}
+	But this is \alert{as difficult to solve as} the original VI!
+ \end{beamercolorbox}
+ \visible<2->{
+ \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}\centering
+ The idea to use a regularization that includes information from the previous iterate $u^{k}$ is similar to AL (where we used $\lambda^{k}$).
+ \end{beamercolorbox}}
+ \visible<3->{
+  \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+But the regularization
+\[
+u \mapsto \frac{1}{2\alpha} \| u - u^{k} \|^2_{H^1}
+\]
+is essentially \alert{useless}. There are, however, bivariate functions that behave similarly.
+ \end{beamercolorbox}}
+\end{frame}
+
+ \begin{frame}\frametitle{Alternative Regularizations}
+ \visible<1->{
+  \begin{minipage}{0.67\linewidth}
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+L.M. Bregman (1967): \visible<2->{Given a \alert{distance-generating functions} $R$,
+the associated \alert{Bregman distance} measures the linearization error of $R$:
+\begin{equation*}
+%\label{eq:BregmanDivergence}
+D_R(a, b) := R(a) - R(b) - \nabla R(b) \cdot (a-b),
+\end{equation*}
+for all $a \in \mathop{\text{dom}} R,~b \in \mathop{\text{int}} \mathop{\text{dom}} R$.}
+\end{beamercolorbox}
+\end{minipage}\hfill
+\begin{minipage}{0.3\linewidth}
+ \begin{figure}
+\includegraphics[height=1.25in,keepaspectratio]{figures/Bregman.png}
+\end{figure}
+\end{minipage}}
+
+\visible<3->{
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}
+Y. Censor \& S.A. Zenios (1992): Invention of the \textbf{Bregman Proximal Point Method}: Generate a sequence $\{u^k\}$\vspace{-2ex}
+\[
+u^{k+1} \in \mathrm{argmin}_{u \in V} \left\{J(u) + \frac{1}{\alpha^{k}} D(u,u^{k}) \right\}\quad \text{for}\quad \{\alpha^k\},\; \alpha^k > 0.
+\]
+G. Chen \& M. Teboulle (1993): Convergence proof based on G\"uler (1991).
+\end{beamercolorbox}}
+\end{frame}
+ 
+  \begin{frame}\frametitle{Shannon Entropy \& Kullback-Leibler}
+ \visible<1->{
+  \begin{minipage}{0.67\linewidth}
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+\visible<1->{The \alert{Shannon entropy} (C. Shannon (1948)) $R: \mathbb R_+ \to \mathbb R$:
+\begin{equation*}
+%\label{eq:GeneralizedShannonEntropy}
+R(a) = a  \ln a  - a, %\text{ with } \nabla R^*(a^\ast) = \phi_1 + \exp{a^\ast},
+\end{equation*}
+yields
+\[\aligned
+D_{R}(a,b) 
+&= a \ln a - a - (b \ln b - b + (\ln b + 1 - 1)(a-b))\\
+&= a \ln \frac{a}{b} 
+\endaligned
+\]
+}
+for all $a \in \mathop{\text{dom}} R,~b \in \mathop{\text{int}} \mathop{\text{dom}} R$.
+\end{beamercolorbox}}
+\end{minipage}\hfill
+\begin{minipage}{0.3\linewidth}
+ \begin{figure}
+\includegraphics[height=1.25in,keepaspectratio]{figures/Bregman.png}
+\end{figure}
+\end{minipage}
  \end{frame}
  
  
