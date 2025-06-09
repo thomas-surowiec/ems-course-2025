@@ -16,6 +16,7 @@
 \usepackage{svg} %allows using svg figures
 \usepackage{tikz}
 \usetikzlibrary{intersections}
+\usetikzlibrary{arrows.meta, calc, quotes, tikzmark}
 \usepackage{makecell}
 \usepackage{multirow}
 \usepackage{appendixnumberbeamer}
@@ -783,9 +784,8 @@ In \alert{Part III} we will return to this perspective and derive a whole new cl
 \section{Derivation of the Latent Variable Proximal Point Method}
  \begin{frame}\frametitle{Frame Title}
         \begin{enumerate}
-    	\item Formal application to the obstacle problem
-	\item Failure of the primal version
-	\item Invention of the latent variable
+%	\item Failure of the primal version
+%	\item Invention of the latent variable
 	\item Discretization approaches
     \end{enumerate}
  \end{frame}
@@ -966,7 +966,7 @@ Observation 2: Similar to IP, there is a logarithm in the regularization term.
  \end{beamercolorbox}}\hfill   
   \end{frame}
  
- \begin{frame}\frametitle{Properties of the Entropy Functional\footnote{\tiny Keith and Surowiec (2024) Thm.\ 4.1, Cor.\ 4.2. $L^p(\Omega)_+ : = \left\{v \in L^p(\Omega) : v \ge 0 \right\}$}}
+ \begin{frame}\frametitle{Properties of the Entropy Functional\footnote{\tiny Keith and Surowiec (2024) Thm.\ 4.1, Cor.\ 4.2. $L^p_+(\Omega) : = \left\{v \in L^p(\Omega) : v \ge 0 \right\}$}}
  {\scriptsize
 \begin{minipage}{0.48\linewidth}
 \begin{theorem}
@@ -981,14 +981,14 @@ S(u) = \left\{
 \]\visible<2->{
 $p \in [1,\infty] \Rightarrow$ $S$ is strictly convex and l.s.c.\\}
 
-\visible<3->{$p \in (1,\infty] \Rightarrow$ $S$ is continuous on $L^p(\Omega)_+$\\}
+\visible<3->{$p \in (1,\infty] \Rightarrow$ $S$ is continuous on $L^p_+(\Omega)$\\}
 
-\visible<4->{$p = \infty \Rightarrow$ $S$ is cont. Fr\'echet diff. on $\mathrm{int}\, L^{\infty}(\Omega)_+$.}
+\visible<4->{$p = \infty \Rightarrow$ $S$ is cont. Fr\'echet diff. on $\mathrm{int}\, L^{\infty}_+(\Omega)$.}
 \end{theorem}
 \end{minipage}\hfill \visible<5->{
 \begin{minipage}{0.48\linewidth}
 \begin{theorem}[continued]\visible<5->{
-For all $u \in \mathrm{int}\, L^{\infty}(\Omega)_+$ and $v \in L^{\infty}(\Omega)$ we have
+For all $u \in \mathrm{int}\, L^{\infty}_+(\Omega)$ and $v \in L^{\infty}(\Omega)$ we have
 \[
 \langle S'(u), v \rangle = \int_{\Omega} v \ln u \, \dd x.
 \]}\visible<6->{
@@ -1000,7 +1000,7 @@ is the unique primal representation of $S'(u)$ and
 \[
 (\nabla S(u), v) = \langle S'(u) , v \rangle
 \]
-for all $u \in  \mathrm{int}\, L^{\infty}(\Omega)_+$ and $v \in L^1(\Omega)$.}
+for all $u \in  \mathrm{int}\, L^{\infty}_+(\Omega)$ and $v \in L^1(\Omega)$.}
 \end{theorem}
 \end{minipage}}
 }
@@ -1017,14 +1017,14 @@ $
 where $g \in H^1(\Omega) \cap C(\overline{\Omega})$ and $\inf_{x \in \partial \Omega} g(x) > 0$.\medskip
 
 \visible<2->{
-Moreover, assume $f \in L^{\infty}(\Omega)$ and $w \in \mathrm{int}\, L^{\infty}(\Omega)$ and set 
+Moreover, assume $f \in L^{\infty}(\Omega)$ and $w \in \mathrm{int}\, L^{\infty}_+(\Omega)$ and set 
 $D(u,w) := S(u) - [S(w) + S'(w)(u-w)]$.}\medskip
 
 \visible<3->{Then the optimization problem
 \[
 \min_{u \in K}\{J(u) + \frac{1}{\alpha} D(u,w)\}
 \]
-has a \alert{unique solution $u \in H^1_g(\Omega) \cap \mathrm{int}\, L^{\infty}(\Omega)_+$}.}
+has a \alert{unique solution $u \in H^1_g(\Omega) \cap \mathrm{int}\, L^{\infty}_+(\Omega)$}.}
 \end{theorem}
 \end{minipage}\hfill \visible<4->{
 \begin{minipage}{0.48\linewidth}
@@ -1040,7 +1040,7 @@ understood in $H^{-1}(\Omega)$.
 The proof is nontrivial. The steps involve
 \begin{itemize}
 \item Existence/uniqueness in $H^1_g(\Omega)$ (Direct Method).
-\item Proof that $u \in \mathrm{int}\, L^{\infty}(\Omega)_+$.
+\item Proof that $u \in \mathrm{int}\, L^{\infty}_+(\Omega)$ (Truncation).
 %\[
 %\min\{g_{\rm min}, e^(-\|\ln(w) + \alpha f\|_{L^{\infty}})\} \le u \le \max\{g_{\rm max}, e^(\|\ln(w) + \alpha f\|_{L^{\infty}})\} 
 %\]
@@ -1051,6 +1051,204 @@ The proof is nontrivial. The steps involve
 \end{minipage}}
 }
  \end{frame}
+ 
+ \begin{frame}\frametitle{Entropic Poisson $\leftrightarrow$ Saddle Point}
+  \visible<1->{
+   \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+\visible<1->{We again have a \alert{singular elliptic PDE} (the Entropic Poisson equation):
+\[
+-\Delta u  + \frac{1}{\alpha}(\ln u - \ln w) = f
+\]
+This can be solved with Newton's method, but this \alert{does not work very well}. \medskip 
+}
+
+\visible<2->{
+Introduce \alert{latent variables} $\psi := \ln u$ and $\widetilde{\psi} := \ln w$. These are well-defined by the theory (in fact $\psi$ has the same regularity as $u$\footnote{\tiny Keith and Surowiec (2024) Prop.\ A.8 }).}\visible<3->{
+This transforms Entropic Poisson into a \alert{nonlinear saddle point problem} in $(u,\psi)$:\vspace{-2ex}
+\begin{equation}\label{eq:lvpp-spp-obstacle}
+	\begin{aligned}
+					\,-\alpha \Delta u + \alert{\psi}
+					&=
+					\alpha f + \alert{\widetilde{\psi}}
+					~~ &&\text{in~} \Omega\,,
+					\\
+%					\visible<4->{\tikzmark{b} \text{guarantees feasibility!}\quad }\tikzmark{f}
+					\alert{u
+					-
+					\exp(\psi)}
+					&=
+					0
+					~~ &&\text{in~} \Omega\,,
+					\\
+					u
+					&=
+					g ~~ &&\text{on~} \partial\Omega\,.
+				\end{aligned}
+				\end{equation}.}\vspace{-2.3ex}
+\end{beamercolorbox}}   
+  
+%\begin{tikzpicture}[overlay,remember picture]
+%    \draw[very thick, -Stealth]         ($({pic cs:b})+(1ex,1ex)$)
+%        to [bend left, sloped, "text"]  ($({pic cs:f})+(1ex,+1em)$);
+%    \end{tikzpicture}
+
+\end{frame}
+
+\begin{frame}\frametitle{Latent Variable Proximal Point\footnote{\tiny Keith and Surowiec (2024) Sec. 4.5}}
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}\centering
+Recursively solving the saddle point problem and setting $w := u$ leads to a \textbf{Latent Variable Proximal Point} (LVPP) algorithm. 
+\end{beamercolorbox}
+
+\visible<2->{
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+\begin{equation}\label{eq:lvpp-spp-obstacle}
+	\begin{aligned}
+					\,-\alpha \Delta u + \alert{\psi}
+					&=
+					\alpha f + \alert{\widetilde{\psi}}
+					~~ &&\text{in~} \Omega\,,
+					\\
+					\alert{u
+					-
+					\exp(\psi)}
+					&=
+					0
+					~~ &&\text{in~} \Omega\,,
+					\\
+					u
+					&=
+					g ~~ &&\text{on~} \partial\Omega\,.
+				\end{aligned}
+				\end{equation}
+\visible<3->{Discretizing \eqref{eq:lvpp-spp-obstacle} with a Galerkin method yields the \textbf{Proximal Galerkin}\footnote{\tiny Keith and Surowiec (2024)} (PG) method.} 
+\end{beamercolorbox}
+}
+\visible<4->{
+\begin{minipage}{0.48\linewidth}
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+Recall the \alert{major challenge} to ensure \alert{global feasibility} for discrete solution.
+\end{beamercolorbox}
+\end{minipage}
+}
+\visible<5->{
+\begin{minipage}{0.48\linewidth}
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}
+Discrete solution $(u_h,\psi_h)$: $u_h \ge 0$ not guaranteed, but $\widetilde{u}_h := \exp(\psi_h) > 0$!
+\end{beamercolorbox}
+\end{minipage}
+}
+\end{frame}
+
+
+\begin{frame}\frametitle{Finite Element Spaces I}
+
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+%\begin{itemize}
+%\item 
+\visible<1->{$\mathcal{T}_h$ shape-regular partition of $\Omega \subset \mathbb{R}^2$.\medskip}
+
+\visible<2->{$T \in \mathcal{T}_h$ open connected triangular mesh cells with Lipschitz boundaries $\partial T$.\medskip}
+
+%\item
+\visible<3->{$\Omega := \bigcup_{T \in \mathcal{T}_h} \overline{T}$.\medskip}
+
+%\item 
+\visible<4->{$h = \max_{T\in\mathcal{T}_h} \mathrm{diam}(T)$ is the mesh size.\medskip}
+
+%\item 
+\visible<5->{$\mathbb{P}_{p}(T)$  space of polynomials of total order up to and including $p$ on a triangle $T$.\medskip}
+
+%%\item $\mathbb{Q}_{p}(T)$ space of tensor-product polynomials of order up to and including $p$ on a quadrilateral $T$.
+
+%\item 
+\visible<6->{$\mathbb{X}(T)$ space of polynomials over an element $T \in \mathcal{T}_h$.}
+%\item We define ``broken'' polynomials 
+\visible<6->{
+\[
+\mathbb{X}(\mathcal{T}_h) = \{\varphi \in L^\infty(\Omega) \mid \varphi_{|T} \in \mathbb{X}(T) \text{~for every~} T \in \mathcal{T}_h\}.
+\]
+%\item  
+There is an analogous construction for quadrilaterals in the paper.}
+%\end{itemize}
+\end{beamercolorbox}
+
+\end{frame}
+
+\begin{frame}\frametitle{Finite Element Spaces II}
+\begin{itemize}
+\item We require spaces of degree-$q$ polynomials whose traces on the cell boundary $\partial T$ have lower polynomial degree $p < q$.
+\item Define the sets of bubble functions in $\mathbb{P}_{q}(T)$
+ %and $\mathbb{Q}_{q}(T)$ 
+ to be 
+\[
+\aligned
+\mathring{\mathbb{P}}^{q}(T) &= \{ \varphi \in \mathbb{P}_{q}(T) \mid \varphi_{|\partial T} =  0\}%\\
+%\mathring{\mathbb{Q}}^{q}(T) &= \{ \varphi \in \mathbb{Q}_{q}(T) \mid \varphi_{|\partial T} =  0\}
+\endaligned
+\]
+\item Then define 
+\[
+\aligned
+\hat{\mathbb{P}}_{p}(T) &= \mathbb{P}_{p}(T) \setminus \mathring{\mathbb{P}}^{p}(T)%\\
+%\hat{\mathbb{Q}}_{p}(T) &= \mathbb{Q}_{p}(T) \setminus \mathring{\mathbb{Q}}^{p}(T)
+\endaligned
+\]
+\item Finally
+let
+\begin{equation}
+	\mathbb{P}_p^q(T) = \hat{\mathbb{P}}_{p}(T) \oplus \mathring{\mathbb{P}}^{q}(T).
+%	\quad
+%	\text{and}
+%	\quad
+%	\mathbb{Q}_p^q(T) = \hat{\mathbb{Q}}_{p}(T) \oplus \mathring{\mathbb{Q}}^{q}(T)
+%	\,.
+\end{equation}
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Finite Element Spaces III}
+For any integer $p \geq 1$, we define the following pairs of spaces:
+%\begin{subequations}
+\label{eq:SubspacePairs}
+\smallskip
+%\noindent\textsl{Triangular elements.} 
+We refer to the following as the $(\mathbb{P}_p\text{-bubble},\mathbb{P}_{p-1}\text{-broken})$ pairing:
+\begin{equation*}
+\label{eq:SubspacePair1}
+	V_h = \mathbb{P}_{p}^{p+2}(\mathcal{T}_h)\cap H^1_0(\Omega)
+	\,,\qquad
+	% \quad
+	% \text{and}
+	% \quad
+	W_h = \mathbb{P}_{p-1}(\mathcal{T}_h)
+	\,.
+\end{equation*}
+% \medskip
+%
+%\noindent\textsl{Quadrilateral elements.} We refer to the following as the $(\mathbb{Q}_p\text{-bubble},\mathbb{Q}_{p-1}\text{-broken})$ pairing:
+%\begin{equation}
+%\label{eq:SubspacePair2}
+%	V_h = \mathbb{Q}_{p}^{p+1}(\mathcal{T}_h)\cap H^1_0(\Omega)
+%	\,,\qquad
+%	% \quad
+%	% % V_h = \mathbb{Q}_{p+2}(\mathcal{T}_h)\cap H^1_0(\Omega)
+%	% \quad
+%	% \text{and}
+%	% \quad
+%	W_h = \mathbb{Q}_{p-1}(\mathcal{T}_h)
+%	\,.
+%\end{equation}
+%\end{subequations}
+\vspace{-3ex}
+\begin{itemize}
+\item Example, $p = 1$: $V_h$ is composed of the direct sum of piecewise linear functions and 3rd order bubble functions and $W_h$ is piecewise constants. \pause
+\item
+For shape regular $\mathcal{T}_h$, these pairs of spaces are \textbf{stable} for the linearized, singularly perturbed saddle point problems.
+\item 
+The paper contains similar spaces for quadrilateral mesh cells and alternative pairs without bubble functions that are also stable.
+\end{itemize}
+\end{frame}
+
  
  \section{First Numerical Experiments}
  \begin{frame}\frametitle{Frame Title}
