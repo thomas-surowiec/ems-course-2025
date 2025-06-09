@@ -782,13 +782,13 @@ In \alert{Part III} we will return to this perspective and derive a whole new cl
  \end{frame}
 
 \section{Derivation of the Latent Variable Proximal Point Method}
- \begin{frame}\frametitle{Frame Title}
-        \begin{enumerate}
+% \begin{frame}\frametitle{Frame Title}
+%        \begin{enumerate}
 %	\item Failure of the primal version
 %	\item Invention of the latent variable
-	\item Discretization approaches
-    \end{enumerate}
- \end{frame}
+%	\item Discretization approaches
+%    \end{enumerate}
+% \end{frame}
  
  \begin{frame}\frametitle{A Brief History of Proximal Point}
         \visible<1->{
@@ -1175,9 +1175,13 @@ There is an analogous construction for quadrilaterals in the paper.}
 \end{frame}
 
 \begin{frame}\frametitle{Finite Element Spaces II}
-\begin{itemize}
-\item We require spaces of degree-$q$ polynomials whose traces on the cell boundary $\partial T$ have lower polynomial degree $p < q$.
-\item Define the sets of bubble functions in $\mathbb{P}_{q}(T)$
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+%\begin{itemize}
+%\item 
+\visible<1->{We require spaces of degree-$q$ polynomials whose traces on the cell boundary $\partial T$ have lower polynomial degree $p < q$.\medskip}
+
+%\item 
+\visible<2->{Define the sets of bubble functions in $\mathbb{P}_{q}(T)$
  %and $\mathbb{Q}_{q}(T)$ 
  to be 
 \[
@@ -1185,15 +1189,17 @@ There is an analogous construction for quadrilaterals in the paper.}
 \mathring{\mathbb{P}}^{q}(T) &= \{ \varphi \in \mathbb{P}_{q}(T) \mid \varphi_{|\partial T} =  0\}%\\
 %\mathring{\mathbb{Q}}^{q}(T) &= \{ \varphi \in \mathbb{Q}_{q}(T) \mid \varphi_{|\partial T} =  0\}
 \endaligned
-\]
-\item Then define 
+\]}\visible<3->{
+%\item 
+Then define 
 \[
 \aligned
 \hat{\mathbb{P}}_{p}(T) &= \mathbb{P}_{p}(T) \setminus \mathring{\mathbb{P}}^{p}(T)%\\
 %\hat{\mathbb{Q}}_{p}(T) &= \mathbb{Q}_{p}(T) \setminus \mathring{\mathbb{Q}}^{p}(T)
 \endaligned
-\]
-\item Finally
+\]}\visible<4->{
+%\item 
+Finally
 let
 \begin{equation}
 	\mathbb{P}_p^q(T) = \hat{\mathbb{P}}_{p}(T) \oplus \mathring{\mathbb{P}}^{q}(T).
@@ -1202,11 +1208,14 @@ let
 %	\quad
 %	\mathbb{Q}_p^q(T) = \hat{\mathbb{Q}}_{p}(T) \oplus \mathring{\mathbb{Q}}^{q}(T)
 %	\,.
-\end{equation}
-\end{itemize}
+\end{equation}}\vspace{-2ex}
+%\end{itemize}
+\end{beamercolorbox}
 \end{frame}
 
 \begin{frame}\frametitle{Finite Element Spaces III}
+\begin{minipage}{0.55\textwidth}
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
 For any integer $p \geq 1$, we define the following pairs of spaces:
 %\begin{subequations}
 \label{eq:SubspacePairs}
@@ -1239,14 +1248,48 @@ We refer to the following as the $(\mathbb{P}_p\text{-bubble},\mathbb{P}_{p-1}\t
 %	\,.
 %\end{equation}
 %\end{subequations}
-\vspace{-3ex}
-\begin{itemize}
-\item Example, $p = 1$: $V_h$ is composed of the direct sum of piecewise linear functions and 3rd order bubble functions and $W_h$ is piecewise constants. \pause
-\item
+\end{beamercolorbox}
+\end{minipage}\hfill\visible<2->{
+\begin{minipage}{0.4\textwidth}
+\begin{example}[$p = 1$]
+$V_h : $  direct sum of piecewise linear fcns.\ and  3$^{rd}$ order bubble fcns.\\ 
+$W_h : $ piecewise constants. 
+\end{example}
+
+\begin{figure}
+\centering
+	\subcaptionbox*{$\mathbb{P}_1\text{-bubble}$}{
+		\includegraphics[width=0.35\linewidth]{./figures/Elements/P1B.pdf}
+	}
+	\subcaptionbox*{$\mathbb{P}_0\text{-broken}$}{
+		\includegraphics[width=0.35\linewidth]{./figures/Elements/P0.pdf}
+	}
+%	\qquad
+%	\subcaptionbox*{$\mathbb{Q}_1\text{-bubble}$}{
+%		\includegraphics[width=0.2\linewidth]{./figures/Elements/Q1B.pdf}
+%	}
+%	\subcaptionbox*{$\mathbb{Q}_0\text{-broken}$}{
+%		\includegraphics[width=0.2\linewidth]{./figures/Elements/Q0.pdf}
+%	}
+%	\caption{
+%	Conventional representation of the $(\mathbb{P}_1\text{-bubble},\mathbb{P}_0\text{-broken})$ and $(\mathbb{Q}_1\text{-bubble},\mathbb{Q}_0\text{-broken})$ finite elements in two dimensions.
+%	The central degree of freedom in each element can be understood as the average over the individual mesh cell.
+%	\label{fig:P1BP0}}
+\end{figure}
+\end{minipage}}
+
+\visible<3->{
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}
 For shape regular $\mathcal{T}_h$, these pairs of spaces are \textbf{stable} for the linearized, singularly perturbed saddle point problems.
-\item 
-The paper contains similar spaces for quadrilateral mesh cells and alternative pairs without bubble functions that are also stable.
-\end{itemize}
+\end{beamercolorbox}}
+
+%\begin{itemize}
+%\item
+%For shape regular $\mathcal{T}_h$, these pairs of spaces are \textbf{stable} for the linearized, singularly perturbed saddle point problems.
+%\item 
+%The paper contains similar spaces for quadrilateral mesh cells and alternative pairs without bubble functions that are also stable.
+%\end{itemize}
+
 \end{frame}
 
  
@@ -1257,12 +1300,12 @@ The paper contains similar spaces for quadrilateral mesh cells and alternative p
     \end{enumerate}
  \end{frame}
  
-  \section{Theoretical Results}
- \begin{frame}\frametitle{Frame Title}
-        \begin{enumerate}
-    	\item
-    \end{enumerate}
- \end{frame}
+%  \section{Theoretical Results}
+% \begin{frame}\frametitle{Frame Title}
+%        \begin{enumerate}
+%    	\item
+%    \end{enumerate}
+% \end{frame}
 
 
 \end{document}
