@@ -1294,12 +1294,255 @@ For shape regular $\mathcal{T}_h$, these pairs of spaces are \textbf{stable} for
 
  
  \section{First Numerical Experiments}
- \begin{frame}\frametitle{Frame Title}
-        \begin{enumerate}
-    	\item
-    \end{enumerate}
- \end{frame}
  
+ \begin{frame}\frametitle{Experiments}
+\begin{center}
+\Large How does PG behave over various meshes and polynomials orders?
+\end{center}
+\end{frame}
+
+\begin{frame}\frametitle{Experiments}
+\begin{minipage}{0.55\linewidth}
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+\visible<1->{$\Omega := \Omega_{\infty} = [-1,1]\times[-1,1] \subset \mathbb R^2$}
+
+\visible<2->{Set $\lambda = 0$ and $g=u$, where %$u(x,y)$ is the smooth manufactured solution 
+\begin{equation*}
+\label{eq:Biactivity_SmoothManufacturedSolution}
+	u(x,y)
+	=
+	\begin{cases}
+		0 & \text{if~} x < 0\,,\\
+		x^4 & \text{otherwise,}\\
+	\end{cases}
+%	\quad
+	% \iff
+%	\text{implied by}
+%	% \impliedby
+%	\quad
+%	f(x,y)
+%	=
+%	\begin{cases}
+%		0 & \text{if~} x < 0\,,\\
+%		-12x^2 & \text{otherwise.}\\
+%	\end{cases}
+\end{equation*}
+$f = -(\partial^2_{xx} u + \partial^2_{yy} u)$.}
+\end{beamercolorbox}
+\visible<3->{
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}
+Strict complementarity fails on $[-1,0] \times [-1,1]$.
+\end{beamercolorbox}
+}
+\end{minipage}%
+\visible<2->{
+\begin{minipage}{0.3\linewidth}
+\centering
+\begin{figure}
+	\centering
+	\begin{tikzpicture}
+		\node at (-3.35,0.5) {\includegraphics[height=1.5in]{figures/ObstacleExperiment1.png}};
+		%\node at (3.25,0.4) {
+		%	   \includegraphics[clip=true, trim= 0 0 0.35cm 0, height=2.1in]{Figures/tikz/FEniCS_plots/example0/example0_ConvergenceRate.pdf}
+		%};
+	    \node at (-0.5,0.4) {\includegraphics[height=2cm]{figures/colorbar0.pdf}};
+	    \node at (-2.2,-1.35) {\scriptsize $
+	    	u(x,y)
+	    	=
+	    	\begin{cases}
+	    		0 & \text{if~} x < 0\\
+	    		x^4 & \text{otherwise}\\
+	    	\end{cases}
+	    $};
+    \end{tikzpicture}
+\end{figure}
+\end{minipage}}
+
+\visible<4->{
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}
+Proximal point is a (slow) fixed point method if $\alpha$ is left fixed.\smallskip
+
+We choose $\left\{\alpha_k\right\}$ with $\alpha_1 = 1$ and $\alpha_k$ increasing to a maximum value of $10^{10}$
+\end{beamercolorbox}
+}
+\hypertarget{example_1_alpha}{}
+ \hyperlink{target_alpha}{\beamerbutton{Go to choice of $\alpha$}}
+% \hypertarget{example_1}{}
+% \hyperlink{target}{\beamerbutton{Go to Finite Element Spaces}}
+%  \hyperlink{target_alg}{\beamerbutton{Go to Algorithm and Convergence}}
+\end{frame}
+
+
+
+\begin{frame}\frametitle{Experiment 1: Results}
+
+\begin{table}
+\centering
+\tiny
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{ |c|c|c|c|c|c|c| }
+ \hhline{|>{\arrayrulecolor{white}}-->{\arrayrulecolor{black}}|-----|}
+ \multicolumn{2}{c|}{} & \multicolumn{5}{c|}{\cellcolor{lightgray!15} \small\raisebox{5pt}{\vphantom{f}} Progress of the iterates $\|u_h^{k} - u_h^{k-1}\|_{H^1(\Omega_\infty)}$ for various $h$ and $p$}\\[3pt]
+ \hhline{|>{\arrayrulecolor{white}}-->{\arrayrulecolor{black}}|-----|}
+ \multicolumn{2}{c|}{}& \multicolumn{3}{c|}{\cellcolor{lightgray!05} Polynomial degree $p = 1$} & \multicolumn{2}{c|}{\cellcolor{lightgray!10} Polynomial degree $p = 2$}\\
+ \hline
+ \rowcolor{lightgray!15}
+ $k$ & $\alpha_{k}$ & $h_\infty/16$ & $h_\infty/32$ & $h_\infty/64$ & $h_\infty/16$ & $h_\infty/32$ \\
+ \hline
+\cellcolor{lightgray!05}   1 & \cellcolor{lightgray!01}   $1.0$              & $2.10\cdot 10^{0}$   & $2.10\cdot 10^{0}$   & $2.10\cdot 10^{0}$   & $2.10\cdot 10^{0}$   & $2.10\cdot 10^{0}$   \\
+\cellcolor{lightgray!05}   2 & \cellcolor{lightgray!01}   $1.0$              & $6.45\cdot 10^{-1}$  & $6.45\cdot 10^{-1}$  & $6.45\cdot 10^{-1}$  & $6.45\cdot 10^{-1}$  & $6.45\cdot 10^{-1}$  \\
+\cellcolor{lightgray!05}   3 & \cellcolor{lightgray!01}   $1.49$             & $1.73\cdot 10^{-1}$  & $1.73\cdot 10^{-1}$  & $1.73\cdot 10^{-1}$  & $1.73\cdot 10^{-1}$  & $1.73\cdot 10^{-1}$  \\
+\cellcolor{lightgray!05}   4 & \cellcolor{lightgray!01}   $2.43$             & $1.10\cdot 10^{-1}$  & $1.10\cdot 10^{-1}$  & $1.10\cdot 10^{-1}$  & $1.10\cdot 10^{-1}$  & $1.10\cdot 10^{-1}$  \\
+\cellcolor{lightgray!05}   5 & \cellcolor{lightgray!01}   $5.35$             & $7.76\cdot 10^{-2}$  & $7.77\cdot 10^{-2}$  & $7.77\cdot 10^{-2}$  & $7.77\cdot 10^{-2}$  & $7.77\cdot 10^{-2}$  \\
+\cellcolor{lightgray!05}   6 & \cellcolor{lightgray!01}   $1.64\cdot 10^{1}$ & $4.76\cdot 10^{-2}$  & $4.77\cdot 10^{-2}$  & $4.77\cdot 10^{-2}$  & $4.77\cdot 10^{-2}$  & $4.77\cdot 10^{-2}$  \\
+\cellcolor{lightgray!05}   7 & \cellcolor{lightgray!01}   $8.50\cdot 10^{1}$ & $2.24\cdot 10^{-2}$  & $2.25\cdot 10^{-2}$  & $2.25\cdot 10^{-2}$  & $2.25\cdot 10^{-2}$  & $2.25\cdot 10^{-2}$  \\
+\cellcolor{lightgray!05}   8 & \cellcolor{lightgray!01}   $9.35\cdot 10^{2}$ & $5.82\cdot 10^{-3}$  & $5.84\cdot 10^{-3}$  & $5.85\cdot 10^{-3}$  & $5.85\cdot 10^{-3}$  & $5.85\cdot 10^{-3}$  \\
+\cellcolor{lightgray!05}   9 & \cellcolor{lightgray!01}   $3.17\cdot 10^{4}$ & $6.04\cdot 10^{-4}$  & $6.07\cdot 10^{-4}$  & $6.07\cdot 10^{-4}$  & $6.07\cdot 10^{-4}$  & $6.07\cdot 10^{-4}$  \\
+\cellcolor{lightgray!05}  10 & \cellcolor{lightgray!01}   $5.85\cdot 10^{6}$ & $1.80\cdot 10^{-5}$  & $1.81\cdot 10^{-5}$  & $1.81\cdot 10^{-5}$  & $1.81\cdot 10^{-5}$  & $1.81\cdot 10^{-5}$  \\
+\cellcolor{lightgray!05}  11 & \cellcolor{lightgray!01}   $1\cdot 10^{10}$   & $9.41\cdot 10^{-8}$  & $9.47\cdot 10^{-8}$  & $9.49\cdot 10^{-8}$  & $9.50\cdot 10^{-8}$  & $9.50\cdot 10^{-8}$  \\
+\cellcolor{lightgray!05}  12 & \cellcolor{lightgray!01}   $1\cdot 10^{10}$   & $2.10\cdot 10^{-12}$ & $2.00\cdot 10^{-12}$ & $1.96\cdot 10^{-12}$ & $1.92\cdot 10^{-12}$ & $1.95\cdot 10^{-10}$ \\
+ \hline
+ \rowcolor{lightgray!05}
+ \multicolumn{2}{|c|}{\cellcolor{lightgray!15} Tot. linear solves} & $21$ & $20$ & $19$ & $19$ & $19$ \\
+ \hline
+\end{tabular}
+
+%\caption{\label{tab:BiactivityMeshIndependence}
+%Biactivity.
+%Table of increments $\|u_h^{k} - u_h^{k-1}\|_{H^1(\Omega_\infty)}$ for various mesh sizes $h$ and polynomial orders $p$ using the triangular element $(\mathbb{P}_p\text{-bubble},\mathbb{P}_{p-1}\text{-broken})$ discretization.
+%% of the biactive manufactured solution~\cref{eq:Biactivity_SmoothManufacturedSolution} on $\Omega = \Omega_\infty$.
+%The initial degrees of freedom for $u_h$ and $\psi_h$ were set to zero at the beginning of each run.
+%Between eight and ten Newton iterations performed by the PETSc Newton solver used for each initial subproblem solve and then only one Newton solve was used for each of the following subproblems.
+%The convergence of the increments for each fixed $k$ and the boundedness of the number of linear solves indicates \emph{mesh-independence}.
+%}
+\end{table}
+\begin{center}
+ Remarkably, PG exhibits \alert{both mesh independence} and \alert{order independence}!
+\end{center}
+\end{frame}
+
+ \begin{frame}\frametitle{Other Proximal Methods from LVPP} 
+  \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}\centering
+The iterates $u^k$, $\lambda^{k} = (\psi^k - \psi^{k+1})/\alpha_{k+1}$ converge like $O((\sum_{j=1}^k \alpha_j)^{-1})$.\footnote{\tiny Thm. 4.13 in Keith and Surowiec (2024) }
+  \end{beamercolorbox}\hfill
+
+\visible<2->{  
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+The LVPP algorithm is \alert{agnostic} to the type of discretization, other \alert{proximal discretizations} are possible.
+  \end{beamercolorbox}}
+  
+\visible<3->{
+\begin{minipage}{0.7\linewidth}
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+%\begin{figure}[c]{0.64\textwidth}
+\centering
+%\footnotesize
+%\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{ |c| >{\centering}p{0.5cm}  >{\centering}p{0.5cm} >{\centering}p{0.5cm}  >{\centering}p{0.5cm}  >{\centering}p{0.5cm} >{\centering\arraybackslash}p{0.5cm}| }
+ \hline
+ \rowcolor{lightgray!10}
+Mesh size $h$ & $2^{-1}$ & $2^{-2}$ & $2^{-3}$ & $2^{-4}$ & $2^{-5}$ & $2^{-6}$ \\
+ \hline
+\cellcolor{lightgray!02}  Finite Difference & 10 & 15 & 13 & 15 & 16 & 16  \\
+\hline\hline
+ \rowcolor{lightgray!10}
+Degree $p$ & $8$ & $16$ & $24$ & $32$ & $40$ & $48$ \\
+ \hline
+\cellcolor{lightgray!02}  Spectral Method & 16 & 17 & 16 & 16 & 16 & 15 \\
+ \hline
+\end{tabular}\medskip
+
+\scriptsize
+%\caption{
+Number of linear system solves for the proximal finite difference and spectral methods.
+%}
+%\label{fig:ObstacleExperiment_Discretizations}
+%\end{figure}
+\end{beamercolorbox}
+\end{minipage}%
+\begin{minipage}{0.3\linewidth}
+ \centering
+\begin{figure}
+	\centering
+	\begin{tikzpicture}
+		\node at (-4.2,1.2) {\scriptsize 
+	    	$u$};
+		\node at (-3.35,0) {\includegraphics[height=1.25in]{../Part I/figures/obstacle_new.png}};
+		\node at (-2.2,-1.35) {\scriptsize 
+	    	$\varphi$};
+    \end{tikzpicture}
+\end{figure}
+\end{minipage}
+}
+ \end{frame}
+
+\begin{frame}\frametitle{Summary}
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+\begin{enumerate}
+\item We discussed three possible solution techniques taken from mathematical optimization and how they can be used to devise function-space-based algorithms to solve variational inequalities.
+\item Penalty, augmented Lagrangian, and interior point methods all cover parts of what we deemed an ideal algorithm in Part I, but not all properties.
+\item The Latent Variable Proximal Point (LVPP) algorithm was introduced as a remedy to the issues of scaling and lack of feasibility guarantees for the obstacle problem.
+\item After discretizing the infinite-dimensional LVPP subproblems with Galerkin, finite difference, and spectral methods, we observed remarkable behavior.
+\item In Part III, we will dive deeper into LVPP and see that it is much more broadly applicable than the obstacle problem.
+\end{enumerate}
+\end{beamercolorbox}
+\end{frame}
+
+
+ \appendix
+ 
+ \begin{frame}\frametitle{Experiments: Results}
+ \hypertarget{target_alpha}{}  % Target anchor
+\begin{minipage}{0.4\linewidth}
+\begin{figure}
+	\centering
+	\begin{tikzpicture}
+%		\node at (-3.35,0.5) {\includegraphics[height=1.5in]{Figures/ObstacleExperiment1.png}};
+		\node at (-1,0.4) {
+			   \includegraphics[clip=true, trim= 0 0 0.35cm 0, height=4cm]{figures/example0_ConvergenceRate.pdf}
+		};
+%	    \node at (-3.5,0.4) {\includegraphics[height=2cm]{figures/colorbar0.pdf}};
+%	    \node at (-2.2,-1.35) {\scriptsize $
+%	    	u(x,y)
+%	    	=
+%	    	\begin{cases}
+%	    		0 & \text{if~} x < 0\\
+%	    		x^4 & \text{otherwise}\\
+%	    	\end{cases}
+%	    $};
+    \end{tikzpicture}
+%	\caption{
+%	\label{fig:BiactiveIterationComplexity}
+%	Biactivity.
+%	Verifying the convergence orders predicted by \Cref{cor:ConvergenceRates} with the $(\mathbb{P}_1\text{-bubble},\mathbb{P}_{0}\text{-broken})$ discretization (FEniCSx).
+%	Left: The exact solution.
+%	Right: Plots of the optimization error $\|u_h - u_h^k\|_{H^1(\Omega_\infty)}$ and corresponding step size $\alpha_k$ when $h = h_\infty / 16$.
+%	The blue curve tracks the \emph{sublinear} convergence induced by the fixed step size rule $\alpha_k = 1$.
+%	Meanwhile, the step size rules \cref{eq:ObstacleStepSizes_geometric} and \cref{eq:ObstacleStepSizes_superexponential} induce \emph{linear} (red) and \emph{superlinear} (green) convergence, respectively.
+%	The results are similar on finer meshes due to mesh-independence; cf.~\Cref{tab:BiactivityMeshIndependence}.
+%	}
+\end{figure}
+\end{minipage}\qquad
+\begin{minipage}{0.45\linewidth}
+{\footnotesize
+Proximal point is a (slow) fixed point method if $\alpha$ is left fixed. We choose:  $\alpha_1 = 1$,
+\begin{equation*}
+\label{eq:ObstacleStepSizes_superexponential}
+	\alpha_k
+	=
+	\min\bigl\{ \max\bigl\{\alpha_1,r^{q^{k-1}} - \alpha_{k-1}\bigr\} , 10^{10} \bigr\}
+	%\,,
+	%\quad
+	%k = 2,3,\ldots,
+\end{equation*}
+where $r = q = 1.5$.\smallskip  
+
+Once $\alpha_k = 10^{10}$, we can check successive iterates as a stopping criterion.
+}
+\end{minipage}
+
+    \hyperlink{example_1_alpha}{\beamerbutton{Back to Example 1}}
+\end{frame}
 %  \section{Theoretical Results}
 % \begin{frame}\frametitle{Frame Title}
 %        \begin{enumerate}
