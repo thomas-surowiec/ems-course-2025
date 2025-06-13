@@ -12,18 +12,15 @@
 \setbeamertemplate{blocks}[default]
 \setbeamertemplate{enumerate items}[default]
 
-\setbeamertemplate{frametitle}{\vspace*{0.5em}\bfseries\insertframetitle\par\vskip-6pt\hrulefill\vspace{-0.1em}
-\logo { 
-        \begin{tikzpicture}[overlay,remember picture]
-        \node[left=1cm] at (current page.24){
-            \includegraphics[width=3.5cm]{logos/proxi-galerkin-frame.png}
-        };
-        \end{tikzpicture}
-        }
-        %-------------------------
-        {\usebeamercolor[fg]{titlegraphic}\insertlogo\par}
+\setbeamertemplate{frametitle}{\vspace*{0.5em}\bfseries\insertframetitle\par\vskip-10pt\hrulefill\vspace{-1em}
 
-}
+%\setbeamertemplate{frametitle}{\insertframetitle\par\vskip-6pt\hrulefill\vspace{-0.1em}
+
+\logo {\begin{tikzpicture}[overlay,remember picture] 
+         \node at (current page.north east) [anchor=north east, xshift=-.5cm, yshift=.1cm]{\includegraphics[width=3.5cm]{../logos/proxi-galerkin-frame.png}}; \end{tikzpicture} }
+%        \node[left=0.5cm] at (current page.45){\includegraphics[width=3.5cm]{../logos/proxi-galerkin-frame.png}}; \end{tikzpicture} }
+        {\usebeamercolor[fg]{titlegraphic}\insertlogo\par}
+        }
 
 \setbeamertemplate{footline}{%
  \begin{beamercolorbox}[sep=0.2em,wd=\paperwidth,leftskip=0.5cm,rightskip=0.5cm]{footlinecolor}

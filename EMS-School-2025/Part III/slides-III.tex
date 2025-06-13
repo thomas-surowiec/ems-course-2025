@@ -1,45 +1,25 @@
-%----------------------------------------------------------------------------------------
-%	PACKAGES AND THEMES
-%----------------------------------------------------------------------------------------
 \PassOptionsToPackage{table}{xcolor}
-\documentclass[aspectratio=169,xcolor=dvipsnames,10pt]{beamer}
+\documentclass[aspectratio=169,xcolor=dvipsnames,11pt]{beamer}
 \usetheme{SimplePlusAIC}
-
-\setbeamerfont{section in toc}{size=\small}
-
-% \usepackage{background}
-% \backgroundsetup{
-%     placement=center,
-%     scale=4,
-%     % contents={Part II/logos/Simula_logo.png},
-%     opacity=0.1
-% }
-% \setbeamertemplate{background}{\BgMaterial}
-
-\setbeamertemplate{background}{\tikz[overlay,remember picture]\node[opacity=0.05,anchor=south west]
-at (current page.south west)
-{\includegraphics[width=5cm,keepaspectratio]{../logos/Simula_logo.png}};}
-
-
-\useinnertheme[showtitle=false]{tcolorbox}
-
-
 \usepackage{amsmath}
 \usepackage{animate}
 \usepackage{hyperref}
 \usepackage{cleveref}
 \usepackage{caption}
 \usepackage{graphicx} % Allows including images
-% \usepackage{subfig}
+%\usepackage{subfig}
 \usepackage{subcaption}
 \usepackage{booktabs} % Allows the use of \toprule, \midrule and  \bottomrule in tables
 \usepackage{svg} %allows using svg figures
 \usepackage{tikz}
+\usetikzlibrary{intersections}
+\usetikzlibrary{arrows.meta, calc, quotes, tikzmark}
 \usepackage{makecell}
 \usepackage{multirow}
 \usepackage{appendixnumberbeamer}
 \usepackage{wrapfig}
 \usepackage{verbatim}
+\usepackage{tcolorbox}
 %\usepackage[dvipsnames]{xcolor}
 
 \usepackage{hhline}
@@ -67,20 +47,12 @@ at (current page.south west)
 \newcommand{\ctsDense}{\xhookrightarrow{d}}
 \newcommand{\ctsCompact}{\xhookrightarrow{c}}
 \newcommand{\E}{\mathbb{E}}
-\newcommand{\bE}{\mathbb{E}}
-\newcommand{\fF}{\mathfrak{F}}
 \newcommand{\pP}{\mathbb{P}}
-\newcommand{\bP}{\mathbb{P}}
-\newcommand{\cP}{\mathcal{P}}
 \newcommand{\R}{\mathbb{R}}
-\newcommand{\bR}{\mathbb{R}}
 \newcommand{\ER}{\overline{\mathbb{R}}}
 \newcommand{\cR}{\mathcal{R}}
 \newcommand{\cJ}{\mathcal{J}}
 \newcommand{\cG}{\mathcal{G}}
-\newcommand{\cU}{\mathcal{U}}
-\newcommand{\cX}{\mathcal{X}}
-\newcommand{\cZ}{\mathcal{Z}}
 \newcommand{\CVaR}{\textup{CVaR}}
 \newcommand{\D}{\textup{ d}}
 \newcommand{\dd}{\mathrm{d}}
@@ -88,18 +60,78 @@ at (current page.south west)
 \DeclareMathOperator*{\essinf}{\vphantom{p}ess\,inf}
 \DeclareMathOperator{\sigmoid}{expit} % a.k.a. logistic sigmoid
 
-\newcommand{\bbe}{\mathbb{E}}
-\newcommand{\Pae}{\mathbb{P}\text{-a.e.}}
-\newcommand{\bbp}{\mathbb{P}}
-\newcommand{\cF}{\mathcal{F}}
-\newcommand{\Zad}{\mathcal{Z}_{\text{\textup{ad}}}}
-\newcommand{\risk}{\mathcal{R}}
-
-\newtheorem{proposition}{Proposition}
-
 \usepackage[ruled,vlined,algo2e]{algorithm2e}
 \crefname{algocf}{algorithm}{algorithms}
  \usepackage{caption}
+
+\usepackage{tcolorbox}  % For fancy boxes
+\usepackage{lipsum}     % For dummy text
+
+% Define a custom style for the box
+\tcbuselibrary{skins, breakable}
+\newtcolorbox[auto counter, number within=section]{roundedshadowbox}[2][]{
+    colback=white, % Background color (kept white)
+    colframe=black, % Border color
+    boxrule=0.5pt, % Border thickness
+    arc=5mm, % Rounded corners
+    shadow=true, % Drop shadow effect
+    width=\linewidth, % Full width box
+    title=#2, % Title text
+    #1 % Additional options (e.g., width override)
+}
+
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+%\PassOptionsToPackage{table}{xcolor}
+%\documentclass[aspectratio=169,xcolor=dvipsnames,11pt]{beamer}
+%\usetheme{SimplePlusAIC}
+%\usepackage{amsmath}
+%\usepackage{hyperref}
+%\usepackage{cleveref}
+%\usepackage{caption}
+%\usepackage{graphicx} % Allows including images
+%\usepackage{subcaption}
+%\usepackage{booktabs} % Allows the use of \toprule, \midrule and  \bottomrule in tables
+%\usepackage{svg} %allows using svg figures
+%\usepackage{tikz}
+%
+%\usepackage{pgfplots}
+%\pgfplotsset{compat=1.18}
+%
+%\usepackage{makecell}
+%\usepackage{multirow}
+%\usepackage{appendixnumberbeamer}
+%\usepackage{wrapfig}
+%\usepackage{verbatim}
+%\usepackage{tcolorbox}
+%\usepackage{hhline}
+%\usepackage{relsize}
+%\usepackage{bm}
+%
+%\usefonttheme[onlymath]{serif}
+%    
+\newcommand{\C}{\mathbb C}
+
+%
+%%\font\nullfont=cmr10
+%
+%\usepackage{tcolorbox}  % For fancy boxes
+%\usepackage{lipsum}     % For dummy text
+%
+%% Define a custom style for the box
+%\tcbuselibrary{skins, breakable}
+%\newtcolorbox[auto counter, number within=section]{roundedshadowbox}[2][]{
+%    colback=white, % Background color (kept white)
+%    colframe=black, % Border color
+%    boxrule=0.5pt, % Border thickness
+%    arc=5mm, % Rounded corners
+%    shadow=true, % Drop shadow effect
+%    width=\linewidth, % Full width box
+%    title=#2, % Title text
+%    #1 % Additional options (e.g., width override)
+%}
+
 
 %----------------------------------------------------------------------------------------
 %	TITLE PAGE
@@ -130,6 +162,178 @@ K\'acov, Czechia, 15-20 June 2025}}
 
 \begin{frame}{Overview}
 \tableofcontents
+\end{frame}
+
+
+\section{Legendre Functions and Geometry Preserving Transformations}
+\begin{frame}\frametitle{The LVPP Team}
+\captionsetup[subfigure]{labelformat=empty}
+\begin{figure}
+  \begin{subfigure}[b]{2.75cm}
+    \includegraphics[width=\linewidth,height=2.5cm, keepaspectratio]{figures/bren096.jpg}
+    \caption{Brendan Keith\\ Brown University}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{2.75cm}
+    \includegraphics[width=\linewidth,height=2.5cm, keepaspectratio]{figures/patrick.jpg}
+    \caption{Patrick E. Farrell\\ Oxford University}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{2.75cm}
+    \includegraphics[width=\linewidth,height=2.5cm, keepaspectratio]{figures/joergen.png}
+    \caption{Jorgen S. Dokken\\ Simula Research Lab}
+  \end{subfigure}
+   \hfill
+  \begin{subfigure}[b]{3.2cm}
+    \includegraphics[width=\linewidth,height=2.5cm, keepaspectratio]{figures/papadopoulos.jpg}
+    \caption{Ioannis Papadopoulos\\ Weierstra\ss-Institut}
+  \end{subfigure}
+\hspace{7em}	
+%  \hfill
+%  \begin{subfigure}[b]{0.19\textwidth}
+%    \includegraphics[width=\linewidth]{figures/rivers.jpg}
+%    \caption{Diffusive Waves}
+%  \end{subfigure}
+\end{figure}
+ \visible<1->{\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}
+ \centering 
+ \end{beamercolorbox}
+ }
+\end{frame}
+
+  \begin{frame}\frametitle{Quadratic Penalty Methods}
+  \begin{minipage}{0.67\linewidth}
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+ Given $\gamma > 0$, we seek a minimizer $u_{\gamma} \in H^1_0(\Omega)$ of the objective functional:
+ \begin{equation*}
+ 	J_{\gamma}(v)
+ 	=
+ 	\frac{1}{2}
+ 	\int_\Omega |\nabla v|^2 \dd x
+ 	-
+ 	\int_\Omega f v\dd x
+	+
+	\underbrace{\frac{\gamma}{2}\int_{\Omega} \max\{0,\varphi - v\}^2 \dd x}_{=:\gamma \beta(v)}
+ 	\,.
+ \end{equation*}
+ Here, $f \in L^2(\Omega)$ and  $\varphi \in H^1(\Omega)$, $\varphi|_{\Gamma} \le 0$.
+\end{beamercolorbox}
+\end{minipage}\hfill
+\begin{minipage}{0.3\linewidth}
+ \begin{figure}
+% \resizebox{0.3\textwidth}{0.25\textwidth}{%
+  \begin{tikzpicture}[scale=0.5]
+    \begin{axis}[
+        axis lines=middle, % Draw axes through the origin
+        xlabel=$x$,
+        ylabel=$f_\gamma(x)$,
+        xmin=-2, xmax=2, % Adjust x-range as needed
+        ymin=-0.75, ymax=4, % Adjust y-range as needed
+        grid=both, % Add a grid
+        grid style={line width=.1pt, draw=gray!10}, % Style the grid lines
+        major grid style={line width=.2pt,draw=gray!50}, % Style major grid lines
+        xtick distance=1, % Tick marks every 1 unit on x-axis
+        ytick distance=1, % Tick marks every 1 unit on y-axis
+        % Add a legend
+        legend pos=outer north east, % Position the legend
+        legend cell align=left,
+        no markers, % Don't put markers on the plots
+    ]
+
+    % Define the function with a placeholder for c
+    % We use 'max(0,x)^2' for the (x)^2 part, and then multiply by c
+    % PGFPlots works with degrees, so we need to be careful with functions that are not trigonometric.
+    % max(0, x) is directly supported.
+
+
+    \addplot[domain=-2:4, Red, ultra thick] {0.5*x^2 + 1*x + 0 * max(0,-x)^2};
+    \addlegendentry{$\gamma=0$};
+    % Plot for c = 0.5
+    \addplot[domain=-2:4, ForestGreen, ultra thick] {0.5*x^2 + 1*x + 1 * max(0,-x)^2};
+    \addlegendentry{$\gamma=1$};
+
+    % Plot for c = 1
+    \addplot[domain=-2:4, MidnightBlue, ultra thick] {0.5*x^2 + 1*x + 10.0 * max(0,-x)^2};
+    \addlegendentry{$\gamma=10$};
+
+    % Plot for c = 2
+    \addplot[domain=-2:4, BurntOrange, ultra thick] {0.5*x^2 + 1*x + 50.0 * max(0,-x)^2};
+    \addlegendentry{$\gamma=100$};
+
+    \end{axis}
+\end{tikzpicture}
+%}
+\caption{\scriptsize Plot of $f_\gamma(x) = \frac{1}{2} x^2 + x + \gamma\max\{0,-x\}^2$}
+  \label{fig:tikz-example}
+\end{figure}
+\end{minipage}
+  \end{frame}
+
+\begin{frame}\frametitle{A}
+\begin{itemize}
+\item Recall what we did with Bregman proximal point and use the graphic from the Austin talk
+\item The key to developing an abstract LVPP framework for more general constraints lies in the way we construct the Bregman divergence.
+\item As you may recall, the Bregman divergence gives us the linearization error of a particular type of proper, convex, lower-semicontinuous function $R$
+\item The Bregman divergence is not symmetric, but it is always non-negative on its domain.
+\item We will now take a deeper look at an important class of convex functions called \alert{Legendre functions}
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{A}
+\begin{itemize}
+\item Define proper, convex, lsc again
+\item Define convex conjugate and motivate its meaning
+\item Define Legendre function
+\item Find a picture of Rockafellar
+\item Work out two examples to show how to compute the convex conjugate
+\item Prove (if possible) the crucial Rockafellar theorems
+\item Give the table in the paper
+\item Return to Bregman 
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{A}
+\begin{itemize}
+\item
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{A}
+\begin{itemize}
+\item
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{A}
+\begin{itemize}
+\item
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{A}
+\begin{itemize}
+\item
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{A}
+\begin{itemize}
+\item
+\end{itemize}
+\end{frame}
+
+\section{The General LVPP Algorithm}
+\begin{frame}\frametitle{A}
+\begin{itemize}
+\item
+\end{itemize}
+\end{frame}
+
+\section{Applications}
+\begin{frame}\frametitle{A}
+\begin{itemize}
+\item
+\end{itemize}
 \end{frame}
 
 \end{document}
