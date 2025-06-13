@@ -467,7 +467,7 @@ Moreover, though $R_1$, $R_2$ have restricted domains, $R^*_1$, $R^*_2$ are defi
 \]}\vspace{-2ex}
 \end{beamercolorbox}
 
-\visible<5->{
+\visible<4->{
 \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}\centering
 Is there are general class of functions $R$ for which $\nabla R^*$ maps into  $\mathrm{int \, dom\,} R$? \alert{Yes!}.
 \end{beamercolorbox}}
@@ -576,6 +576,7 @@ K = \{ v \in V \mid Bv(x) \in C(x) \text{ for almost every } x \in \Omega_d \sub
 \end{minipage}
 \end{frame}
 
+\section{The General LVPP Algorithm}
 
 \begin{frame}[plain,c]
 %\frametitle{A first slide}
@@ -615,8 +616,54 @@ K = \{ v \in V \mid Bv(x) \in C(x) \text{ for almost every } x \in \Omega_d \sub
 \end{table}
 \end{frame}
 
-\begin{frame}\frametitle{A}
-\begin{itemize}
+\begin{frame}\frametitle{The LVPP Algorithm}
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+Taking $\mathop{\text{dom}}R(\cdot,x) := C(x)$ brings us back to proximal point:\medskip
+
+\visible<2->{Given $u^0 \in V$ and $\left\{\alpha_k\right\}$ find $u \in \mathop{\text{argmin}}_{v \in K} J(v)$  by recursively computing} 
+\visible<3->{
+\begin{equation}\label{eq:lvpp-op}
+\only<3>{
+u^{k} \in \mathop{\text{argmin}}_{u \in K} J(u) + \alpha_{k}^{-1} \int_{\Omega_d} D_R(Bu, Bu^{k-1}) \dd \mathcal{H}_d, \quad k = 1, 2, \dots.
+}
+\only<4->{
+    \text{Find } u^k \in K: \quad \underbrace{\alpha_k J^\prime(u^k) +  B^* \nabla R(Bu^k) - B^* \nabla R(Bu^{k-1}) = 0,}_{\text{Properties of $R$ force constraints to be inactive for $u^k$} }
+}
+\end{equation}\vspace{-2ex}
+}\end{beamercolorbox}
+\visible<5->{
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+Using again \alert{latent variables}: given $\psi^0 \in W$, find $(u^{k}, \psi^{k}) \in V \times W$ satisfying
+\begin{subequations} \label{eq:intro:lvpp}
+\begin{align}
+\label{eq:intro:lvpp:a}
+\alpha_{k} J'(u^{k}) + B^*\psi^{k} &= B^*\psi^{k-1}, \\
+\label{eq:intro:lvpp:b}
+Bu^{k} - \nabla R^*(\psi^{k}) &= 0
+\end{align}
+\end{subequations}\vspace{-4ex}
+\end{beamercolorbox}\centering
+}\visible<6->{
+\begin{minipage}{0.4\linewidth} 
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}
+\centering
+\textbf{\eqref{eq:intro:lvpp:b} implies }$Bu^k \in  \nabla R^*(W) \subset C$!\\
+Clearly, $\nabla R^*(W_h) \subset C$, as well.
+\end{beamercolorbox}
+\end{minipage}
+}
+\visible<7->{ 
+\begin{minipage}{0.5\linewidth} 
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}
+\centering
+A new, unifying perspective on pointwise inequality constraints.
+\end{beamercolorbox}
+\end{minipage}
+}
+\end{frame}
+
+%\begin{frame}\frametitle{A}
+%\begin{itemize}
 %\item Define proper, convex, lsc again
 %\item Define convex conjugate and motivate its meaning
 %\item Define Legendre function
@@ -624,9 +671,12 @@ K = \{ v \in V \mid Bv(x) \in C(x) \text{ for almost every } x \in \Omega_d \sub
 %\item Work out two examples to show how to compute the convex conjugate
 %\item Prove (if possible) the crucial Rockafellar theorems
 %\item Give the table in the paper
-\item Return to Bregman 
-\end{itemize}
-\end{frame}
+%\item Return to Bregman 
+%\end{itemize}
+%\end{frame}
+
+
+
 
 \begin{frame}\frametitle{A}
 \begin{itemize}
@@ -658,7 +708,6 @@ K = \{ v \in V \mid Bv(x) \in C(x) \text{ for almost every } x \in \Omega_d \sub
 \end{itemize}
 \end{frame}
 
-\section{The General LVPP Algorithm}
 \begin{frame}\frametitle{A}
 \begin{itemize}
 \item
