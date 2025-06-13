@@ -152,7 +152,6 @@ K\'acov, Czechia, 15-20 June 2025}}
 %----------------------------------------------------------------------------------------
 %	PRESENTATION SLIDES
 %----------------------------------------------------------------------------------------
-
 \begin{document}
 
 {
@@ -160,12 +159,22 @@ K\'acov, Czechia, 15-20 June 2025}}
 \frame{\titlepage}
 }
 
+\begin{frame}[plain,c]
+%\frametitle{A first slide}
+\hfill
+\begin{center}
+\Huge What is really going on here?
+\end{center}
+\hfill
+\end{frame}
+
 \begin{frame}{Overview}
+
 \tableofcontents
 \end{frame}
 
 
-\section{Legendre Functions and Geometry Preserving Transformations}
+\section{Geometry Preserving Transformations}
 \begin{frame}\frametitle{The LVPP Team}
 \captionsetup[subfigure]{labelformat=empty}
 \begin{figure}
@@ -211,91 +220,246 @@ K\'acov, Czechia, 15-20 June 2025}}
 }
 \end{frame}
 
-  \begin{frame}\frametitle{Quadratic Penalty Methods}
+\begin{frame}\frametitle{Bregman Proximal Point}
+\only<1,2>{Abstractly speaking, we began with the optimization problem:}
+\only<3>{The optimality conditions provide us with a variational inequality:}
+\only<4>{Since the variational inequality does not reduce to a variational equation:}
+\[
+\only<1,2>{ \min_{u \in K} J(u)}
+\only<3>{ \min_{u \in K} J(u) \quad \rightarrow \quad \text{Find } u \in K : J'(u)(v - u) \ge 0,\; \forall v \in K.}
+\only<4>{\text{ Solve }\quad \min_{u \in K} J(u) \quad \text{ by recursively solving }  \quad \min_{u \in K} J(u) + \alpha^{-1} D(u,u_{\text{old}}) \quad \text{instead.}}
+\]
+\only<2,3>{
+\begin{minipage}{0.5\textwidth}
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+$V$: a reflexive Banach space,\smallskip
+
+$K \subset V$: a closed convex set,\smallskip
+
+$J$: a smooth coercive functional.
+\end{beamercolorbox}
+\end{minipage}
+}
+\only<4->{
+\begin{minipage}{0.5\textwidth}
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+$V$: a reflexive Banach space,\smallskip
+
+$K \subset V$: a closed convex set,\smallskip
+
+$J$: a smooth coercive functional,\smallskip
+
+$D : K \times K \to \overline{\mathbb R}$ is a \alert{Bregman distance.}
+\end{beamercolorbox}
+\end{minipage}%
+\begin{minipage}{0.5\textwidth}
+\begin{figure}[h]
+\includegraphics[width=0.8\linewidth]{figures/Prox.png}
+\caption{Illustration of Bregman Proximal Point.} 
+\end{figure}
+\end{minipage}
+}
+\end{frame}
+
+\begin{frame}\frametitle{Bregman Distances}
+
+\begin{minipage}{0.5\linewidth}
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+\visible<1->{Bregman distances/divergences are induced by \textbf{distance-generating functions} $R$.}\smallskip
+
+\visible<2->{They measure the linearization error of $R$:
+\begin{equation*}
+%\label{eq:BregmanDivergence}
+D_R(a, b) := R(a) - R(b) - \nabla R(b) \cdot (a-b),
+\end{equation*}
+for all $a \in \mathop{\text{dom}} R,~b \in \mathop{\text{int}} \mathop{\text{dom}} R$.}
+\end{beamercolorbox}
+\end{minipage}\visible<2->{
+ \begin{minipage}{0.4\linewidth}
+ \centering
+\begin{figure}[h]
+\includegraphics[width=0.8\linewidth]{figures/Bregman.png}
+\end{figure}}
+\visible<3->{
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}
+They are very useful when the geometry of $K$ can be encoded in $\mathop{\text{dom}} R$.
+\end{beamercolorbox}}
+\end{minipage}
+\end{frame}
+
+\begin{frame}\frametitle{Observations}
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}
+\centering
+ \visible The abstract LVPP framework lies in the construction of the Bregman divergence.
+\end{beamercolorbox}
+
+\visible<2->{
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+Minimal properties of $R$:
+\begin{itemize}
+\item \visible<2->{Proper: $R > -\infty$ and there exists $a \in \mathbb R^n$ such that $R(a) < +\infty$.\smallskip}
+
+\item \visible<3->{Convex: $R(\lambda a + (1-\lambda)b) \le \lambda R(a) + (1-\lambda) R(b) \quad \forall a,b \in \mathbb R^n, \forall \lambda \in [0,1]$.\smallskip}
+
+\item \visible<4->{Lower semicontinuous: $\forall a \in \mathbb R^n$ ($\{a_n\} \subset \mathbb R^n : a_n \to a \Rightarrow \liminf_{n} R(a_n) \ge R(a)$).\smallskip}
+
+\item \visible<5->{Differentiable in the interior of the effective domain of $R$.}
+\end{itemize}
+\end{beamercolorbox}}
+\visible<6->{
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+$D_{R}$ is a not a metric, but still: $D_{R}(a,b) = R(a) - R(b) - \nabla R(b)(a-b) \ge 0$.
+%\begin{multline*}
+%\visible<7->{R(\lambda a + (1-\lambda)b) \le \lambda R(a) + (1-\lambda) R(b)}\visible<8->{ \Rightarrow
+%R(b + \lambda (a-b)) - R(b) \le \lambda (R(a)  - R(b))}\visible<9->{ \Rightarrow\\
+%\lambda^{-1}(R(b + \lambda (a-b)) - R(b)) \le R(a) - R(b)}\visible<10->{ \Rightarrow
+%R(a) - R(b) - \nabla R(b)(a-b) \ge 0.}
+%\end{multline*}
+\end{beamercolorbox}
+}
+\end{frame}
+
+%\begin{frame}\frametitle{Legendre Functions}
+%\begin{itemize}
+%\item Recall what we did with Bregman proximal point and use the graphic from the Austin talk
+%\item The key to developing an abstract LVPP framework for more general constraints lies in the way we construct the Bregman divergence.
+%\item As you may recall, the Bregman divergence gives us the linearization error of a particular type of proper, convex, lower-semicontinuous function $R$
+%\item The Bregman divergence is not symmetric, but it is always non-negative on its domain.
+%\item We will now take a deeper look at an important class of convex functions called \alert{Legendre functions}
+%\end{itemize}
+%\end{frame}
+
+\begin{frame}[plain,c]
+%\frametitle{A first slide}
+\hfill
+\begin{center}
+\Huge What are some \alert{relevant} distance-generating functions?
+\end{center}
+\hfill
+\end{frame}
+
+\begin{frame}\frametitle{The Convex Conjugate\footnote{\tiny Also called: Legendre-Fenchel Transform, Dual Function, Fenchel Conjugate}}
   \begin{minipage}{0.67\linewidth}
 \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
- Given $\gamma > 0$, we seek a minimizer $u_{\gamma} \in H^1_0(\Omega)$ of the objective functional:
- \begin{equation*}
- 	J_{\gamma}(v)
- 	=
- 	\frac{1}{2}
- 	\int_\Omega |\nabla v|^2 \dd x
- 	-
- 	\int_\Omega f v\dd x
-	+
-	\underbrace{\frac{\gamma}{2}\int_{\Omega} \max\{0,\varphi - v\}^2 \dd x}_{=:\gamma \beta(v)}
- 	\,.
- \end{equation*}
- Here, $f \in L^2(\Omega)$ and  $\varphi \in H^1(\Omega)$, $\varphi|_{\Gamma} \le 0$.
+ Let $X$ be a real topological vector space and $X^*$ its topological dual with pairing denoted by $\langle \cdot,\cdot \rangle$. 
+ Given $f: X \to \overline{\mathbb R}$, its \alert{convex conjugate} is the function $f^* : X^* \to \overline{\mathbb R}$ defined by
+ \[
+ f^*(x^*) := \sup_{x \in X} \left\{\langle x^*,x\rangle - f(x) \right\}.
+ \]
 \end{beamercolorbox}
 \end{minipage}\hfill
 \begin{minipage}{0.3\linewidth}
+ \centering
  \begin{figure}
-% \resizebox{0.3\textwidth}{0.25\textwidth}{%
-  \begin{tikzpicture}[scale=0.5]
-    \begin{axis}[
-        axis lines=middle, % Draw axes through the origin
-        xlabel=$x$,
-        ylabel=$f_\gamma(x)$,
-        xmin=-2, xmax=2, % Adjust x-range as needed
-        ymin=-0.75, ymax=4, % Adjust y-range as needed
-        grid=both, % Add a grid
-        grid style={line width=.1pt, draw=gray!10}, % Style the grid lines
-        major grid style={line width=.2pt,draw=gray!50}, % Style major grid lines
-        xtick distance=1, % Tick marks every 1 unit on x-axis
-        ytick distance=1, % Tick marks every 1 unit on y-axis
-        % Add a legend
-        legend pos=outer north east, % Position the legend
-        legend cell align=left,
-        no markers, % Don't put markers on the plots
-    ]
-
-    % Define the function with a placeholder for c
-    % We use 'max(0,x)^2' for the (x)^2 part, and then multiply by c
-    % PGFPlots works with degrees, so we need to be careful with functions that are not trigonometric.
-    % max(0, x) is directly supported.
-
-
-    \addplot[domain=-2:4, Red, ultra thick] {0.5*x^2 + 1*x + 0 * max(0,-x)^2};
-    \addlegendentry{$\gamma=0$};
-    % Plot for c = 0.5
-    \addplot[domain=-2:4, ForestGreen, ultra thick] {0.5*x^2 + 1*x + 1 * max(0,-x)^2};
-    \addlegendentry{$\gamma=1$};
-
-    % Plot for c = 1
-    \addplot[domain=-2:4, MidnightBlue, ultra thick] {0.5*x^2 + 1*x + 10.0 * max(0,-x)^2};
-    \addlegendentry{$\gamma=10$};
-
-    % Plot for c = 2
-    \addplot[domain=-2:4, BurntOrange, ultra thick] {0.5*x^2 + 1*x + 50.0 * max(0,-x)^2};
-    \addlegendentry{$\gamma=100$};
-
-    \end{axis}
-\end{tikzpicture}
-%}
-\caption{\scriptsize Plot of $f_\gamma(x) = \frac{1}{2} x^2 + x + \gamma\max\{0,-x\}^2$}
-  \label{fig:tikz-example}
+  \centering\vspace{1ex}
+  \visible<1->{\begin{minipage}[b]{0.45\textwidth}
+    \includegraphics[width=\linewidth]{figures/legendre.png}
+    \captionof*{figure}{\tiny A-M. Legendre}
+  \end{minipage}}%
+  \hfill
+  \begin{minipage}[b]{0.46\textwidth}
+    \includegraphics[width=\linewidth]{figures/Werner_Fenchel.jpeg}
+    \captionof*{figure}{\tiny W. Fenchel}
+  \end{minipage}
 \end{figure}
-\end{minipage}
-  \end{frame}
 
-\begin{frame}\frametitle{A}
-\begin{itemize}
-\item Recall what we did with Bregman proximal point and use the graphic from the Austin talk
-\item The key to developing an abstract LVPP framework for more general constraints lies in the way we construct the Bregman divergence.
-\item As you may recall, the Bregman divergence gives us the linearization error of a particular type of proper, convex, lower-semicontinuous function $R$
-\item The Bregman divergence is not symmetric, but it is always non-negative on its domain.
-\item We will now take a deeper look at an important class of convex functions called \alert{Legendre functions}
-\end{itemize}
+\end{minipage}
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}\centering
+$f^*$ is convex (prove this), but it may be nowhere finite.
+\end{beamercolorbox}
+\end{frame}
+
+\begin{frame}[plain,c]
+\centering
+\begin{tikzpicture}
+  \begin{axis}[
+      axis lines=middle,
+      xlabel={$x$},
+      ylabel={$f(x)$},
+      domain=0.1:4,
+      samples=200,
+      ymin=-2.5, ymax=2.5,
+      xmin=0, xmax=4,
+      legend style={at={(0.5,1.0)}, anchor=north},
+      thick
+    ]
+    
+    % Function
+    \addplot[blue, ultra thick, domain=0.1:4] {x*ln(x) - x};
+    \addlegendentry{$f(x) = x \ln x - x$}
+    
+    % Tangents at x0, x1, x2
+    % x0 = 0.5
+    \pgfmathsetmacro\xA{0.5}
+    \pgfmathsetmacro\yA{\xA*ln(\xA) - \xA}
+    \pgfmathsetmacro\mA{ln(\xA)}
+    \addplot[red,  thick, domain=0.1:4] {\mA*(x - \xA) + \yA};
+    \addplot[only marks, mark=*] coordinates {(\xA,\yA)};
+    \node[below left] at (axis cs:\xA,\yA) {$x_0$};
+
+    % x1 = 1.5
+    \pgfmathsetmacro\xB{1.5}
+    \pgfmathsetmacro\yB{\xB*ln(\xB) - \xB}
+    \pgfmathsetmacro\mB{ln(\xB)}
+    \addplot[green!70!black,  thick, domain=0.1:4] {\mB*(x - \xB) + \yB};
+    \addplot[only marks, mark=*] coordinates {(\xB,\yB)};
+    \node[below right] at (axis cs:\xB,\yB) {$x_1$};
+
+    % x2 = 3.0
+    \pgfmathsetmacro\xC{3.0}
+    \pgfmathsetmacro\yC{\xC*ln(\xC) - \xC}
+    \pgfmathsetmacro\mC{ln(\xC)}
+    \addplot[orange!80!black,  thick, domain=0.1:4] {\mC*(x - \xC) + \yC};
+    \addplot[only marks, mark=*] coordinates {(\xC,\yC)};
+    \node[above right] at (axis cs:\xC,\yC) {$x_2$};
+
+  \end{axis}
+\end{tikzpicture}\vspace{2ex}
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}\centering
+$f^*$ encodes all the information of the convex hull of $f(x)$'s epigraph in terms of its supporting hyperplanes.
+\end{beamercolorbox}
+\end{frame}
+
+\begin{frame}\frametitle{An Example}
+\begin{example}
+Let $f(x) = \exp x$. Then $f: \mathbb R \to \mathbb R$ and $f^* : \mathbb R \to \overline{\mathbb R}$ is given by
+\[
+f^*(x^*) := \sup_{x \in \mathbb R}\{ x^* x - \exp(x) \} = - \inf_{x \in \mathbb R}\{\exp(x) - x^* x\}.
+\]
+\visible<2->{If $x^* < 0$, then $x\to -\infty$ implies $x^* x - \exp(x) \to +\infty$. Hence, $f^*(x^*) = +\infty$. \medskip}
+
+\visible<3->{If $x^* = 0$, then the least upper bound of $-\exp(x)$ over $x \in \mathbb R$ is 0. Hence, $f^*(x^*) = 0$.  \medskip}
+
+\visible<4->{If $x^* > 0$, then the minimizer of $\exp(x) - x^*x$ solves $\exp(x) = x^*$, i.e., $x = \ln(x^*)$. \medskip}
+
+\visible<5->{So the \alert{convex conjugate} of \alert{$f(x) = \exp(x)$} is Shannon's entropy extended to $\mathbb R$.}
+\end{example}
+\end{frame}
+
+\begin{frame}\frametitle{The Hellinger Entropy}
+\begin{example}
+Let $f(x) = -\sqrt{1 - \|x\|^2}$ with $f(x) = +\infty$ for $\|x\| > 1$. Here, we have for $\|x\| \le 1$
+\[ 
+(\langle x^*, \cdot\rangle - f(\cdot))'(x) = x^* -  (1 - \|x\|^2)^{-1/2} x \Rightarrow x(x^*) = \frac{x^*}{\sqrt{1 + \|x^*\|^2}}
+\]
+By substitution, we get
+\[
+f^*(x^*) = \frac{1 + \|x^*\|^2}{\sqrt{1 + \|x^*\|^2}}.
+\]
+Note: 
+\[
+\nabla f^*(x^*) = \frac{x^*}{\sqrt{1 + \|x^*\|^2}} \text{ and } \| \nabla f^*(x^*) \| \le 1.
+\]
+\end{example}
 \end{frame}
 
 \begin{frame}\frametitle{A}
 \begin{itemize}
-\item Define proper, convex, lsc again
-\item Define convex conjugate and motivate its meaning
+%\item Define proper, convex, lsc again
+%\item Define convex conjugate and motivate its meaning
 \item Define Legendre function
 \item Find a picture of Rockafellar
-\item Work out two examples to show how to compute the convex conjugate
+%\item Work out two examples to show how to compute the convex conjugate
 \item Prove (if possible) the crucial Rockafellar theorems
 \item Give the table in the paper
 \item Return to Bregman 
