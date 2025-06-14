@@ -889,6 +889,509 @@ ${\tt tol_{rel}} = {\tt tol_{abs}}$ = 1E-6
 \end{minipage}
 \end{frame}
 
+\begin{frame}{Variational Fracture}
+
+  \begin{minipage}{0.53\textwidth}
+  \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}\scriptsize
+A.\ A.\ Griffith's foundational paper (1921) uses a preexisting crack and well-defined crack path.\medskip
+
+Mostly overcome in the seminal work by Francfort and Marigo (1998)\medskip
+
+The widely used \textbf{phase-field approximation} by Bourdin, Francfort, and Marigo (2000).
+%\footnote{\tiny The model in Bourdin, Francfort, and Marigo (2000) is an Ambrosio-Tortorelli approximation of the Mumford-Shah functional \cite{Mumford1989,Ambrosio1990}.}
+
+%We only solve for the vertical displacements here. 
+     \end{beamercolorbox}
+ 
+ \visible<2->{    
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}\scriptsize
+\visible<2->{Challenge 1: Variational fracture is a \alert{free discontinuity problem (FDP)}. The state is split into a \alert{function} $u$ over $\Omega$ and a \alert{geometric quantity} $\Gamma \subset \Omega$.\medskip}
+ 
+ \visible<3->{Challenge 2: The phase-field approximation has a \alert{non-convex energy} and admits \alert{non-unique global solutions}. \medskip}
+ 
+ \visible<4->{Challenge 3: The \alert{irreversibility} of the crack evolution has to be built into the pointwise inequality constraints.}
+      \end{beamercolorbox}}
+    \end{minipage}\hspace*{1.75cm}
+    \begin{minipage}{0.3\textwidth}
+  \centering
+ \begin{figure}
+  \centering\vspace{1ex}
+   \begin{minipage}[b]{0.4\textwidth}
+    \includegraphics[width=\linewidth]{figures/griffith.jpg}
+    \captionof*{figure}{\tiny A.A.\ Griffith}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[b]{0.4\textwidth}
+    \includegraphics[width=\linewidth]{figures/francfort.jpg}
+    \captionof*{figure}{\tiny G.\ Francfort }
+  \end{minipage}
+  \vspace{1em}
+  \begin{minipage}[b]{0.4\textwidth}
+    \includegraphics[width=\linewidth]{figures/marigo.jpeg}
+    \captionof*{figure}{\tiny J.-J.\ Marigo}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[b]{0.4\textwidth}
+    \includegraphics[width=\linewidth]{figures/BlaiseBourdin_1024.jpg}
+    \captionof*{figure}{\tiny B.\ Bourdin }
+  \end{minipage}
+\end{figure}
+    \end{minipage}
+\end{frame}
+
+\begin{frame}\frametitle{Problem Description}
+\begin{minipage}{0.6\textwidth}
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}\scriptsize
+Domain: $\Omega \subset \mathbb R^n$ open, bounded set\medskip 
+
+\visible<2->{(Francfort \& Marigo): $u : \Omega \to \mathbb R$ (displacement), $\Gamma \subset \Omega \cap \mathbb R^{n-1}$ (crack). Note \alert{this is not a function!}\medskip}
+
+\visible<3->{(Bourdin, Francfort \& Marigo): The \alert{geometric variable} $\Gamma$ is replaced by an \alert{order parameter} $c : \Omega \to [0,1]$ 
+\[
+c = 0 \text{ no damage, } \alert{c = 1} \text{ presence of crack.}
+\] 
+The localization of the crack controlled by a \alert{length scale} $\ell > 0$ \medskip}
+
+\visible<4->{The crack evolution is computed over a \alert{quasi-static incremental loading} procedure.\medskip}
+
+\visible<5->{At each step, the load on the body is varied, and the body is allowed to equilibrate.\medskip}
+\end{beamercolorbox}
+\end{minipage}\hspace{4ex}
+\begin{minipage}{0.27\textwidth}
+\begin{figure}
+  \includegraphics[width=\linewidth]{figures/christian-lambert-KtqTxJgN70M-unsplash.jpg}
+  \captionof*{figure}{\tiny Photo by Christian Lambert}
+  \end{figure}
+\end{minipage}
+
+%%Photo by <a href="https://unsplash.com/@_christianlambert?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Christian Lambert</a> on <a href="https://unsplash.com/photos/blue-and-white-abstract-painting-KtqTxJgN70M?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+      
+\end{frame}
+
+\begin{frame}\frametitle{Problem Description}
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+At each loading step, we are given Dirichlet boundary data $g$ and the previous order parameter $c_{\rm prev}$. \visible<2->{This defines our feasible set $K$:
+\begin{equation*}
+\label{eq:FeasibleSetFracture}
+K = \left\{ (u,c) \in H^1_g(\Omega) \times H^1(\Omega) \mid 0 \le c_{\rm prev} \le c \le 1 \; \text{a.e.~in} \; \Omega \right\},
+\end{equation*}
+where
+%\begin{equation*}
+$V = H^1_g(\Omega) = \left\{ u \in H^1(\Omega) \mid \gamma u = g \text{ on } \Gamma_D \right\},$
+%\end{equation*}
+with $\Gamma_D \subset \partial \Omega$.}
+\end{beamercolorbox}
+
+\visible<3->{
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+Given energy release rates $G_c > 0$, 
+%the length scale $\ell > 0$,  
+%an artificial residual stiffness
+artificial  stiffness
+%of a fully ruptured phase 
+$\epsilon > 0$, we arrive at the (\alert{non-convex}) objective functional:
+\[
+J(u,c) := \underbrace{\frac{1}{2}\int_{\Omega}(\epsilon + (1-\epsilon)
+(1-c)^2)|\nabla u|^2\,\mathrm{d}x}_{\text{biconvex bulk energy}} 
++ 
+\underbrace{\frac{G_c}{2}\int_{\Omega} \ell |\nabla c|^2 
++ 
+\ell^{-1}|c|^2\,\mathrm{d}x.}_{\text{governs diffuse crack interface}}
+\]\vspace{-2ex}
+\end{beamercolorbox}}
+\end{frame}
+
+\begin{frame}\frametitle{LVPP for Variational Fracture}
+\vspace{-1ex}
+\begin{minipage}{0.25\textwidth}\scriptsize
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}
+%\begin{itemize}
+%\item 
+$B := (0,\operatorname{id})$ (acts only on $c$)\medskip
+
+%\item 
+$\Omega_d :=\Omega$\medskip
+
+%\item 
+$C(x) := \mathbb R \times [c_{\rm prev}(x),1]$\medskip
+
+%\item 
+$R(a) := (a - \phi_1) \ln (a - \phi_1) + (\phi_2-a) \ln (\phi_2-a)$\medskip
+
+%\item 
+$\phi_1 := c_{\rm prev}$ and $\phi_2 := 1$\medskip
+
+%\item 
+No latent variable for $u$\medskip
+
+%\item 
+$\psi^0 = 0$
+%\end{itemize}
+\end{beamercolorbox}
+\end{minipage}\hfill\visible<2->{
+\begin{minipage}{0.72\textwidth}  %%<--- here
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}\scriptsize
+Find $(u^k, c^k, \psi^k) \in H^1_g(\Omega) \times H^1(\Omega) \times L^\infty(\Omega)$ such that
+\begin{subequations}
+\label{eq:FractureVF}
+\begin{align*}
+    &\underbrace{\alpha_k G ((\epsilon + (1-\epsilon)(1-c^k)^2)\nabla u^k, \nabla v)}_{= \alpha_k(\partial_u J(u,c),v)}
+    = 0
+    \,,
+    \\
+    &
+    %\begin{split}
+    \underbrace{-\alpha_k  ((1-\epsilon)(1-c^k)|\nabla u^k|^2,d)%\hspace{30mm}
+%    \indent 
+    +
+    \alpha_k G_c ( \ell(\nabla c^k, \nabla d) + \ell^{-1}(c^k, d) )}_{=\alpha_k (\partial_c J(u,c),d)}
+    +\\
+    &\hspace{7cm}(\psi^k-\psi^{k-1},d)%\\
+    =
+    0
+    \,,
+    %\end{split}
+    \\
+    &\underbrace{(c^k,w)
+    -
+    \bigg(\frac{c_\mathrm{prev} + \exp (\psi^k)}{\exp(\psi^k) + 1}, w\bigg)}_{= (c - \nabla R^*(\psi),w)}
+    =
+    0
+    \,,
+\end{align*}
+\end{subequations}
+for all $(v, d, w) \in H^1_0(\Omega) \times H^1(\Omega) \times L^\infty(\Omega)$.
+\end{beamercolorbox}
+\end{minipage}}
+
+\visible<3->{
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}\centering
+Many choose an alternating minimization scheme (leaveing off the 3$^{rd}$ equation) due to the simplicity of the individual equations. We use Newton.
+\end{beamercolorbox}}
+\end{frame}
+
+\begin{frame}\frametitle{LVPP for Variational Fracture}
+
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+\begin{itemize}
+%\item Code available here: 
+\item Define a \alert{proximal Galerkin method} continuous piecewise linear finite elements for $u$, $c$, and $\psi$.
+%\item \visible<2->{Solve the resulting discrete systems with Newton's method.}
+\item \visible<3->{For robustness of the optimization procedure, we perturb the  system Jacobian with a coercive modification, by adding
+\[
+\iota ((u, v) + (c, d) - (\psi, w))
+\]
+to the Jacobian with perturbation parameter $\iota = 10^{-3}$.}
+\item \visible<4->{Simple heuristic for $\alpha_k$:  if the number of Newton iterations is four or fewer, $\alpha_{k+1} = 2\alpha_k$; if the number of Newton iterations is ten or more, $\alpha_{k+1} = \alpha_k/2$; otherwise $\alpha_{k+1} = \alpha_k$.
+}
+\end{itemize}
+\end{beamercolorbox}
+\end{frame}
+
+\begin{frame}\frametitle{LVPP for Variational Fracture}
+\begin{minipage}{0.55\linewidth}
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+ \visible<1->{The anti-plane shear test: impose $u = +L$ top right of notch, $u = -L$ top left of notch} \smallskip
+ 
+ \visible<1->{At each loading step, $L := L + 0.005$, starting from zero.
+Natural BCs elsewhere.}
+
+Stop when $L = 2$.
+\end{beamercolorbox}
+\visible<2->{
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}
+Performance of LVPP:\\
+Average proximal steps per loading: 2.85\\
+Maximum number of proximal steps: 147\\
+Average number of Newton steps: 5.44
+\end{beamercolorbox}}
+\end{minipage}\hspace{4ex}
+\begin{minipage}{0.3\linewidth}
+ \centering
+%\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+%Parameters:\\
+%
+%\end{beamercolorbox}
+\begin{figure}
+\centering
+\begin{minipage}[c]{3cm}
+\begin{tikzpicture}
+    \node[anchor=south west,inner sep=0] (image) at (0,0) {\includegraphics[width=\textwidth]{Figures/fracture-damage-4ref.png}};
+    \begin{scope}[x={(image.south east)},y={(image.north west)}]
+        \node (bcleft) at (0.25, 1.05) {\small $u = -L$};
+        \node (bcright) at (0.75, 1.05) {\small $u = +L$};
+    \end{scope}
+\end{tikzpicture}
+\end{minipage}
+\hspace*{0cm}
+ \begin{minipage}[c]{0.9cm}
+     \includegraphics[width=\linewidth]{figures/fracture-damage-colorbar-label.png}
+ \end{minipage}
+%\caption{The final damage field for the fracture problem described in \Cref{sec:fracture}.}
+%\label{fig:fracture}
+% \vspace*{-1em}
+\end{figure}
+\end{minipage}
+\end{frame}
+
+
+\begin{frame}\frametitle{Gradient Constraints}
+\begin{minipage}{0.55\linewidth}
+\visible<1->{
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+\footnotesize}\visible<1->{Often arise in \alert{Quasi-Variational Inequalities} (QVIs).\\
+ 
+ }\visible<2->{
+Major contributions by L. Prigozhin (modeling), J.F. Rodrigues (analysis), M. Hinterm\"uller \& C.N. Rautenberg (algorithms), and many others.\\
+ 
+ }\visible<3->{
+Diverse applications: 
+\begin{itemize}
+\item Elastic-plastic torsion problem
+\item Sandpile growth
+\item Magnetization in type-II superconductors
+\item Hydrology 
+\item Simplified stress constraints.
+\end{itemize}}
+\end{beamercolorbox}
+
+%\visible<2->{
+%\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+%\visible<2->{$\Omega \subset \mathbb{R}^3$, $\Gamma$ split into two disjoint subsets.}
+%\visible<2->{$\Gamma = \overline{ \Gamma_\mathrm{D} \cup \Gamma_\mathrm{T} }$ with\\
+%$\Gamma_D$ for \textbf{d}isplacement\\
+%$\Gamma_{T}$ for \textbf{t}raction boundary conditions.}
+%\end{beamercolorbox}}
+\end{minipage}\hspace{4ex}
+\begin{minipage}{0.3\linewidth}
+ \centering
+ \begin{figure}
+  \centering\vspace{1ex}
+  \visible<1->{\begin{minipage}[b]{0.38\textwidth}
+    \includegraphics[width=\linewidth]{figures/Prigozhin.jpg}
+    \captionof*{figure}{\tiny L. Prigozhin}
+  \end{minipage}}%
+  \hfill
+  \begin{minipage}[b]{0.46\textwidth}
+    \includegraphics[width=\linewidth]{figures/Rodrigues.jpg}
+    \captionof*{figure}{\tiny J.F. Rodrigues}
+  \end{minipage}
+\end{figure}
+ \begin{minipage}[b]{0.5\textwidth}
+    \includegraphics[width=\linewidth]{figures/global_feasible_active_set.png}
+    \captionof*{figure}{\tiny Black: $|\nabla u| = \phi$.}
+  \end{minipage}%
+%  \hfill
+%  \begin{minipage}[b]{0.6\textwidth}
+    \includegraphics[width=0.8\linewidth]{figures/gradient_constraint_u.png}
+%    \captionof*{figure}{\tiny State $u$}
+%  \end{minipage}
+%\begin{figure}
+%	\centering
+%	\begin{tikzpicture}
+%		\node at (-5,0) {\includegraphics[height=1in]{figures/global_feasible_active_set.png}};\hspace{10ex}
+%    \end{tikzpicture}\vspace{-8ex}
+%	\begin{tikzpicture}
+%		\node at (-2,-1) {\includegraphics[height=1.25in]{figures/gradient_constraint_u.png}};
+%    \end{tikzpicture}
+%%\end{figure}
+%  \end{minipage}
+\end{minipage}
+\end{frame}
+
+\begin{frame}\frametitle{Gradient Constraints}
+\begin{minipage}{0.55\linewidth}
+\visible<1->{
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+\footnotesize\visible<1->{Domain: $\Omega \subset \mathbb{R}^n$ open, bounded, Lipschitz\\
+
+}\visible<2->{
+State space: $V := W^{1,p}_0(\Omega)$ with $p \ge 2$\\
+
+}\visible<3->{
+Objective function:
+ \begin{equation*}\label{eq:grad-ob}
+     J(u) :=  \frac{1}{p} \int_{\Omega}|\nabla u|^p - f u \dd x
+ \end{equation*}
+Forcing term $f \in L^2(\Omega)$\medskip
+
+}\visible<4->{
+\alert{Inequality constraints:
+\begin{equation}\label{eq:grad-constr}
+K = \{ u \in H^1_0(\Omega) \mid |\nabla u| \le \phi \text{ a.e.\ in } \Omega \}\,.
+\end{equation}
+}
+$\phi \in L^{\infty}(\Omega)$ : $\phi \ge \epsilon$ a.e.\ for constant $\epsilon > 0$.
+}
+
+
+\end{beamercolorbox}
+}
+%\visible<2->{
+%\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+%\visible<2->{$\Omega \subset \mathbb{R}^3$, $\Gamma$ split into two disjoint subsets.}
+%\visible<2->{$\Gamma = \overline{ \Gamma_\mathrm{D} \cup \Gamma_\mathrm{T} }$ with\\
+%$\Gamma_D$ for \textbf{d}isplacement\\
+%$\Gamma_{T}$ for \textbf{t}raction boundary conditions.}
+%\end{beamercolorbox}}
+\end{minipage}\hspace{4ex}
+\begin{minipage}{0.3\linewidth}
+ \centering
+ \begin{figure}
+  \centering\vspace{1ex}
+  \visible<1->{\begin{minipage}[b]{0.38\textwidth}
+    \includegraphics[width=\linewidth]{figures/hintermueller.jpg}
+    \captionof*{figure}{\tiny M. Hinterm\"uller}
+  \end{minipage}}%
+  \hfill
+  \begin{minipage}[b]{0.46\textwidth}
+    \includegraphics[width=\linewidth]{figures/rautenberg.jpg}
+    \captionof*{figure}{\tiny C.N. Rautenberg}
+  \end{minipage}
+\end{figure}
+ \begin{minipage}[b]{0.5\textwidth}
+    \includegraphics[width=\linewidth]{figures/global_feasible_active_set.png}
+    \captionof*{figure}{\tiny Black: $|\nabla u| = \phi$.}
+  \end{minipage}%
+%  \hfill
+%  \begin{minipage}[b]{0.6\textwidth}
+    \includegraphics[width=0.8\linewidth]{figures/gradient_constraint_u.png}
+%    \captionof*{figure}{\tiny \hspace{28ex} State $u$ for $p=2$}
+%  \end{minipage}
+%\begin{figure}
+%	\centering
+%	\begin{tikzpicture}
+%		\node at (-5,0) {\includegraphics[height=1in]{figures/global_feasible_active_set.png}};\hspace{10ex}
+%    \end{tikzpicture}\vspace{-8ex}
+%	\begin{tikzpicture}
+%		\node at (-2,-1) {\includegraphics[height=1.25in]{figures/gradient_constraint_u.png}};
+%    \end{tikzpicture}
+%%\end{figure}
+%  \end{minipage}
+\end{minipage}
+\end{frame}
+
+
+\begin{frame}\frametitle{Gradient Constraints}
+ \hypertarget{eikonal}{}  % Target anchor
+    % Button to go back
+    \hyperlink{extensions}{\beamerbutton{Back to Extensions}}
+\begin{itemize}
+\item  $\Omega \subset \mathbb R^n$ is an open bounded subset.
+\item  $\rho : \Omega \to \mathbb R_+$ is essentially bounded and $\rho \ge \underline{\rho} > 0$ for constant $\underline{\rho}$ (a.e.\ $\Omega$).
+\item We want to find $u$  that  minimizes 
+\[
+J(v) := -\int_{\Omega} v \, \mathrm{d} x 
+\] 
+over
+\[
+K = \left\{
+v \in W^{1,\infty}_g(\Omega) \left| | \nabla v | \le \rho \text{ a.e. } \Omega \right.
+\right\}
+\] 
+where $g \in W^{1,\infty}(\Omega)$ satisfies the bound constraint. \pause
+\item S. Zagatti (2014)\footnote{\tiny Theorem 1., \textit{Maximal generalized solution of eikonal equation}  J. Differential Equations 257 (2014) 231–263 } if $\rho$ is continuous on $\Omega$ up to a closed null set $N$, then $u$ is a generalized solution of the \textbf{Eikonal equation}:
+\begin{equation}\label{eq:eik}
+\aligned
+|\nabla u| &= \rho \text{ in } \Omega,\\
+u &= g \text{ on } \partial \Omega.
+\endaligned
+\end{equation}
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{LVPP for Eikonal Equation}
+\begin{itemize}
+\item
+Using
+%\begin{equation*}\label{eq:hellinger}
+$R(y;x) := -\sqrt{\rho^2(x) - |y|^2} \quad y \in \mathbb R^n,~ x \in \Omega
+$
+%\,.
+%\end{equation*}
+we obtain the LVPP saddle point problem for the Eikonal equation:\medskip
+
+\only<1>{
+Given a latent variable  $\varphi$, find $(u,\psi) \in H^1_0(\Omega) \times L^2(\Omega)^n$ such that
+\begin{equation}\label{eq:grad-lvpp}
+    \aligned
+ - \mathrm{div}\, \psi &-\alpha 1 + \mathrm{div}\, \varphi  &&=\; 0 \,\\
+   \nabla u &-  \frac{\rho(x)}{\sqrt{1+|\psi|^2}}\psi  &&= \; 0.
+    \endaligned
+\end{equation}}
+\pause
+\only<2>{
+Given a latent variable  $\varphi$, find $(u,\psi) \in  L^2(\Omega) \times H(\operatorname{div},\Omega)$ such that
+\begin{equation}
+\label{eq:EikonalVF}
+%    \left\{
+    \begin{aligned}
+%        &\,\text{Find }
+%        \psi \in H(\operatorname{div},\Omega)
+%        \text{ and }
+%        u \in L^2(\Omega)
+%        \text{ such that}
+%        \\
+        &\,
+        \begin{alignedat}{3}
+            (\operatorname{div}\psi, v)
+            &=
+            (-1, v) + (\operatorname{div}\varphi,v)
+            &&~\fa v \in L^2(\Omega),\\
+             (u, \operatorname{div} w) + \bigg(\frac{\rho\,\psi}{\sqrt{1/\alpha+|\psi|^2}}, w\bigg) 
+            &= 0
+            &&~\fa w \in H(\operatorname{div},\Omega)\,.
+        \end{alignedat}
+    \end{aligned}
+%    \right.
+\end{equation}}
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Eikonal}
+\begin{itemize}
+\item
+Discretization:
+\begin{equation}
+\label{eq:EikonalDVF}
+    \left\{
+    \begin{aligned}
+        &\,\text{Find }
+        \psi_h \in W_h
+        \text{ and }
+        u_h \in V_h
+        \text{ such that}
+        \\
+        &\,
+        \begin{alignedat}{3}
+            \bigg(\frac{\rho\,\psi_h}{\sqrt{1/\alpha+|\psi_h|^2}}, w\bigg) + (u_h, \operatorname{div} w)
+            &= 0
+            &&~\fa w \in W_h
+            \,,
+            \\
+            (\operatorname{div}\psi_h, v)
+            &=
+            (-1, v) + (\operatorname{div}\varphi_h,v)
+            &&~\fa v \in V_h
+            \,.
+        \end{alignedat}
+    \end{aligned}
+    \right.
+\end{equation}
+where
+\[
+    V_h = \mathbb{P}_{p-1}(\mathcal{T}_h)
+    \,,
+    \qquad
+    W_h = \mathbb{RT}_{p}(\mathcal{T}_h)
+    \,.
+\]
+\item The linearization is essentially Darcy's law with $u$ pressure, $\psi$ flux. 
+\item Solve with Newton's method using MUMPS.
+\end{itemize}
+\end{frame}
+
 \end{document}
 
 \begin{frame}\frametitle{A}
