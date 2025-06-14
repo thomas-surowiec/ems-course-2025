@@ -20,6 +20,8 @@
 \usepackage{wrapfig}
 \usepackage{verbatim}
 \usepackage{tcolorbox}
+\usepackage{multicol}
+\setlength{\columnsep}{1cm}
 %\usepackage[dvipsnames]{xcolor}
 
 \usepackage{hhline}
@@ -678,47 +680,249 @@ A new, unifying perspective on pointwise inequality constraints.
 
 
 
-\begin{frame}\frametitle{A}
-\begin{itemize}
-\item
-\end{itemize}
-\end{frame}
-
-\begin{frame}\frametitle{A}
-\begin{itemize}
-\item
-\end{itemize}
-\end{frame}
-
-\begin{frame}\frametitle{A}
-\begin{itemize}
-\item
-\end{itemize}
-\end{frame}
-
-\begin{frame}\frametitle{A}
-\begin{itemize}
-\item
-\end{itemize}
-\end{frame}
-
-\begin{frame}\frametitle{A}
-\begin{itemize}
-\item
-\end{itemize}
-\end{frame}
-
-\begin{frame}\frametitle{A}
-\begin{itemize}
-\item
-\end{itemize}
-\end{frame}
 
 \section{Applications}
-\begin{frame}\frametitle{A}
+
+\begin{frame}\frametitle{The Signorini Problem}
+\begin{minipage}{0.55\linewidth}
+\visible<1->{
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+Signorini (1959), analyzed by Fichera (1963).\\
+ 
+The essential first problem in contact mechanics.\\
+ 
+Models the deformation of a linear elastic body in the presence of a contact boundary constraint.
+\end{beamercolorbox}
+}\visible<2->{
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+\visible<2->{$\Omega \subset \mathbb{R}^3$, $\Gamma$ split into two disjoint subsets.}
+\visible<2->{$\Gamma = \overline{ \Gamma_\mathrm{D} \cup \Gamma_\mathrm{T} }$ with\\
+$\Gamma_D$ for \textbf{d}isplacement\\
+$\Gamma_{T}$ for \textbf{t}raction boundary conditions.}
+\end{beamercolorbox}}
+\end{minipage}\hspace{4ex}
+\begin{minipage}{0.3\linewidth}
+ \centering
+ \begin{figure}
+  \centering\vspace{1ex}
+  \visible<1->{\begin{minipage}[b]{0.45\textwidth}
+    \includegraphics[width=\linewidth]{figures/Antonio_Signorini.jpg}
+    \captionof*{figure}{\tiny A. Signorini}
+  \end{minipage}}%
+  \hfill
+  \begin{minipage}[b]{0.46\textwidth}
+    \includegraphics[width=\linewidth]{figures/Gaetano_Fichera.jpg}
+    \captionof*{figure}{\tiny G. Fichera}
+  \end{minipage}
+\end{figure}\vspace{-8ex}
+\begin{figure}
+	\centering
+	\begin{tikzpicture}
+		\node at (-3.35,0) {\includegraphics[height=1.25in]{figures/contact.png}};
+    \end{tikzpicture}
+\end{figure}
+\end{minipage}
+\end{frame}
+
+\begin{frame}\frametitle{The Signorini Problem}
+\begin{minipage}{0.55\linewidth}
+\visible<1->{
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+\visible<1->{State space:\vspace{-1.5ex}
+\begin{equation*}
+\label{eq:Signorini_V}
+    V = \big\{ u \in H^1(\Omega,\mathbb{R}^3)
+        \mid u = g \text{ on } \Gamma_\mathrm{D\textbf{}}
+    \big\}
+    \,,
+\end{equation*}}\vspace{-4ex}
+
+\visible<2->{Objective function:\vspace{-1.5ex}
+\begin{equation*}
+    J(u) =
+    \frac{1}{2}\int_\Omega (\mathbb C \epsilon(u)) : \epsilon(u) \dd x
+    -
+    \int_\Omega f \cdot u \dd x
+    \,,
+\end{equation*}}\vspace{-2.5ex}
+
+\visible<3->{Inequality constraints:\vspace{-1ex}
+\begin{equation*}
+ \alert{   K = \big\{ u \in V
+        \mid u \cdot \tilde{n} \leq \phi_1 \text{ on } \Gamma_\mathrm{T}
+    \big\} }
+    \,.
+\end{equation*}}\vspace{-4ex}
+\end{beamercolorbox}
+}\visible<4->{
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}\scriptsize
+%Here, $\epsilon : H^1(\Omega,\mathbb{R}^3) \to L^2(\Omega,\mathbb{R}^{3\times 3}_{\mathrm{sym}})$, 
+$\epsilon := (\nabla + \nabla^\top)/2$ symmetric gradient\smallskip
+ 
+$\C \colon \mathbb{R}^{3\times 3}_{\mathrm{sym}} \to \mathbb{R}^{3\times3}_{\mathrm{sym}}$ sym.\ pos.-def.\ elasticity tensor\smallskip
+
+$f \colon \Omega \to \mathbb{R}^3$ internal body force density\smallskip
+
+$\phi_1 \colon \Gamma_\mathrm{T} \to \mathbb{R}_+$ gap function, $\tilde{n}$ normal to contact surface.
+\end{beamercolorbox}}
+\end{minipage}\hspace{4ex}
+\begin{minipage}{0.3\linewidth}
+ \centering
+ \begin{figure}
+  \centering\vspace{1ex}
+  \visible<1->{\begin{minipage}[b]{0.45\textwidth}
+    \includegraphics[width=\linewidth]{figures/Antonio_Signorini.jpg}
+    \captionof*{figure}{\tiny A. Signorini}
+  \end{minipage}}%
+  \hfill
+  \begin{minipage}[b]{0.46\textwidth}
+    \includegraphics[width=\linewidth]{figures/Gaetano_Fichera.jpg}
+    \captionof*{figure}{\tiny G. Fichera}
+  \end{minipage}
+\end{figure}\vspace{-8ex}
+\begin{figure}
+	\centering
+	\begin{tikzpicture}
+		\node at (-3.35,0) {\includegraphics[height=1.25in]{figures/contact.png}};
+    \end{tikzpicture}
+\end{figure}
+\end{minipage}
+\end{frame}
+
+\begin{frame}\frametitle{LVPP for Signorini}
+\begin{minipage}{\linewidth}
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+
+\begin{columns}
+\begin{column}{0.55\textwidth}
 \begin{itemize}
-\item
+\item $B := \gamma(\cdot) \cdot \tilde{n}$ (trace on contact boundary)
+\item $\Omega_d := \Gamma_\mathrm{T}$
+\item $C(x) := (-\infty,\phi_1(x)]$
+\item $R(a) := (a-\phi) \ln (a - \phi) - (a - \phi)$
+\item $\psi^0 = 0$
 \end{itemize}
+\end{column}
+\begin{column}{0.3\textwidth}  %%<--- here
+\begin{minipage}{0.3\linewidth}
+ \centering
+\begin{figure}
+	\centering
+	\begin{tikzpicture}
+		\node at (-7.35,0) {\includegraphics[height=1.25in]{figures/contact.png}};
+    \end{tikzpicture}
+\end{figure}
+\end{minipage}
+\end{column}
+\end{columns}
+%The LVPP saddle-point problems:\\
+Find $(u^{k}, \psi^{k}) \in V \times L^\infty(\Gamma_\mathrm{T})$ satisfying
+\begin{subequations}
+\label{eq:SignoriniVF}
+\begin{align}
+    ( \alpha_k\C \epsilon(u^k), \epsilon(v) ) - (\psi^k, v\cdot \tilde{n} )_{\Gamma_\mathrm{T}}
+    &=
+    (\alpha_k f, v) - ( \psi^{k-1}, v \cdot \tilde{n} )_{\Gamma_\mathrm{T}}
+    \,,
+    \\
+    ( u^k\cdot \tilde{n} , w )_{\Gamma_\mathrm{T}} + ( \exp \psi^k, w )_{\Gamma_\mathrm{T}}
+    &= ( \phi_1, w )_{\Gamma_\mathrm{T}}
+    \,,
+\end{align}
+\end{subequations}
+for all $(v, w) \in V \times L^\infty(\Gamma_\mathrm{T})$, where $(\cdot, \cdot  )_{\Gamma_\mathrm{T}}$ denotes the $L^2(\Gamma_\mathrm{T})$-inner product.
+\end{beamercolorbox}
+\end{minipage}
+\end{frame}
+
+\begin{frame}\frametitle{LVPP for Signorini}
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+\begin{itemize}
+%\item Code available here: 
+\item Define a \alert{proximal Galerkin method} using equal-order continuous Lagrange spaces for the displacement $u$ and latent variable $\psi$.
+\item \visible<2->{Note that the spaces are on manifolds of differing dimensions. Hence, the two discrete subspaces are not the same.}
+\item \visible<3->{We used the mixed-dimensional assembly routines in DOLFINx.}
+%\item \visible<4->{The discrete problem is solved for half of a sphere centered at $(0,0,0.5)$ with radius $0.4$ coming into contact with the rigid $x,y$-plane.} 
+%\item \visible<5->{$\tilde{n}=(0,0,-1)^\top$ and $\phi_1$ measures the vertical distance between the $x,y$-plane and the boundary of the half sphere, i.e., $\phi_1(x,y,z) = z$.}
+%\item \visible<6->{Second-order Lagrange elements approximate the geometry, the displacement, and the latent variable.}
+%\item The initial proximity parameter $\alpha_0 = 0.005$ is doubled at each subsequent proximal step (i.e., LVPP iteration). 
+%\item  The tolerance for Newton’s method is set to $10^{-6}$. 
+%\item  The LVPP algorithm requires a total of 13 proximal iterations, amounting to 17 linear solves. The maximum number of Newton steps was 5, the minimum 1. The number of degrees of freedom was $17,613$ for a mesh with $3,661$ cells.
+\end{itemize}
+\end{beamercolorbox}
+\end{frame}
+
+\begin{frame}\frametitle{LVPP for Signorini}
+\begin{minipage}{0.55\linewidth}
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+ \visible<1->{Initial shape: hemisphere centered at $(0,0,0.5)$ with radius $0.4$ coming in contact with $xy$-plane.} \smallskip
+ 
+ \visible<1->{$\tilde{n}=(0,0,-1)^\top$ and $\phi_1(x,y,z) = z$.}\smallskip
+ 
+\visible<1->{Second-order Lagrange elements for geometry, displacement, and the latent variable.}
+\end{beamercolorbox}
+\visible<2->{
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}
+Performance of LVPP:\\
+Proximal iterations 13 ($\alpha$ updates)\\
+\textbf{Total linear solves: 17}\\
+Max Newton steps: 5\\
+Min Newton steps: 1
+DoFs: 17,613\\
+Cells: 3,661
+\end{beamercolorbox}}
+\end{minipage}\hspace{4ex}
+\begin{minipage}{0.3\linewidth}
+ \centering
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+Parameters:\\
+$\alpha_0 = 5$E-3\\
+$\alpha_{k+1} := 2\alpha_k$\\
+${\tt tol_{rel}} = {\tt tol_{abs}}$ = 1E-6
+\end{beamercolorbox}
+\begin{figure}
+	\centering
+	\begin{tikzpicture}
+		\node at (-3.35,0) {\includegraphics[height=1.25in]{figures/contact.png}};
+    \end{tikzpicture}
+\end{figure}
+\end{minipage}
 \end{frame}
 
 \end{document}
+
+\begin{frame}\frametitle{A}
+\begin{itemize}
+\item
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{A}
+\begin{itemize}
+\item
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{A}
+\begin{itemize}
+\item
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{A}
+\begin{itemize}
+\item
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{A}
+\begin{itemize}
+\item
+\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{A}
+\begin{itemize}
+\item
+\end{itemize}
+\end{frame}
