@@ -1030,41 +1030,41 @@ $\psi^0 = 0$
 \end{beamercolorbox}
 \end{minipage}\hfill\visible<2->{
 \begin{minipage}{0.72\textwidth}  %%<--- here
-\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}\scriptsize
-Find $(u^k, c^k, \psi^k) \in H^1_g(\Omega) \times H^1(\Omega) \times L^\infty(\Omega)$ such that
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}\scriptsize\visible<3->{
+Find $(u^k, c^k, \psi^k) \in H^1_g(\Omega) \times H^1(\Omega) \times L^\infty(\Omega)$ such that}
 \begin{subequations}
 \label{eq:FractureVF}
 \begin{align*}
-    &\underbrace{\alpha_k G ((\epsilon + (1-\epsilon)(1-c^k)^2)\nabla u^k, \nabla v)}_{= \alpha_k(\partial_u J(u,c),v)}
+    \visible<4->{&\underbrace{\alpha_k G ((\epsilon + (1-\epsilon)(1-c^k)^2)\nabla u^k, \nabla v)}_{= \alpha_k(\partial_u J(u,c),v)}
     = 0
-    \,,
-    \\
+    \,,}
+    \\\visible<5->{
     &
     %\begin{split}
     \underbrace{-\alpha_k  ((1-\epsilon)(1-c^k)|\nabla u^k|^2,d)%\hspace{30mm}
 %    \indent 
     +
-    \alpha_k G_c ( \ell(\nabla c^k, \nabla d) + \ell^{-1}(c^k, d) )}_{=\alpha_k (\partial_c J(u,c),d)}
-    +\\
+    \alpha_k G_c ( \ell(\nabla c^k, \nabla d) + \ell^{-1}(c^k, d) )}_{=\alpha_k (\partial_c J(u,c),d)}}
+    +\\\visible<5->{
     &\hspace{7cm}(\psi^k-\psi^{k-1},d)%\\
     =
     0
-    \,,
+    \,,}
     %\end{split}
-    \\
+    \\\visible<6->{
     &\underbrace{(c^k,w)
     -
     \bigg(\frac{c_\mathrm{prev} + \exp (\psi^k)}{\exp(\psi^k) + 1}, w\bigg)}_{= (c - \nabla R^*(\psi),w)}
     =
     0
-    \,,
+    \,,}
 \end{align*}
-\end{subequations}
-for all $(v, d, w) \in H^1_0(\Omega) \times H^1(\Omega) \times L^\infty(\Omega)$.
+\end{subequations}\visible<7->{
+for all $(v, d, w) \in H^1_0(\Omega) \times H^1(\Omega) \times L^\infty(\Omega)$.}
 \end{beamercolorbox}
 \end{minipage}}
 
-\visible<3->{
+\visible<8->{
 \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}\centering
 Many choose an alternating minimization scheme (leaveing off the 3$^{rd}$ equation) due to the simplicity of the individual equations. We use Newton.
 \end{beamercolorbox}}
@@ -1134,264 +1134,250 @@ Average number of Newton steps: 5.44
 \end{minipage}
 \end{frame}
 
-
-\begin{frame}\frametitle{Gradient Constraints}
-\begin{minipage}{0.55\linewidth}
-\visible<1->{
+\begin{frame}\frametitle{Fully Nonlinear PDEs}
+\begin{minipage}{0.5\linewidth}
 \begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
-\footnotesize}\visible<1->{Often arise in \alert{Quasi-Variational Inequalities} (QVIs).\\
- 
- }\visible<2->{
-Major contributions by L. Prigozhin (modeling), J.F. Rodrigues (analysis), M. Hinterm\"uller \& C.N. Rautenberg (algorithms), and many others.\\
- 
- }\visible<3->{
-Diverse applications: 
-\begin{itemize}
-\item Elastic-plastic torsion problem
-\item Sandpile growth
-\item Magnetization in type-II superconductors
-\item Hydrology 
-\item Simplified stress constraints.
-\end{itemize}}
-\end{beamercolorbox}
+Many nonlinear  
+PDEs have the form:\\ Find $u: \Omega \to \mathbb R$ such that
+\begin{equation*}\label{eq:nonlinear-pde}
+F(x,u,\nabla u) = 0 \text{ in } \Omega
+\text{ and } u = g \text{ on }\partial \Omega\,.
+\end{equation*}
 
-%\visible<2->{
-%\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
-%\visible<2->{$\Omega \subset \mathbb{R}^3$, $\Gamma$ split into two disjoint subsets.}
-%\visible<2->{$\Gamma = \overline{ \Gamma_\mathrm{D} \cup \Gamma_\mathrm{T} }$ with\\
-%$\Gamma_D$ for \textbf{d}isplacement\\
-%$\Gamma_{T}$ for \textbf{t}raction boundary conditions.}
-%\end{beamercolorbox}}
-\end{minipage}\hspace{4ex}
-\begin{minipage}{0.3\linewidth}
+This equation lack a divergence structure.\medskip
+
+Integrating by parts will not lead us to the correct notion of a weak solution.%\medskip
+%We need the concept of viscosity solution introduced by Crandall and Lions (1983).
+\end{beamercolorbox}\hfill\visible<2->{
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}
+We need the concept of viscosity solution introduced by Crandall and Lions (1983).
+\end{beamercolorbox}}
+\end{minipage}\hspace{3ex}
+\begin{minipage}{0.35\linewidth}
  \centering
  \begin{figure}
   \centering\vspace{1ex}
-  \visible<1->{\begin{minipage}[b]{0.38\textwidth}
-    \includegraphics[width=\linewidth]{figures/Prigozhin.jpg}
-    \captionof*{figure}{\tiny L. Prigozhin}
+  \visible<1->{\begin{minipage}[b]{0.5\textwidth}
+    \includegraphics[width=\linewidth]{figures/pllions.jpg}
+    \captionof*{figure}{\tiny P.-L. Lions}
   \end{minipage}}%
   \hfill
-  \begin{minipage}[b]{0.46\textwidth}
-    \includegraphics[width=\linewidth]{figures/Rodrigues.jpg}
-    \captionof*{figure}{\tiny J.F. Rodrigues}
-  \end{minipage}
+  \begin{minipage}[b]{0.44\textwidth}
+    \includegraphics[width=\linewidth]{figures/mgcrandall.jpg}
+    \captionof*{figure}{\tiny M.G.\ Crandall}
+  \end{minipage}\vspace{-2ex}
+    \includegraphics[width=0.7\linewidth]{figures/eikonal_mobius.png}
 \end{figure}
- \begin{minipage}[b]{0.5\textwidth}
-    \includegraphics[width=\linewidth]{figures/global_feasible_active_set.png}
-    \captionof*{figure}{\tiny Black: $|\nabla u| = \phi$.}
-  \end{minipage}%
-%  \hfill
-%  \begin{minipage}[b]{0.6\textwidth}
-    \includegraphics[width=0.8\linewidth]{figures/gradient_constraint_u.png}
-%    \captionof*{figure}{\tiny State $u$}
-%  \end{minipage}
-%\begin{figure}
-%	\centering
-%	\begin{tikzpicture}
-%		\node at (-5,0) {\includegraphics[height=1in]{figures/global_feasible_active_set.png}};\hspace{10ex}
-%    \end{tikzpicture}\vspace{-8ex}
-%	\begin{tikzpicture}
-%		\node at (-2,-1) {\includegraphics[height=1.25in]{figures/gradient_constraint_u.png}};
-%    \end{tikzpicture}
-%%\end{figure}
-%  \end{minipage}
 \end{minipage}
 \end{frame}
 
-\begin{frame}\frametitle{Gradient Constraints}
-\begin{minipage}{0.55\linewidth}
-\visible<1->{
-\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
-\footnotesize\visible<1->{Domain: $\Omega \subset \mathbb{R}^n$ open, bounded, Lipschitz\\
+\begin{frame}{Viscosity Solutions}
+%\begin{definition}
+\visible<1->{\textbf{Subsolution:} An \alert{upper semicontinuous} function $u$ in $\Omega$ is a \alert{viscosity subsolution} if for any $x_0 \in \Omega$ and any $C^2$ function $\phi$ such that $\phi(x_0) = u(x_0)$ and $\phi \geq u$ in a neighborhood of $x_0$, we have:
+\[
+F\left(x_0, \phi(x_0), D\phi(x_0)\right) \leq 0.
+\]}\vspace{-1ex}
 
-}\visible<2->{
-State space: $V := W^{1,p}_0(\Omega)$ with $p \ge 2$\\
+%\vspace{0.5em}
 
-}\visible<3->{
-Objective function:
- \begin{equation*}\label{eq:grad-ob}
-     J(u) :=  \frac{1}{p} \int_{\Omega}|\nabla u|^p - f u \dd x
- \end{equation*}
-Forcing term $f \in L^2(\Omega)$\medskip
+\visible<2->{\textbf{Supersolution:} A \alert{lower semicontinuous} function $u$ in $\Omega$ is a \alert{viscosity supersolution} if for any $x_0 \in \Omega$ and any $C^2$ function $\phi$
+such that $\phi(x_0) = u(x_0)$ and $\phi \leq u$ in a neighborhood of $x_0$, we have:
+\[
+F\left(x_0, \phi(x_0), D\phi(x_0))\right) \geq 0.
+\]}\vspace{-1ex}
 
-}\visible<4->{
-\alert{Inequality constraints:
-\begin{equation}\label{eq:grad-constr}
-K = \{ u \in H^1_0(\Omega) \mid |\nabla u| \le \phi \text{ a.e.\ in } \Omega \}\,.
-\end{equation}
-}
-$\phi \in L^{\infty}(\Omega)$ : $\phi \ge \epsilon$ a.e.\ for constant $\epsilon > 0$.
-}
+%\vspace{0.5em}
 
-
-\end{beamercolorbox}
-}
-%\visible<2->{
-%\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
-%\visible<2->{$\Omega \subset \mathbb{R}^3$, $\Gamma$ split into two disjoint subsets.}
-%\visible<2->{$\Gamma = \overline{ \Gamma_\mathrm{D} \cup \Gamma_\mathrm{T} }$ with\\
-%$\Gamma_D$ for \textbf{d}isplacement\\
-%$\Gamma_{T}$ for \textbf{t}raction boundary conditions.}
-%\end{beamercolorbox}}
-\end{minipage}\hspace{4ex}
-\begin{minipage}{0.3\linewidth}
- \centering
- \begin{figure}
-  \centering\vspace{1ex}
-  \visible<1->{\begin{minipage}[b]{0.38\textwidth}
-    \includegraphics[width=\linewidth]{figures/hintermueller.jpg}
-    \captionof*{figure}{\tiny M. Hinterm\"uller}
-  \end{minipage}}%
-  \hfill
-  \begin{minipage}[b]{0.46\textwidth}
-    \includegraphics[width=\linewidth]{figures/rautenberg.jpg}
-    \captionof*{figure}{\tiny C.N. Rautenberg}
-  \end{minipage}
-\end{figure}
- \begin{minipage}[b]{0.5\textwidth}
-    \includegraphics[width=\linewidth]{figures/global_feasible_active_set.png}
-    \captionof*{figure}{\tiny Black: $|\nabla u| = \phi$.}
-  \end{minipage}%
-%  \hfill
-%  \begin{minipage}[b]{0.6\textwidth}
-    \includegraphics[width=0.8\linewidth]{figures/gradient_constraint_u.png}
-%    \captionof*{figure}{\tiny \hspace{28ex} State $u$ for $p=2$}
-%  \end{minipage}
-%\begin{figure}
-%	\centering
-%	\begin{tikzpicture}
-%		\node at (-5,0) {\includegraphics[height=1in]{figures/global_feasible_active_set.png}};\hspace{10ex}
-%    \end{tikzpicture}\vspace{-8ex}
-%	\begin{tikzpicture}
-%		\node at (-2,-1) {\includegraphics[height=1.25in]{figures/gradient_constraint_u.png}};
-%    \end{tikzpicture}
-%%\end{figure}
-%  \end{minipage}
-\end{minipage}
+\visible<3->{\textbf{Viscosity Solution:} A \alert{continuous} function $u$ is a \alert{viscosity solution} of the PDE
+\[
+F(x, u, Du) = 0 \quad \text{in } \Omega
+\]
+if it is both a subsolution and a supersolution.}
+%\end{definition}
 \end{frame}
 
 
+\begin{frame}\frametitle{An Example}
+\begin{example}[Eikonal Equation]
+Given $\Omega \subset \mathbb R^n$, a continuous function $\rho : \Omega \to \mathbb R$, and boundary data $g \in W^{1,\infty}(\Omega)$ such that $|\nabla g| \le \rho$,  find $u : \Omega \to \mathbb R$ such that
+\begin{equation*}\label{eq:eik}
+\aligned
+|\nabla u| &= \rho \text{ in } \Omega,\\
+u &= g \text{ on } \partial \Omega.
+\endaligned
+\end{equation*}
+This equation admits a unique viscosity solution $\bar{u}$.
+\end{example}\visible<2->{
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}\centering
+But what does this have to do with inequality constraints or variational inequalities?
+\end{beamercolorbox}}
+
+\end{frame}
+
 \begin{frame}\frametitle{Gradient Constraints}
- \hypertarget{eikonal}{}  % Target anchor
+% \hypertarget{eikonal}{}  % Target anchor”
     % Button to go back
-    \hyperlink{extensions}{\beamerbutton{Back to Extensions}}
-\begin{itemize}
-\item  $\Omega \subset \mathbb R^n$ is an open bounded subset.
-\item  $\rho : \Omega \to \mathbb R_+$ is essentially bounded and $\rho \ge \underline{\rho} > 0$ for constant $\underline{\rho}$ (a.e.\ $\Omega$).
-\item We want to find $u$  that  minimizes 
+%    \hyperlink{extensions}{\beamerbutton{Back to Extensions}}
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+$\Omega \subset \mathbb R^n$ is an open bounded subset.\medskip
+
+$\rho : \Omega \to \mathbb R_+$ is continuous and $\rho \ge \underline{\rho} > 
+0$ for constant $\underline{\rho}$ (a.e.\ $\Omega$).\medskip
+
+Define an objective function
 \[
 J(v) := -\int_{\Omega} v \, \mathrm{d} x 
 \] 
 over
 \[
 K = \left\{
-v \in W^{1,\infty}_g(\Omega) \left| | \nabla v | \le \rho \text{ a.e. } \Omega \right.
+v \in W^{1,\infty}_g(\Omega) \left|\; | \nabla v | \le \rho \text{ a.e. } \Omega \right.
 \right\}
 \] 
-where $g \in W^{1,\infty}(\Omega)$ satisfies the bound constraint. \pause
-\item S. Zagatti (2014)\footnote{\tiny Theorem 1., \textit{Maximal generalized solution of eikonal equation}  J. Differential Equations 257 (2014) 231–263 } if $\rho$ is continuous on $\Omega$ up to a closed null set $N$, then $u$ is a generalized solution of the \textbf{Eikonal equation}:
-\begin{equation}\label{eq:eik}
-\aligned
-|\nabla u| &= \rho \text{ in } \Omega,\\
-u &= g \text{ on } \partial \Omega.
-\endaligned
-\end{equation}
-\end{itemize}
+where $g \in W^{1,\infty}(\Omega)$ satisfies the bound constraint.\medskip
+
+Then $u$ the \alert{minimizer} of $J$ over $K$ is a \alert{viscosity solution} of the \alert{eikonal equation}.\footnote{\tiny S. Zagatti (2014)}
+\end{beamercolorbox}
+
+%S. Zagatti (2014)\footnote{\tiny Theorem 1., \textit{Maximal generalized solution of eikonal equation}  J. Differential Equations 257 (2014) 231–263 } if $\rho$ is continuous on $\Omega$ up to a closed null set $N$, then $u$ is a generalized solution of the \textbf{Eikonal equation}:
 \end{frame}
 
 \begin{frame}\frametitle{LVPP for Eikonal Equation}
-\begin{itemize}
-\item
-Using
-%\begin{equation*}\label{eq:hellinger}
-$R(y;x) := -\sqrt{\rho^2(x) - |y|^2} \quad y \in \mathbb R^n,~ x \in \Omega
-$
-%\,.
-%\end{equation*}
-we obtain the LVPP saddle point problem for the Eikonal equation:\medskip
+\vspace{-1ex}
+\begin{minipage}{0.25\textwidth}\scriptsize
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}
+$V := H^1_0(\Omega)$\medskip
 
-\only<1>{
-Given a latent variable  $\varphi$, find $(u,\psi) \in H^1_0(\Omega) \times L^2(\Omega)^n$ such that
-\begin{equation}\label{eq:grad-lvpp}
-    \aligned
- - \mathrm{div}\, \psi &-\alpha 1 + \mathrm{div}\, \varphi  &&=\; 0 \,\\
-   \nabla u &-  \frac{\rho(x)}{\sqrt{1+|\psi|^2}}\psi  &&= \; 0.
-    \endaligned
-\end{equation}}
-\pause
+$B := \nabla$\medskip
+
+$C := \mathbb B_{1}(0)$\medskip
+
+$\Omega_d := \Omega$\medskip
+ 
+$R(a) := -\sqrt{1 - \|a\|^2}$\medskip
+
+$\rho := 1$\medskip
+
+$\psi^0 := 0$
+\end{beamercolorbox}
+\end{minipage}\hfill\visible<2->{
+\begin{minipage}{0.72\textwidth}  %%<--- here
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+Find \only<2,3>{$(u^{k}, \psi^{k}) \in H^1_0(\Omega) \times L^2(\Omega,\mathbb{R}^n)$}\only<4->{satisfying $(u^{k}, \psi^{k}) \in L^2(\Omega) \times H(\operatorname{div},\Omega)$}
 \only<2>{
-Given a latent variable  $\varphi$, find $(u,\psi) \in  L^2(\Omega) \times H(\operatorname{div},\Omega)$ such that
-\begin{equation}
-\label{eq:EikonalVF}
-%    \left\{
-    \begin{aligned}
-%        &\,\text{Find }
-%        \psi \in H(\operatorname{div},\Omega)
-%        \text{ and }
-%        u \in L^2(\Omega)
-%        \text{ such that}
-%        \\
-        &\,
-        \begin{alignedat}{3}
-            (\operatorname{div}\psi, v)
-            &=
-            (-1, v) + (\operatorname{div}\varphi,v)
-            &&~\fa v \in L^2(\Omega),\\
-             (u, \operatorname{div} w) + \bigg(\frac{\rho\,\psi}{\sqrt{1/\alpha+|\psi|^2}}, w\bigg) 
-            &= 0
-            &&~\fa w \in H(\operatorname{div},\Omega)\,.
-        \end{alignedat}
-    \end{aligned}
-%    \right.
-\end{equation}}
+\begin{subequations}
+\label{eq:eikonal-lvpp-H1}
+\begin{align*}
+   -\alpha_k(1, v) +  (\psi^k - \psi^{k-1}, \nabla v)
+    &= 0, \\
+  (\nabla u^k, w) - \bigg(\frac{\psi^k}{\sqrt{1+|\psi^k|^2}}, w\bigg)
+    &= 0,
+\end{align*}
+\end{subequations}}\only<3>{
+\begin{subequations}
+\label{eq:eikonal-lvpp-H1}
+\begin{align*}
+     \underbrace{-\alpha_k(1, v)}_{\scriptsize \alpha_k (J'(u^k),v)} +  \underbrace{(\psi^k - \psi^{k-1}, \nabla v)}_{\scriptsize \langle B^*(\psi^k - \psi^{k-1}),v\rangle}
+    &= 0, \\
+    \underbrace{(\nabla u^k, w)}_{\scriptsize (Bu^k,w)} - \underbrace{\bigg(\frac{\psi^k}{\sqrt{1+|\psi^k|^2}}, w\bigg)}_{\scriptsize (\nabla R^*(\psi^k),w)}
+    &= 0,
+\end{align*}
+\end{subequations}}
+\only<4->{
+\begin{subequations}
+\label{eq:eikonal-lvpp-Hdiv}
+\begin{align*}
+    \bigg(\frac{\psi^k}{\sqrt{1+|\psi^k|^2}}, w\bigg) + (u^k, \nabla\cdot w)
+    &= 0,
+\label{eq:eikonal-lvpp-Hdiv-1}
+    \\
+    (\nabla\cdot \psi^k, v)
+    &= 
+    (\nabla\cdot\psi^{k-1},v) - \alpha_k(1,v),
+\label{eq:eikonal-lvpp-Hdiv-2}
+\end{align*}
+\end{subequations}}
+for all \only<2,3>{$(v,w) \in H^1_0(\Omega) \times L^2(\Omega,\mathbb{R}^n)$}\only<4->{for all $(v,w) \in L^2(\Omega) \times H(\operatorname{div},\Omega)$}.\end{beamercolorbox}
+\end{minipage}}
 
-\end{itemize}
+\visible<4->{
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}\centering
+Despite not being originally in divergence form, we have a new, meaningful weak formulation. This allows seamless integration with popular finite element software.
+\end{beamercolorbox}}
 \end{frame}
 
-\begin{frame}\frametitle{Eikonal}
+\begin{frame}\frametitle{LVPP for Eikonal Equation}
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+We consider three different domains:
 \begin{itemize}
-\item
-Discretization:
-\begin{equation}
-\label{eq:EikonalDVF}
-    \left\{
-    \begin{aligned}
-        &\,\text{Find }
-        \psi_h \in W_h
-        \text{ and }
-        u_h \in V_h
-        \text{ such that}
-        \\
-        &\,
-        \begin{alignedat}{3}
-            \bigg(\frac{\rho\,\psi_h}{\sqrt{1/\alpha+|\psi_h|^2}}, w\bigg) + (u_h, \operatorname{div} w)
-            &= 0
-            &&~\fa w \in W_h
-            \,,
-            \\
-            (\operatorname{div}\psi_h, v)
-            &=
-            (-1, v) + (\operatorname{div}\varphi_h,v)
-            &&~\fa v \in V_h
-            \,.
-        \end{alignedat}
-    \end{aligned}
-    \right.
-\end{equation}
-where
-\[
-    V_h = \mathbb{P}_{p-1}(\mathcal{T}_h)
-    \,,
-    \qquad
-    W_h = \mathbb{RT}_{p}(\mathcal{T}_h)
-    \,.
-\]
-\item The linearization is essentially Darcy's law with $u$ pressure, $\psi$ flux. 
-\item Solve with Newton's method using MUMPS.
+\item a two-dimensional star-shaped domain,
+\item a solid (three-dimensional) sphere,
+\item a M\"obius strip.
 \end{itemize}
+Domains are scaled so that the maximum shortest distance to boundary is one.\medskip
+
+\textbf{Finite element spaces}
+\begin{itemize}
+\item Star-shaped and sphere: We used a first-order discontinuous piecewise polynomial space for $L^2(\Omega)$ and second-order Raviart--Thomas polynomial space for $H(\operatorname{div},\Omega)$.\footnote{\tiny This is the standard choice for Darcy flow problems.}
+\item M\"obius strip: We used a continuous piecewise polynomial discretization of Taylor--Hood-type. In particular, we used second-order Lagrange elements to approximate $\psi^k$ and first-order Lagrange elements for $u^k$.
+\end{itemize}
+\end{beamercolorbox}
 \end{frame}
 
+\begin{frame}\frametitle{LVPP for Eikonal Equation}
+\begin{minipage}{0.35\linewidth}
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+ \visible<1->{We solved each discretized subproblem with a damped Newton method.} \medskip
+ 
+ \visible<1->{$\alpha_k = 10\cdot\min\{2^k, 5\}$\medskip}
+
+Stop proximal steps when $\|u^k - u^{k-1}\|_{L^2(\Omega)} < 10^{-4}$.
+\end{beamercolorbox}
+\visible<2->{
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block title}
+Performance of LVPP:\\
+Max.\ no.\ Newton steps: 3\\
+Total Newton steps $< 10$\\
+(For all three examples)
+\end{beamercolorbox}}
+\end{minipage}\hspace{0ex}
+\begin{minipage}{0.6\linewidth}
+ \centering
+\begin{figure}
+\centering
+    \subcaptionbox*{} {\includegraphics[width=0.29\linewidth]{figures/Eikonal.png}}
+    \subcaptionbox*{} {\includegraphics[width=0.23\linewidth]{figures/eikonal_sphere.png}}
+    \subcaptionbox*{} {\includegraphics[width=0.29\linewidth]{figures/eikonal_mobius.png}}
+\end{figure}\visible<3->{
+\begin{minipage}{0.9\textwidth}
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+Nothing can be Sethian's and Osher's Fast Marching and Fast Sweeping methods in computational complexity, but LVPP allows for easy integration in complex finite element codes.
+\end{beamercolorbox}
+\end{minipage}}
+\end{minipage}
+\end{frame}
+
+\begin{frame}\frametitle{Conclusion and Outlook}
+\begin{beamercolorbox}[rounded=true, shadow=true, wd=\textwidth]{block body}
+\visible<1->{Starting with convex optimization, we \only<1>{(formally!)}\only<2->{\alert{(formally!)}} derived a new kind of saddle point problem that provides a unifying perspective on variational inequalities and beyond.
+}\medskip
+
+\visible<2->{
+\alert{HOWEVER}, the general LVPP framework requires \textbf{rigorous} justification beyond simple bound constraints. }\visible<3->{This includes: 
+\begin{itemize}
+\item Regularity theory of solutions to the LVPP subproblems 
+\item Differentiability of Nemitskii operators generated by $\nabla R^*$
+\item Justification of Newton on continuous and discrete levels
+\item Need iterative solvers for the new saddle point problems
+\item Proofs of mesh and order independence.
+\end{itemize}
+}
+
+\visible<4->{
+But the \textbf{extensive numerical studies} indicate it is worth the effort!
+}
+\end{beamercolorbox}
+\end{frame}
 \end{document}
 
 \begin{frame}\frametitle{A}
