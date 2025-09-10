@@ -1,0 +1,35 @@
+\documentclass[border=10pt]{standalone}
+\usepackage{tikz}
+
+\definecolor{color0}{rgb}{0.7843, 0.7843, 0.7843}
+\definecolor{color1}{rgb}{0, 0.4470, 0.7410}
+\definecolor{color2}{rgb}{0.8500, 0.3250, 0.0980}
+\definecolor{color3}{rgb}{0.9290, 0.6940, 0.1250}
+\definecolor{color4}{rgb}{0.7060, 0.3840, 0.7650}
+\definecolor{color5}{rgb}{0.4660, 0.6740, 0.1880}
+\definecolor{color6}{rgb}{0.3010, 0.7450, 0.9330}
+\definecolor{color7}{rgb}{0.6350, 0.0780, 0.1840}
+\definecolor{color8}{rgb}{0.0, 0.4078, 0.3412}
+
+\begin{document}
+	\begin{tikzpicture}[x=2cm,y=2cm,,scale=2.0]
+
+	  \coordinate (A) at (0,0) {};
+	  \coordinate (B) at (0,1) {};
+	  \coordinate (C) at (1,0) {};
+	  \coordinate (D) at (1,1) {};
+	  \coordinate (E) at (0.5,0.5) {};
+
+	  \draw [black] (A)--(B);
+	  \draw [black] (B)--(D);
+	  \draw [black] (D)--(C);
+	  \draw [black] (C)--(A);
+
+	  \fill [black] (A) circle(2pt);
+	  \fill [black] (B) circle(2pt);
+	  \fill [black] (C) circle(2pt);
+	  \fill [black] (D) circle(2pt);
+	  \draw [black] (E) circle(2pt);
+
+	\end{tikzpicture}
+\end{document}
